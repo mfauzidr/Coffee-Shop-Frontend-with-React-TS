@@ -4,7 +4,7 @@ import ProductCard from './ProductCard';
 import PagePagination from './PagePagination';
 
 interface Product {
-  id: string;
+  uuid: string;
   image: string;
   productName: string;
   description: string;
@@ -59,8 +59,8 @@ const ProductGrid: React.FC = () => {
           {posts &&
             posts.map((product) => (
               <ProductCard
-                key={product.id}
-                id={product.id}
+                key={product.uuid}
+                uuid={product.uuid}
                 isFlashSale={true}
                 image={product.image}
                 productName={product.productName}

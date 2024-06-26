@@ -6,7 +6,7 @@ import NoImg from '../assets/img/no-image.png';
 
 // Define the Product type here as well
 interface Product {
-  id: string;
+  uuid: string;
   image: string;
   productName: string;
   description: string;
@@ -15,11 +15,11 @@ interface Product {
   ratingProduct?: number;
 }
 
-interface ProductCardProps extends Omit<Product, 'id'> {
-  id: string;
+interface ProductCardProps extends Omit<Product, 'uuid'> {
+  uuid: string;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ id, image, productName, description, price, isFlashSale, ratingProduct }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ uuid, image, productName, description, price, isFlashSale, ratingProduct }) => {
   const discount = price / 2;
   const defaultImage = NoImg;
 
@@ -36,7 +36,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, image, productName, descr
       <div className="relative flex-1 bg-white shadow-md mx-8 md:mx-8 p-3 -mt-8">
         <div className="flex flex-col gap-2">
           <h2 className="text-xs md:text-2xl font-bold">
-            <Link to={`/detail-product/${id}`}>{productName}</Link>
+            <Link to={`/detail-product/${uuid}`}>{productName}</Link>
           </h2>
           <div className="flex-1 h-12 md:h-auto text-xs md:text-sm overflow-scroll">{description}</div>
           {ratingProduct && (
@@ -53,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, image, productName, descr
             )}
           </div>
           <div className="flex flex-1 gap-2">
-            <Button buttonName='Buy' type='button' size='w-full' link={`/detail-product/${id}`} />
+            <Button buttonName='Buy' type='button' size='w-full' link={`/detail-product/${uuid}`} />
             <CartButton size='14px md:24px' padding='px-4 py-px' border='border border-amber-500 rounded' />
           </div>
         </div>

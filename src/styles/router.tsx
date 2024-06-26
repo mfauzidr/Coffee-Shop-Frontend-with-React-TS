@@ -4,7 +4,7 @@ import Login from '../pages/Login'
 import ForgotPassword from '../pages/ForgotPassword'
 import Home from '../pages/Home'
 import Product from '../pages/Product'
-// import DetailProduct from '../pages/DetailProduct'
+import DetailProduct from '../pages/DetailProduct'
 // import CheckoutProduct from '../pages/CheckoutProduct'
 // import HistoryOrder from '../pages/HistoryOrder'
 // import DetailOrder from '../pages/DetailOrder'
@@ -33,10 +33,10 @@ const router = createBrowserRouter([
     path: '/product',
     element: <Product />
   },
-  // {
-  //   path: '/detail-product/:id',
-  //   element: <DetailProduct />
-  // },
+  {
+    path: '/detail-product/:uuid',
+    element: <DetailProduct />
+  },
   // {
   //   path: '/checkout-product',
   //   element: <CheckoutProduct />

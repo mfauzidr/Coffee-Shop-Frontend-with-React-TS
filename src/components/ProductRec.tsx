@@ -1,54 +1,56 @@
-import Product1 from '../assets/img/home-p-3.png'
-import Product2 from '../assets/img/home-p-4.png'
-import ProductCard from './ProductCard'
+import React, { useEffect, useState } from 'react';
+import ProductCard from './ProductCard';
+import axios from 'axios';
 
-const ProductRec = () => {
-    const productData = [
-        {
-          isFlashSale: true,
-          image: Product1,
-          name: "Hazelnut Latte",
-          description: "You can explore the menu that we provide with fun and have their own taste and make your day better.",
-          price: 20000,
-          ratingProduct: 5.0,
-        },
-        {
-          isFlashSale: true,
-          image: Product2,
-          name: "Hazelnut Latte",
-          description: "You can explore the menu that we provide with fun and have their own taste and make your day better.",
-          price: 20000,
-          ratingProduct: 3.9,
-        },
-        {
-          isFlashSale: true,
-          image: Product2,
-          name: "Hazelnut Latte",
-          description: "You can explore the menu that we provide with fun and have their own taste and make your day better.",
-          price: 20000,
-          ratingProduct: 5.0,
-        },        
-    ]
-
-    return (
-        <>
-          <div className="flex flex-1 text-black">
-            <div className="flex flex-col flex-1 md:flex-row mt-14 gap-5 items-center justify-center">
-                {productData.map((product, index) => (
-                    <ProductCard 
-                    key={index}
-                    isFlashSale={product.isFlashSale}
-                    image={product.image}
-                    title={product.name}
-                    description={product.description}
-                    price={product.price}
-                    ratingProduct={product.ratingProduct}
-                    />
-                ))}
-            </div>
-          </div>
-        </>
-    )
+interface Product {
+  uuid: string;
+  image: string;
+  productName: string;
+  description: string;
+  price: number;
+  isFlashSale: boolean;
+  ratingProduct?: number;
 }
 
-export default ProductRec
+const ProductRec: React.FC = () => {
+
+  const [products, setProducts] = useState<Product[]>([]);
+
+  const getProducts = async () => {
+    try {
+      const res = await axios.get('https://coffee-shop-backend-with-t-git-396322-mochammad-fauzis-projects.vercel.app/products', {
+        params: {
+          limit: 3,
+        },
+      });
+      setProducts(res.data.results);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  return (
+    <div className="flex flex-1 text-black">
+      <div className="flex flex-col flex-1 md:flex-row mt-14 gap-5 items-center justify-center">
+        {products.map((product) => (
+          <ProductCard
+            key={product.uuid}
+            uuid={product.uuid}
+            image={product.image}
+            productName={product.productName}
+            description={product.description}
+            price={product.price}
+            isFlashSale={product.isFlashSale}
+            ratingProduct={product.ratingProduct}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default ProductRec;
