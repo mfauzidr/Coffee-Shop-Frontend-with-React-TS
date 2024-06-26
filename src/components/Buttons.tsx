@@ -48,15 +48,15 @@ export const SignButton: React.FC<SignButtonProps> = ({ value, href, styling }) 
 };
 
 interface CartButtonProps {
-  padding: string;
-  border: string;
-  size: string;
+  padding?: string;
+  border?: string;
+  size?: string;
 }
 
 export const CartButton: React.FC<CartButtonProps> = ({ padding, border, size }) => {
   return (
     <button className={`${padding} ${border} ${size}`} onClick={() => (window.location.href = "/checkout-product")}>
-      <FeatherIcon icon="shopping-cart" className="text-amber-500" />
+      <FeatherIcon icon="shopping-cart" className="text-amber-500 w-4 md:w-6 h-4 md:h-6" />
     </button>
   );
 };
@@ -64,13 +64,13 @@ export const CartButton: React.FC<CartButtonProps> = ({ padding, border, size })
 interface ButtonProps {
   type: 'button' | 'submit' | 'reset';
   buttonName: string;
-  size: string;
+  size?: string;
   link?: string;
 }
 
 export const Button: React.FC<ButtonProps> = ({ type, buttonName, size, link = '#' }) => {
   return (
-    <Link to={link} className={`flex-1 ${size} py-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center`}>
+    <Link to={link} className={`flex-1 ${size} py-1 md:py-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center text-xs md:text-base`}>
       <button type={type}>
         {buttonName}
       </button>

@@ -3,7 +3,7 @@ import Register from '../pages/Register'
 import Login from '../pages/Login'
 import ForgotPassword from '../pages/ForgotPassword'
 import Home from '../pages/Home'
-// import Product from '../pages/Product'
+import Product from '../pages/Product'
 // import DetailProduct from '../pages/DetailProduct'
 // import CheckoutProduct from '../pages/CheckoutProduct'
 // import HistoryOrder from '../pages/HistoryOrder'
@@ -29,10 +29,10 @@ const router = createBrowserRouter([
     path: '/',
     element: <Home />
   },
-  // {
-  //   path: '/product',
-  //   element: <Product />
-  // },
+  {
+    path: '/product',
+    element: <Product />
+  },
   // {
   //   path: '/detail-product/:id',
   //   element: <DetailProduct />
