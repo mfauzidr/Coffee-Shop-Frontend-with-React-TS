@@ -13,7 +13,7 @@ function Brand({ textColor }: BrandProps) {
         <i>
           <FeatherIcon icon="coffee" className="h-5 w-5" />
         </i>
-        <div className="text-xl ml-3">
+        <div className="text-xl ml-3 font-sacramento">
           Coffee Shop
         </div>
       </div>

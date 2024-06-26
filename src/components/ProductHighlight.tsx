@@ -1,49 +1,63 @@
-import SectionHeader from "./SectionHeader"
-import ProductCard from "./ProductCard"
-import { useEffect, useState } from "react"
-import axios from "axios"
+import React, { useEffect, useState } from 'react';
+import SectionHeader from './SectionHeader';
+import ProductCard from './ProductCard';
+import axios from 'axios';
 
-const ProductHighlight = () => {
-  const [ posts, setPosts ] = useState([{}])
+// Define the Product type here
+interface Product {
+  id: string;
+  image: string;
+  productName: string;
+  description: string;
+  price: number;
+  isFlashSale: boolean;
+  ratingProduct?: number;
+}
 
-  const getPosts = async () =>{
-    const res = await axios.get('http://localhost:8888/products' , {
-      params: {
-        limit: 4
-      },
-    })
+const ProductHighlight: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
 
-    setPosts(res.data.results)
-  }
-  
-  useEffect(() =>{
-    getPosts()
-  },[])
+  const getProducts = async () => {
+    try {
+      const res = await axios.get('https://coffee-shop-backend-with-t-git-396322-mochammad-fauzis-projects.vercel.app/products', {
+        params: {
+          limit: 4,
+        },
+      });
+      setProducts(res.data.results);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
-
+  useEffect(() => {
+    getProducts();
+  }, []);
 
   return (
     <section className="flex flex-col h-screen items-center mt-20 px-10 gap-6">
-      <SectionHeader 
-        title={<h1>Here is People’s <span className="text-amber-800">Favorite</span></h1>} 
+      <SectionHeader
+        title={<h1>Here is People’s <span className="text-amber-800">Favorite</span></h1>}
         text="Let’s choose and have a bit taste of people’s favorite. It might be yours too!"
       />
-      <div className="h-full overflow-scroll md:overflow-visible bg-gray-200 md:bg-white md:px-0">
-        <div className="flex flex-col flex-1 md:flex-row mt-14 gap-5">
-          {posts.map((product) => (
+      <div className="h-[480px] max-w-full overflow-x-auto md:overflow-visible bg-gray-200 md:bg-white md:px-0">
+        <div className="flex flex-1 md:flex-row mt-5 md:mt-14 md:gap-5 w-80 md:w-full">
+          {products.map((product) => (
             <ProductCard
-            key={product.id}
-            id={product.id}
-            image={product.image}
-            productName={product.productName}
-            description={product.description}
-            price={product.price}
-          />
+              key={product.id}
+              id={product.id}
+              image={product.image}
+              productName={product.productName}
+              description={product.description}
+              price={product.price}
+              isFlashSale={product.isFlashSale}
+              ratingProduct={product.ratingProduct}
+            />
           ))}
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default ProductHighlight
+export default ProductHighlight;

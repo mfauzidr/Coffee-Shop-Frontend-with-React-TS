@@ -1,7 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.tsx"],
-  theme: {},
+  theme: {
+    extend: {
+      fontFamily: {
+        'sacramento': ['Sacramento', 'cursive'],
+      },
+    },
+  },
   plugins: [],
 }
 

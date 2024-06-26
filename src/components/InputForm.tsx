@@ -4,12 +4,10 @@ import { Link } from 'react-router-dom';
 
 interface InputProps {
   name: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
 }
 
-export const FullNameInput = ({ name, value, onChange, placeholder = 'Enter Your Full Name' }: InputProps) => {
+export const FullNameInput = ({ name, placeholder = 'Enter Your Full Name' }: InputProps) => {
   return (
     <div className="relative">
       <label className="block font-semibold" htmlFor={name}>
@@ -19,19 +17,17 @@ export const FullNameInput = ({ name, value, onChange, placeholder = 'Enter Your
         </i>
       </label>
       <input
-        className="border rounded-lg w-full h-12 pl-10 outline-none"
+        className="border rounded-lg w-full h-11 pl-10 outline-none"
         id={name}
         name={name}
         type="text"
-        value={value}
-        onChange={onChange}
         placeholder={placeholder}
       />
     </div>
   );
 };
 
-export const EmailInput = ({ name, value, onChange, placeholder = 'Enter Your Email' }: InputProps) => {
+export const EmailInput = ({ name, placeholder = 'Enter Your Email' }: InputProps) => {
   return (
     <div className="relative">
       <label className="block font-semibold" htmlFor={name}>
@@ -41,19 +37,17 @@ export const EmailInput = ({ name, value, onChange, placeholder = 'Enter Your Em
         </i>
       </label>
       <input
-        className="border rounded-lg w-full h-12 pl-10 outline-none"
+        className="border rounded-lg w-full h-11 pl-10 outline-none"
         id={name}
         name={name}
         type="email"
-        value={value}
-        onChange={onChange}
         placeholder={placeholder}
       />
     </div>
   );
 };
 
-export const PasswordInput = ({ name, value, onChange, placeholder = 'Enter Your Password', showSetNew = true }: InputProps & { showSetNew?: boolean }) => {
+export const PasswordInput = ({ name, placeholder = 'Enter Your Password', showSetNew = true }: InputProps & { showSetNew?: boolean }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => {
@@ -73,14 +67,13 @@ export const PasswordInput = ({ name, value, onChange, placeholder = 'Enter Your
           <FeatherIcon icon="lock" className="h-5 w-5 text-gray-500" />
         </i>
       </label>
-      <div className="flex border rounded-lg w-full h-12 pl-10 pr-3 items-center">
+      <div className="flex border rounded-lg w-full h-11 pl-10 pr-3 items-center">
         <input
           className="w-full outline-none"
           id={name}
           name={name}
           type={showPassword ? 'text' : 'password'}
-          value={value}
-          onChange={onChange}
+
           placeholder={placeholder}
         />
         <button onClick={togglePassword} id="reveal-password" className="justify-self-end" type="button">
@@ -93,7 +86,7 @@ export const PasswordInput = ({ name, value, onChange, placeholder = 'Enter Your
   );
 };
 
-export const ConfirmPasswordInput = ({ name, value, onChange, placeholder = 'Enter Your Password Again' }: InputProps) => {
+export const ConfirmPasswordInput = ({ name, placeholder = 'Enter Your Password Again' }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => {
@@ -108,14 +101,13 @@ export const ConfirmPasswordInput = ({ name, value, onChange, placeholder = 'Ent
           <FeatherIcon icon="lock" className="h-5 w-5 text-gray-500" />
         </i>
       </label>
-      <div className="flex border rounded-lg w-full h-12 pl-10 pr-3 items-center">
+      <div className="flex border rounded-lg w-full h-11 pl-10 pr-3 items-center">
         <input
           className="w-full outline-none"
           id={name}
           name={name}
           type={showPassword ? 'text' : 'password'}
-          value={value}
-          onChange={onChange}
+
           placeholder={placeholder}
         />
         <button onClick={togglePassword} id="reveal-confirm-password" className="justify-self-end" type="button">

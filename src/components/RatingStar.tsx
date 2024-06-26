@@ -1,7 +1,14 @@
 // import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
 
-const RatingStar = ({ rating ,gap, size }) => {
+interface RatingStarProps {
+  rating: number
+  gap?: string
+  size?: string
+}
+
+const RatingStar: React.FC<RatingStarProps> = ({ rating, gap = '', size = '' }) => {
   const maxRating = 5
   const starElements = []
 
@@ -11,7 +18,7 @@ const RatingStar = ({ rating ,gap, size }) => {
     starElements.push(
       <FontAwesomeIcon
         key={i}
-        icon="fa-solid fa-star"
+        icon={"fa-solid fa-star" as IconProp}
         style={{ color: starColor }}
         className="text-lg"
       />

@@ -5,71 +5,61 @@ import { ConfirmPasswordInput, EmailInput, FullNameInput, PasswordInput } from '
 import { LoginMethod, SubmitButton } from './Buttons';
 import Brand from './Brand';
 
-interface RegisterElements {
-  fullname: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-
-function RegisterForm() {
+const RegisterForm: React.FC = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [form, setForm] = useState<RegisterElements>({
-    fullname: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
-
-  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prevForm) => ({
-      ...prevForm,
-      [name]: value,
-    }));
-  };
 
   const registerProcess = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { fullname, email, password, confirmPassword } = form;
+    const form = e.target as HTMLFormElement;
+    const fullname = form.fullname.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    const confirmPassword = form.confirmPassword.value;
 
     if (!fullname || !email || !password || !confirmPassword) {
+      setErrorMessage('Please fill out the form correctly!');
       setIsError(true);
       setIsSuccess(false);
       return;
     }
 
     if (!email.includes('@')) {
+      setErrorMessage('Please enter a valid email address!');
       setIsError(true);
       setIsSuccess(false);
       return;
     }
 
     if (password !== confirmPassword) {
+      setErrorMessage('Passwords do not match!');
       setIsError(true);
       setIsSuccess(false);
       return;
     }
 
     const formData = new URLSearchParams();
-    formData.append('fullname', fullname);
+    formData.append('fullName', fullname);
     formData.append('email', email);
     formData.append('password', password);
 
+    console.log('Form Data:', formData.toString())
+
     try {
-      const { data } = await axios.post('http://localhost:8888/auth/register', formData);
+      await axios.post('https://coffee-shop-backend-with-typescript.vercel.app/register', formData);
+
       setIsSuccess(true);
       setIsError(false);
 
       setTimeout(() => {
         navigate('/login');
       }, 2000);
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      setErrorMessage(err.response?.data?.message || 'Something went wrong');
       setIsError(true);
       setIsSuccess(false);
     }
@@ -77,14 +67,14 @@ function RegisterForm() {
 
   return (
     <>
-      <form onSubmit={registerProcess} id="form" className="flex flex-col w-full md:w-3/5 gap-6 px-4 md:px-0">
-        <Brand textColor={'amber-800'} />
-        <div className="text-2xl text-amber-800">Register</div>
+      <form onSubmit={registerProcess} id="form" className="flex flex-col w-full md:w-3/5 gap-2 px-4 md:px-0 h-screen">
+        <Brand textColor="amber-800" />
+        <div className="text-xl text-amber-800">Register</div>
         <div className="text-base">Fill out the form correctly!</div>
-        <FullNameInput name="fullname" value={form.fullname} onChange={onChangeHandler} placeholder="Enter Your Full Name" />
-        <EmailInput name="email" value={form.email} onChange={onChangeHandler} placeholder="Enter Your Email" />
-        <PasswordInput name="password" value={form.password} onChange={onChangeHandler} placeholder="Enter Your Password" showSetNew={false} />
-        <ConfirmPasswordInput name="confirmPassword" value={form.confirmPassword} onChange={onChangeHandler} placeholder="Confirm Your Password" />
+        <FullNameInput name="fullname" placeholder="Enter Your Full Name" />
+        <EmailInput name="email" placeholder="Enter Your Email" />
+        <PasswordInput name="password" placeholder="Enter Your Password" showSetNew={false} />
+        <ConfirmPasswordInput name="confirmPassword" placeholder="Confirm Your Password" />
         <div
           id="alert-success"
           className={`bg-green-300 border border-green-400 text-green-960 px-10 py-4 rounded text-bold ${isSuccess ? '' : 'hidden'}`}
@@ -95,13 +85,13 @@ function RegisterForm() {
           id="alert-error"
           className={`bg-red-300 border border-red-400 text-red-900 px-10 py-4 rounded text-bold ${isError ? '' : 'hidden'}`}
         >
-          Please fill out the form correctly!
+          {errorMessage}
         </div>
         <div>
           <SubmitButton buttonName="Register" />
         </div>
       </form>
-      <div className="flex flex-col w-full md:w-3/5 mt-6 gap-6 px-4 md:px-0">
+      <div className="flex flex-col w-full md:w-3/5 mt-5 gap-2 px-4 md:px-0">
         <div className="flex items-center justify-center">
           Have an account? <Link to="/login" className="text-amber-500">Login</Link>
         </div>
