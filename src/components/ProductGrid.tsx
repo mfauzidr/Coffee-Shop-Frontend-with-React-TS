@@ -55,7 +55,7 @@ const ProductGrid: React.FC = () => {
   return (
     <>
       <div className="flex flex-1 max-w-3xl text-black">
-        <div className="relative grid grid-flow-row grid-cols-2 gap-2 md:gap-8 -ml-2 md:ml-0">
+        <div className="relative grid grid-flow-row grid-cols-2 gap-2 md:gap-8">
           {posts &&
             posts.map((product) => (
               <ProductCard

@@ -8,17 +8,17 @@ const PaymentInfo = () => {
         { label: 'Door Delivery', value: 'delivery' },
         { label: 'Pick Up', value: 'pick-up' },
     ]
-    return(
+    return (
         <>
-        <div className="flex flex-col w-2/3 gap-4">
-            <div className="text-xl font-medium">Payment Info & Delivery</div>
-            <form className="flex flex-col gap-3" action="">
-                <EmailInput />
-                <FullNameInput />
-                <AddressInput />
-                <RadioGroup groupName="size" label="Delivery" options={sizeOptions} />
-            </form>
-        </div>
+            <div className="flex flex-col w-full md:w-2/3 gap-4 mb-6 md:mb-0">
+                <div className="text-lg md:text-xl font-medium">Payment Info & Delivery</div>
+                <form className="flex flex-col gap-3" action="">
+                    <EmailInput name="email" placeholder="Enter Your Email" />
+                    <FullNameInput name="fullname" placeholder="Enter Your Full Name" />
+                    <AddressInput />
+                    <RadioGroup groupName="size" label="Delivery" options={sizeOptions} />
+                </form>
+            </div>
 
         </>
     )

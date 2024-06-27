@@ -1,11 +1,24 @@
+import React from 'react';
 
-const RadioGroup = ({ groupName, label, options }) => {
+interface Option {
+  value: string;
+  label: string;
+  required?: boolean;
+}
+
+interface RadioGroupProps {
+  groupName: string;
+  label: string;
+  options: Option[];
+}
+
+const RadioGroup: React.FC<RadioGroupProps> = ({ groupName, label, options }) => {
   return (
     <fieldset className="flex flex-col gap-4">
-      <label className="text-lg font-bold" htmlFor={groupName}>
+      <label className="font-bold" htmlFor={groupName}>
         {label}
       </label>
-      <ul className="flex w-auto gap-x-7" id={groupName}>
+      <ul className="flex text-xs md:text-md w-auto gap-x-3 md:gap-x-7" id={groupName}>
         {options.map((option) => (
           <li key={option.value} className="flex flex-1">
             <input
@@ -26,7 +39,7 @@ const RadioGroup = ({ groupName, label, options }) => {
         ))}
       </ul>
     </fieldset>
-  )
-}
-  
-export default RadioGroup
+  );
+};
+
+export default RadioGroup;

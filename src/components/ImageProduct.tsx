@@ -14,9 +14,9 @@ const ImageProduct: React.FC<ImageProductProps> = ({ image, smallImages }) => {
 
   return (
     <div className="flex-1 container">
-      <div className="grid grid-cols-1 gap-7">
+      <div className="grid grid-cols-1 gap-5">
         <div>
-          <img src={image ? `${image}` : defaultImage} alt="Large Image" className="w-full h-96 object-cover object-center" />
+          <img src={image ? `${image}` : defaultImage} alt="Large Image" className="w-full h-72 md:h-96 object-cover object-center" />
         </div>
         <div className="grid grid-cols-3 gap-4">
           {small.map((smallImage, index) => (

@@ -5,7 +5,7 @@ import axios from 'axios';
 
 // Define the Product type here
 interface Product {
-  id: string;
+  uuid: string;
   image: string;
   productName: string;
   description: string;
@@ -40,12 +40,12 @@ const ProductHighlight: React.FC = () => {
         title={<h1>Here is People’s <span className="text-amber-800">Favorite</span></h1>}
         text="Let’s choose and have a bit taste of people’s favorite. It might be yours too!"
       />
-      <div className="h-[480px] max-w-full overflow-x-auto md:overflow-visible bg-gray-200 md:bg-white md:px-0">
-        <div className="flex flex-1 md:flex-row mt-5 md:mt-14 md:gap-5 w-80 md:w-full">
+      <div className="h-auto max-w-full overflow-x-auto md:overflow-visible">
+        <div className="flex flex-1 md:flex-row mt-5 md:mt-14 gap-2 md:gap-5 w-80 md:w-full">
           {products.map((product) => (
             <ProductCard
-              key={product.id}
-              id={product.id}
+              key={product.uuid}
+              uuid={product.uuid}
               image={product.image}
               productName={product.productName}
               description={product.description}

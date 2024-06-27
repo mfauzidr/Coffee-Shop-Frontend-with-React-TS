@@ -5,7 +5,7 @@ import ForgotPassword from '../pages/ForgotPassword'
 import Home from '../pages/Home'
 import Product from '../pages/Product'
 import DetailProduct from '../pages/DetailProduct'
-// import CheckoutProduct from '../pages/CheckoutProduct'
+import CheckoutProduct from '../pages/CheckoutProduct'
 // import HistoryOrder from '../pages/HistoryOrder'
 // import DetailOrder from '../pages/DetailOrder'
 // import Profile from '../pages/Profile'
@@ -37,10 +37,10 @@ const router = createBrowserRouter([
     path: '/detail-product/:uuid',
     element: <DetailProduct />
   },
-  // {
-  //   path: '/checkout-product',
-  //   element: <CheckoutProduct />
-  // },
+  {
+    path: '/checkout-product',
+    element: <CheckoutProduct />
+  },
   // {
   //   path: '/history-order',
   //   element: <HistoryOrder />

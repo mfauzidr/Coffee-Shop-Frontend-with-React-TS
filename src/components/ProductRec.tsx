@@ -35,7 +35,7 @@ const ProductRec: React.FC = () => {
 
   return (
     <div className="flex flex-1 text-black">
-      <div className="flex flex-col flex-1 md:flex-row mt-14 gap-5 items-center justify-center">
+      <div className="flex flex-1 mt-7 md:mt-14 gap-5 items-center md:justify-center max-w-full overflow-x-auto md:overflow-visible">
         {products.map((product) => (
           <ProductCard
             key={product.uuid}

@@ -51,7 +51,7 @@ const DetailProduct: React.FC = () => {
     return (
         <>
             <Navbar bgColor='bg-black' position="static" />
-            <div className="flex mx-32 my-32 h-auto gap-5">
+            <div className="block md:flex mx-8 md:mx-32 my-8 md:my-32 h-auto gap-5">
                 {product && (
                     <>
                         <ImageProduct smallImages={{ small: productImages.small }} image={product.image} />
@@ -66,9 +66,9 @@ const DetailProduct: React.FC = () => {
                     </>
                 )}
             </div>
-            <div className="flex flex-col h-auto mx-32 gap-6">
-                <div className="flex">
-                    <h1 className="text-5xl tracking-tighter">Recommendation <span className="text-amber-800">For You</span></h1>
+            <div className="flex flex-col h-auto mx-8 md:mx-32 gap-6">
+                <div className="flex w-full">
+                    <h1 className="text-2xl md:text-5xl tracking-tighter">Recommendation <span className="text-amber-800">For You</span></h1>
                 </div>
                 <div className="flex flex-col gap-6 justify-center mb-8">
                     <ProductRec />

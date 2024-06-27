@@ -7,8 +7,8 @@ const HomeArticle = () => {
         <>
             <article className="flex h-1/2">
                 <div className="flex md:flex-1 justify-center items-center bg-white px-6 py-12 md:px-0">
-                    <div className="flex flex-col flex-1 md:px-20 gap-6">
-                        <h1 className="text-2xl md:text-5xl relative pl-6">
+                    <div className="flex flex-col flex-1 md:px-32 gap-6">
+                        <h1 className="text-2xl md:text-3xl relative pl-6">
                             <span className="border-l-4 md:border-l-8 border-l-amber-500 h-full md:h-1/2 absolute left-0 md:top-1/2 md:transform md:-translate-y-1/2"></span>
                             We Provide <span className="text-amber-800">Good Coffee</span> and <span className="text-amber-800">Healthy Meals</span>
                         </h1>
