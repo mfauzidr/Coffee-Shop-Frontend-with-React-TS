@@ -50,6 +50,7 @@ const ProductGrid: React.FC = () => {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+    window.scrollTo({ top: 650, behavior: 'smooth' });
   };
 
   return (

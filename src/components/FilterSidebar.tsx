@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from './Buttons';
+import Slider from 'react-slider'
 
 interface CheckboxFilterProps {
   label: string;
@@ -8,14 +9,35 @@ interface CheckboxFilterProps {
 const CheckboxFilter: React.FC<CheckboxFilterProps> = ({ label }) => {
   return (
     <li className="flex gap-2.5 items-center">
-      <input
-        className="h-6 w-6 rounded-lg appearance-none border-2 checked:bg-amber-500 checked:text-black"
-        type="checkbox"
-      />
+      <div className="relative">
+        <input
+          className="h-6 w-6 rounded-lg appearance-none border-2 checked:bg-amber-500 checkbox-custom"
+          type="checkbox"
+        />
+      </div>
       {label}
     </li>
   );
 };
+
+const PriceRangeSlider: React.FC = () => {
+  const minPrice = 1000
+  const maxPrice = 50000
+
+  const [values, setValues] = useState([minPrice, maxPrice])
+
+  return (
+    <>
+      <Slider className={"slider"}
+        onChange={setValues}
+        value={values}
+        min={minPrice}
+        max={maxPrice}
+      />
+
+    </>
+  )
+}
 
 interface ListFilterProps {
   id: string;
@@ -58,7 +80,7 @@ const FilterSidebar: React.FC = () => {
         <label className="font-bold" htmlFor="search">
           Search
         </label>
-        <input className="h-16 rounded p-5 text-black text-sm" id="search" type="text" placeholder="Search here" />
+        <input className="h-10 rounded p-5 text-black text-sm" id="search" type="text" placeholder="Search here" />
         <label className="font-bold" htmlFor="category">
           Category
         </label>
@@ -69,10 +91,7 @@ const FilterSidebar: React.FC = () => {
         <ListFilter id="sort-by" items={sortByItems} />
         <div className="mt-4">
           <label className="font-bold">Range Price</label>
-          <div className="flex items-center">
-            <input type="range" className="w-1/2 appearance-none bg-gray-300 rounded cursor-pointer" id="range1" name="range1" min="0" max="100" />
-            <input type="range" className="w-1/2 appearance-none bg-gray-300 rounded cursor-pointer" id="range2" name="range2" min="0" max="100" />
-          </div>
+          <PriceRangeSlider />
         </div>
         <Button buttonName="Apply" type="button" size="py-2" link="#" />
       </form>

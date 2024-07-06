@@ -39,7 +39,7 @@ const Navbar: React.FC<{ bgColor: string; position: string }> = ({ bgColor, posi
                     <CartButton />
                 </div>
                 <div className="flex gap-6">
-                    <SignButton value={"SignIn"} href={'/login'} styling={"border h-12 w-24 rounded-md hover:bg-white hover:text-black"} />
+                    <SignButton value={"Sign In"} href={'/login'} styling={"border h-12 w-24 rounded-md hover:bg-white hover:text-black"} />
                     <SignButton value={"Sign Up"} href={'/register'} styling={"text-black border border-amber-500 h-12 w-24 rounded-md bg-amber-500 hover:bg-amber-200 hover:border-amber-200"} />
                 </div>
             </div>
