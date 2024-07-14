@@ -1,29 +1,35 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react';
 
-const StatCard = ({ label, max, duration }) => {
-  const [currentValue, setCurrentValue] = React.useState(0)
+interface StatCardProps {
+  label: string;
+  max: number;
+  duration: number;
+}
+
+const StatCard: React.FC<StatCardProps> = ({ label, max, duration }) => {
+  const [currentValue, setCurrentValue] = useState(0);
 
   useEffect(() => {
     if (currentValue < max) {
       const interval = setInterval(() => {
-        const newValue = Math.min(currentValue + 1, max)
-        setCurrentValue(newValue)
+        const newValue = Math.min(currentValue + 1, max);
+        setCurrentValue(newValue);
 
         if (newValue === max) {
-          clearInterval(interval)
+          clearInterval(interval);
         }
-      }, duration)
+      }, duration);
 
-      return () => clearInterval(interval)
+      return () => clearInterval(interval);
     }
-  }, [currentValue, max, duration])
+  }, [currentValue, max, duration]);
 
   return (
     <div className="flex flex-1 flex-col items-center">
       <div className="text-2xl md:text-5xl text-amber-500">{currentValue}+</div>
-      <div className="text-sm md:txt-base">{label}</div>
+      <div className="text-sm md:text-base">{label}</div>
     </div>
-  )
+  );
 }
 
-export default StatCard
+export default StatCard;
