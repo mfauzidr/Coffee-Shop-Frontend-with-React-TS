@@ -28,8 +28,8 @@ const ProductDetailForm: React.FC<ProductDetailFormProps> = ({ isFlashSale, name
   useEffect(() => {
     const getSizes = async () => {
       try {
-        const res = await axios.get(`https://coffee-shop-backend-with-typescript.vercel.app/sizes`);
-        const sizeOptions = res.data.map((size: { id: number; size: string }) => ({
+        const res = await axios.get(`https://coffee-shop-backend-with-typescript.vercel.app/size`);
+        const sizeOptions = res.data.results.map((size: { id: number; size: string }) => ({
           value: size.size,
           label: size.size,
         }));
@@ -44,10 +44,10 @@ const ProductDetailForm: React.FC<ProductDetailFormProps> = ({ isFlashSale, name
   useEffect(() => {
     const getVariants = async () => {
       try {
-        const res = await axios.get(`https://coffee-shop-backend-with-typescript.vercel.app/variants`);
-        const variantOptions = res.data.map((variant: { id: number; variant: string }) => ({
-          value: variant.variant,
-          label: variant.variant,
+        const res = await axios.get(`https://coffee-shop-backend-with-typescript.vercel.app/variant`);
+        const variantOptions = res.data.results.map((variant: { id: number; name: string }) => ({
+          value: variant.name,
+          label: variant.name,
           required: true, // If you want to set required property
         }));
         setVariants(variantOptions);
