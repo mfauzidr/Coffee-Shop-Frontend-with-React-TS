@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import RatingStar from './RatingStar';
 import { Button, CartButton } from './Buttons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import RadioGroup from './RadioGroup';
+import axios from 'axios';
 
 interface ProductDetailFormProps {
   isFlashSale: boolean;
@@ -14,25 +15,57 @@ interface ProductDetailFormProps {
   desc: string;
 }
 
+interface Option {
+  value: string;
+  label: string;
+  required?: boolean;
+}
+
 const ProductDetailForm: React.FC<ProductDetailFormProps> = ({ isFlashSale, name, price, ratingProduct, isRecommended, desc }) => {
-  const sizeOptions = [
-    { label: 'Regular', value: 'regular', required: true },
-    { label: 'Medium', value: 'medium' },
-    { label: 'Large', value: 'large' },
-  ];
-  const variantOptions = [
-    { label: 'Ice', value: 'ice', required: true },
-    { label: 'Hot', value: 'hot' },
-  ];
+  const [sizes, setSizes] = useState<Option[]>([]);
+  const [variants, setVariants] = useState<Option[]>([]);
+
+  useEffect(() => {
+    const getSizes = async () => {
+      try {
+        const res = await axios.get(`https://coffee-shop-backend-with-typescript.vercel.app/sizes`);
+        const sizeOptions = res.data.map((size: { id: number; size: string }) => ({
+          value: size.size,
+          label: size.size,
+        }));
+        setSizes(sizeOptions);
+      } catch (error) {
+        console.error('Error fetching sizes:', error);
+      }
+    };
+    getSizes();
+  }, []);
+
+  useEffect(() => {
+    const getVariants = async () => {
+      try {
+        const res = await axios.get(`https://coffee-shop-backend-with-typescript.vercel.app/variants`);
+        const variantOptions = res.data.map((variant: { id: number; variant: string }) => ({
+          value: variant.variant,
+          label: variant.variant,
+          required: true, // If you want to set required property
+        }));
+        setVariants(variantOptions);
+      } catch (error) {
+        console.error('Error fetching variants:', error);
+      }
+    };
+    getVariants();
+  }, []);
 
   const [quantity, setQuantity] = useState<number>(1);
 
   const decreaseBtn = () => {
-    setQuantity(prevQuantity => Math.max(prevQuantity - 1, 1));
+    setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1));
   };
 
   const increaseBtn = () => {
-    setQuantity(prevQuantity => prevQuantity + 1);
+    setQuantity((prevQuantity) => prevQuantity + 1);
   };
 
   const discount = price / 2;
@@ -68,7 +101,7 @@ const ProductDetailForm: React.FC<ProductDetailFormProps> = ({ isFlashSale, name
             </div>
           )}
         </div>
-        <div className='text-xs md:text-md'>{desc}</div>
+        <div className="text-xs md:text-md">{desc}</div>
         <div className="flex items-center">
           <div className="flex items-center">
             <button
@@ -79,7 +112,12 @@ const ProductDetailForm: React.FC<ProductDetailFormProps> = ({ isFlashSale, name
             >
               -
             </button>
-            <input type="text" className="w-6 md:w-12 h-4 md:h-8 text-center border text-xs md:text-md" value={quantity} readOnly />
+            <input
+              type="text"
+              className="w-6 md:w-12 h-4 md:h-8 text-center border text-xs md:text-md"
+              value={quantity}
+              readOnly
+            />
             <button
               type="button"
               className="flex items-center justify-center w-5 md:w-8 h-5 md:h-8 text-xs md:text-md bg-amber-500 rounded border border-amber-500 focus:outline-none"
@@ -89,8 +127,8 @@ const ProductDetailForm: React.FC<ProductDetailFormProps> = ({ isFlashSale, name
             </button>
           </div>
         </div>
-        <RadioGroup groupName="size" label="Choose Size" options={sizeOptions} />
-        <RadioGroup groupName="variant" label="Hot/Ice?" options={variantOptions} />
+        <RadioGroup groupName="size" label="Choose Size" options={sizes} />
+        <RadioGroup groupName="variant" label="Hot/Ice?" options={variants} />
       </div>
       <div className="block md:flex md:gap-x-7 md:mt-14">
         <div className="flex flex-1 justify-center items-center h-11 text-sm font-medium border border-amber-500 rounded-md mt-4 md:mt-0 bg-amber-500">

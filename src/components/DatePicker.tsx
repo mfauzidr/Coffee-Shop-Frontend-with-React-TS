@@ -1,24 +1,28 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react';
 
-const DatePicker = () => {
-  const [date, setDate] = React.useState('')
+interface DatePickerProps {
+  responsiveDisplay: string;
+}
 
-  const handleDate = (event) => {
-    setDate(event.target.value)
-  }
+const DatePicker: React.FC<DatePickerProps> = ({ responsiveDisplay }) => {
+  const [date, setDate] = React.useState<string>('');
+
+  const handleDate = (event: ChangeEvent<HTMLInputElement>) => {
+    setDate(event.target.value);
+  };
 
   return (
-    <div className="flex items-center bg-gray-200 p-2 font-bold">
+    <label className={`text-sm items-center bg-gray-100 p-2 font-bold ${responsiveDisplay}`}>
       <input
-        type="month"
-        id="monthYear"
-        name="monthYear"
-        className="outline-none bg-gray-200"
+        type="date"
+        id="date"
+        name="date"
+        className="outline-none bg-gray-100"
         value={date}
         onChange={handleDate}
       />
-    </div>
-  )
-}
+    </label>
+  );
+};
 
-export default DatePicker
+export default DatePicker;

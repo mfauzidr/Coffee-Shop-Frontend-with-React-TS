@@ -19,11 +19,11 @@ export const LoginMethod: React.FC = () => {
     <div className="flex gap-x-3.5 items-center justify-center">
       <button className="flex-1 border shadow-md w-full h-16 rounded-xl flex items-center justify-center" type="button">
         <img className="mr-2" src="../src/assets/img/facebook-icon.png" alt="" style={{ width: '24px', height: '24px' }} />
-        <span className="hidden md:flex"> Facebook </span>
+        <span className="hidden lg:flex"> Facebook </span>
       </button>
       <button className="flex-1 border shadow-md w-full h-16 rounded-xl flex items-center justify-center" type="button">
         <img className="mr-2" src="../src/assets/img/google-icon.png" alt="" style={{ width: '24px', height: '24px' }} />
-        <span className="hidden md:flex"> Google </span>
+        <span className="hidden lg:flex"> Google </span>
       </button>
     </div>
   );
@@ -56,7 +56,7 @@ interface CartButtonProps {
 export const CartButton: React.FC<CartButtonProps> = ({ padding, border, size }) => {
   return (
     <button className={`${padding} ${border} ${size}`} onClick={() => (window.location.href = "/checkout-product")}>
-      <FeatherIcon icon="shopping-cart" className="text-amber-500 w-4 md:w-6 h-4 md:h-6" />
+      <FeatherIcon icon="shopping-cart" className="text-amber-500 w-5 lg:w-6 h-5 lg:h-6" />
     </button>
   );
 };
@@ -70,7 +70,7 @@ interface ButtonProps {
 
 export const Button: React.FC<ButtonProps> = ({ type, buttonName, size, link = '#' }) => {
   return (
-    <Link to={link} className={`flex-1 ${size} py-1 md:py-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center text-xs md:text-base`}>
+    <Link to={link} className={`flex-1 ${size} py-1 lg:py-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center text-xs md:text-base`}>
       <button type={type}>
         {buttonName}
       </button>

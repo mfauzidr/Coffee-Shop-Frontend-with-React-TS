@@ -4,15 +4,15 @@ import CarouselPagination from "./CarouselPagination"
 
 const Reviews = () => {
     return (
-        <div className="md:h-auto">
-            <div className="flex flex-col md:flex-row w-full md:h-5/6 bg-gradient-to-b from-gray-600 to-black gap-5 py-8 px-12 md:px-32">
-                <div className="flex items-center justify-center md:hidden text-white text-sm">TESTIMONIAL</div>
-                <div className="flex flex-1 items-center justify-end">
+        <div className="lg:h-auto">
+            <div className="flex flex-col lg:flex-row w-full lg:h-5/6 bg-gradient-to-b from-gray-600 to-black gap-5 py-8 px-16 lg:px-32">
+                <div className="flex items-center justify-center lg:hidden text-white text-sm">TESTIMONIAL</div>
+                <div className="flex flex-1 items-center md:justify-center lg:justify-end">
                     <img src={RateProfileImg} alt="" />
                 </div>
                 <div className="flex flex-1 flex-col text-white items-left justify-center gap-6">
-                    <div className="hidden md:flex">TESTIMONIAL</div>
-                    <h1 className="text-2xl md:text-5xl relative pl-6">
+                    <div className="hidden lg:flex">TESTIMONIAL</div>
+                    <h1 className="text-2xl lg:text-5xl relative pl-6">
                         <span className="border-l-8 border-l-amber-500 h-full absolute left-0 top-1/2 transform -translate-y-1/2"></span>
                         Viezh Robert
                     </h1>

@@ -67,13 +67,13 @@ const RegisterForm: React.FC = () => {
 
   return (
     <>
-      <form onSubmit={registerProcess} id="form" className="flex flex-col w-full md:w-3/5 gap-2 px-4 md:px-0 h-screen">
+      <form onSubmit={registerProcess} id="form" className="flex flex-col w-full md:w-4/5 lg:w-3/5 gap-2 px-8 lg:px-0 h-screen justify-center">
         <Brand textColor="amber-800" />
         <div className="text-xl text-amber-800">Register</div>
         <div className="text-base">Fill out the form correctly!</div>
         <FullNameInput name="fullname" placeholder="Enter Your Full Name" />
         <EmailInput name="email" placeholder="Enter Your Email" />
-        <PasswordInput name="password" placeholder="Enter Your Password" showSetNew={false} />
+        <PasswordInput label='Password' name="password" placeholder="Enter Your Password" showSetNew={false} />
         <ConfirmPasswordInput name="confirmPassword" placeholder="Confirm Your Password" />
         <div
           id="alert-success"
@@ -91,7 +91,7 @@ const RegisterForm: React.FC = () => {
           <SubmitButton buttonName="Register" />
         </div>
       </form>
-      <div className="flex flex-col w-full md:w-3/5 mt-5 gap-2 px-4 md:px-0">
+      <div className="flex flex-col w-full lg:w-3/5 mt-5 gap-2 px-4 lg:px-0">
         <div className="flex items-center justify-center">
           Have an account? <Link to="/login" className="text-amber-500">Login</Link>
         </div>

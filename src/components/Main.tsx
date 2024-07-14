@@ -11,11 +11,11 @@ const Main: React.FC = () => {
   };
 
   return (
-    <header className="h-screen flex flex-col-reverse md:flex-row">
-      <div className="flex flex-1 bg-gradient-to-b from-gray-600 to-black justify-center items-center px-6 py-12 md:px-0 md:py-0">
-        <div className="flex flex-col md:px-32 gap-6 text-white">
-          <h1 className="text-2xl md:text-5xl">Start Your Day with Coffee and Good Meals</h1>
-          <div className="text-sm md:text-base">
+    <header className="h-screen flex flex-col-reverse lg:flex-row">
+      <div className="flex flex-1 bg-gradient-to-b from-gray-600 to-black justify-center items-center px-16 py-12 lg:px-0 lg:py-0">
+        <div className="flex flex-col lg:px-32 gap-6 text-white">
+          <h1 className="text-2xl lg:text-5xl">Start Your Day with Coffee and Good Meals</h1>
+          <div className="text-sm lg:text-base">
             We provide high quality beans, good taste, and healthy meals made by love just for you. Start your day with us for a bigger smile!
           </div>
           <div>
@@ -34,7 +34,7 @@ const Main: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="hidden md:flex md:flex-1 bg-cover bg-center" style={{ backgroundImage: `url(${bgMain})` }}></div>
+      <div className="hidden lg:flex lg:flex-1 bg-cover bg-center" style={{ backgroundImage: `url(${bgMain})` }}></div>
     </header>
   );
 };

@@ -9,7 +9,7 @@ interface Option {
 interface RadioGroupProps {
   groupName: string;
   label: string;
-  options: Option[];
+  options?: Option[];
 }
 
 const RadioGroup: React.FC<RadioGroupProps> = ({ groupName, label, options }) => {
@@ -18,8 +18,8 @@ const RadioGroup: React.FC<RadioGroupProps> = ({ groupName, label, options }) =>
       <label className="font-bold" htmlFor={groupName}>
         {label}
       </label>
-      <ul className="flex text-xs md:text-md w-auto gap-x-3 md:gap-x-7" id={groupName}>
-        {options.map((option) => (
+      <ul className="flex text-xs md:text-base w-auto gap-x-3 md:gap-x-7" id={groupName}>
+        {options?.map((option) => (
           <li key={option.value} className="flex flex-1">
             <input
               type="radio"

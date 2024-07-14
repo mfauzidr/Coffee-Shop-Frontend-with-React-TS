@@ -71,7 +71,7 @@ const FilterSidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="hidden md:flex flex-col bg-black rounded-3xl h-fit p-8 gap-y-6">
+    <aside className="hidden lg:flex flex-col bg-black rounded-3xl h-fit p-8 gap-y-6">
       <form className="flex flex-col gap-6" action="">
         <div className="flex justify-between">
           <div>Filter</div>

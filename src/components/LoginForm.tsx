@@ -36,12 +36,12 @@ function LoginForm() {
   };
 
   return (
-    <form onSubmit={loginProcess} id="form" className="flex flex-col w-full md:w-3/5 gap-2 px-4 md:px-0 h-screen justify-center">
+    <form onSubmit={loginProcess} id="form" className="flex flex-col w-full md:w-4/5 lg:w-3/5 gap-2 px-8 lg:px-0 h-screen justify-center">
       <Brand textColor="amber-800" />
       <div className="text-xl text-amber-800">Login</div>
       <div className="text-base">Fill out the form correctly</div>
       <EmailInput name="email" placeholder="Enter Your Email" />
-      <PasswordInput name="password" placeholder="Enter Your Password" showSetNew={false} />
+      <PasswordInput label='Password' name="password" placeholder="Enter Your Password" showSetNew={false} />
       <div className="text-right">
         <Link to="/forgot-password" className="text-amber-500">Lupa Password?</Link>
       </div>

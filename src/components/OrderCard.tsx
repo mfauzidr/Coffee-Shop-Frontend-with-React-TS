@@ -36,12 +36,12 @@ const OrderCard: React.FC<OrderCardProps> = ({
       </div>
       <div className="flex flex-col p-1 md:p-2.5 gap-1 md:gap-3.5 w-fit md:w-96">
         {isFlashSale && (
-          <div className="flex justify-center items-center bg-red-600 text-white text-xs md:text-md px-2 py-1 rounded-3xl w-20 md:w-24 md:h-6 ">
+          <div className="flex justify-center items-center bg-red-600 text-white text-xs md:text-base px-2 py-1 rounded-3xl w-20 md:w-24 md:h-6 ">
             Flash Sale!
           </div>
         )}
-        <div className="font-bold text-md md:text-lg">{name}</div>
-        <div className="flex divide-x-1 md:divide-x-2 text-gray-600 text-xs md:text-md justify-between">
+        <div className="font-bold text-md md:text-xl">{name}</div>
+        <div className="flex divide-x-1 md:divide-x-2 text-gray-600 text-xs md:text-base justify-between">
           <div>
             <div className="mr-1 md:mr-2">{quantity} pcs</div>
           </div>
@@ -58,7 +58,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
         <div className="flex text-sm md:text-2xl text-amber-500">
           {isFlashSale ? (
             <>
-              <span className="text-[8px] md:text-xs font-bold text-red-500 line-through">
+              <span className="mr-2 text-[8px] md:text-xs font-bold text-red-500 line-through">
                 IDR {price.toLocaleString('id')}
               </span>
               IDR {discount.toLocaleString('id')}

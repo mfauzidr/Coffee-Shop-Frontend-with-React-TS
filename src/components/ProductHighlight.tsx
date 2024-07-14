@@ -35,13 +35,13 @@ const ProductHighlight: React.FC = () => {
   }, []);
 
   return (
-    <section className="flex flex-col h-screen items-center mt-20 px-10 gap-6">
+    <section className="flex flex-col h-3/4 lg:h-screen items-center mt-20 px-10 gap-6">
       <SectionHeader
         title={<h1>Here is People’s <span className="text-amber-800">Favorite</span></h1>}
         text="Let’s choose and have a bit taste of people’s favorite. It might be yours too!"
       />
-      <div className="h-auto max-w-full overflow-x-auto md:overflow-visible">
-        <div className="flex flex-1 md:flex-row mt-5 md:mt-14 gap-2 md:gap-5 w-80 md:w-full">
+      <div className="h-auto max-w-full overflow-x-auto lg:overflow-visible">
+        <div className="flex flex-1 lg:flex-row mt-5 lg:mt-14 gap-2 lg:gap-5 w-80 lg:w-full">
           {products.map((product) => (
             <ProductCard
               key={product.uuid}

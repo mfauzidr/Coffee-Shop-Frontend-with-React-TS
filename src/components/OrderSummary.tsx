@@ -22,7 +22,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ orders }) => {
   const subtotal = orderTotal + delivery + tax;
 
   return (
-    <div className="flex flex-col w-full md:w-1/3">
+    <div className="flex flex-col w-full lg:w-1/3 mt-4 lg:mt-0">
       <div className="flex justify-between items-center h-10 mb-3 md:mb-6">
         <div className="text-md md:text-xl font-medium">Total</div>
       </div>

@@ -38,13 +38,13 @@ const PagePagination: React.FC<PagePaginationProps> = ({ pages, currentPage, onP
             key={index}
             onClick={() => (pageNumber !== '...' ? onPageChange(pageNumber as number) : null)}
             className={`flex justify-center items-center ${currentPage === pageNumber ? 'text-white bg-amber-500' : 'text-black bg-gray-100'
-              } rounded-full w-5 md:w-10 h-5 md:h-10 text-xs md:text-base`}
+              } rounded-full w-5 lg:w-10 h-5 lg:h-10 text-xs lg:text-base`}
           >
             {pageNumber}
           </button>
         ))}
         <button
-          className="flex justify-center items-center bg-amber-500 rounded-full w-5 md:w-10 h-5 md:h-10"
+          className="flex justify-center items-center bg-amber-500 rounded-full w-5 lg:w-10 h-5 lg:h-10"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === pages}
         >

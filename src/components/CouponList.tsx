@@ -59,7 +59,7 @@ const CouponList: React.FC = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mx-10 md:mx-32 py-4 md:py-12">
+      <div className="flex justify-between items-center mx-10 md:mx-16 py-4 md:py-12">
         <div className="text-2xl md:text-5xl">
           Today <span className="text-amber-800">Promo</span>
         </div>

@@ -53,12 +53,12 @@ const CheckoutProduct = () => {
   return (
     <>
       <Navbar bgColor="bg-black" position="static" />
-      <div className="flex flex-col mx-16 md:mx-32 mt-8 md:mt-16 h-auto gap-6">
+      <div className="flex flex-col mx-8 md:mx-16 lg:mx-32 mt-8 md:mt-16 h-auto gap-6">
         <PageHeader pageName="Payment Details" />
-        <div className="block md:flex gap-5">
-          <div className="flex flex-col md:w-2/3 gap-2.5 mb:2.5 md:mb-0">
+        <div className="block lg:flex gap-5">
+          <div className="flex flex-col lg:w-2/3 gap-2.5 mb:2.5 lg:mb-0">
             <div className="flex justify-between items-center h-fit mb-3.5">
-              <div className="text-lg md:text-xl font-medium">Your Order</div>
+              <div className="text-lg lg:text-xl font-medium">Your Order</div>
               <button
                 className="w-20 md:w-28 h-8 md:h-10 border border-amber-500 rounded-md bg-amber-500 font-semibold text-xs md:text-sm"
                 onClick={() => (window.location.href = '/product')}
