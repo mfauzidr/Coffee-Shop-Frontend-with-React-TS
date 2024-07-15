@@ -9,6 +9,7 @@ import CheckoutProduct from '../pages/CheckoutProduct'
 import HistoryOrder from '../pages/HistoryOrder'
 import DetailOrder from '../pages/DetailOrder'
 import Profile from '../pages/Profile'
+import { NotFound } from '../pages/NotFound'
 
 
 
@@ -52,7 +53,11 @@ const router = createBrowserRouter([
   {
     path: '/profile',
     element: <Profile />
-  }
+  },
+  {
+    path: "*",
+    element: <NotFound />,
+  },
 ])
 
 export default router

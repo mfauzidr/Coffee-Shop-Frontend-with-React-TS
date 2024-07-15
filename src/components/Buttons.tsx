@@ -47,6 +47,30 @@ export const SignButton: React.FC<SignButtonProps> = ({ value, href, styling }) 
   );
 };
 
+interface ProfileButtonProps {
+  href: string;
+}
+
+export const ProfileButton: React.FC<ProfileButtonProps> = ({ href }) => {
+  return (
+    <Link to={href} className="border h-12 w-24 rounded-md text-white flex items-center justify-center bg-none hover:bg-slate-600" type="button">
+      Profile
+    </Link>
+  );
+};
+
+interface LogoutButtonProps {
+  onClick: () => void;
+}
+
+export const LogoutButton: React.FC<LogoutButtonProps> = ({ onClick }) => {
+  return (
+    <button onClick={onClick} className="h-12 w-24 rounded-md bg-amber-500 hover:bg-amber-900 text-white flex items-center justify-center" type="button">
+      Logout
+    </button>
+  );
+};
+
 interface CartButtonProps {
   padding?: string;
   border?: string;

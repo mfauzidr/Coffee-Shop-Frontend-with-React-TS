@@ -42,12 +42,11 @@ const RegisterForm: React.FC = () => {
       return;
     }
 
-    const formData = new URLSearchParams();
-    formData.append('fullName', fullname);
-    formData.append('email', email);
-    formData.append('password', password);
-
-    console.log('Form Data:', formData.toString())
+    const formData = {
+      fullName: fullname,
+      email: email,
+      password: password,
+    };
 
     try {
       await axios.post('https://coffee-shop-backend-with-typescript.vercel.app/register', formData);
@@ -58,8 +57,12 @@ const RegisterForm: React.FC = () => {
       setTimeout(() => {
         navigate('/login');
       }, 2000);
-    } catch (err: any) {
-      setErrorMessage(err.response?.data?.message || 'Something went wrong');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setErrorMessage(error.response?.data?.message || 'Something went wrong');
+      } else {
+        setErrorMessage('An unexpected error occurred');
+      }
       setIsError(true);
       setIsSuccess(false);
     }

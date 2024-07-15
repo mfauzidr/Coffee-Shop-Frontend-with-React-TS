@@ -9,9 +9,10 @@ interface InputProps {
   placeholder?: string;
   disabled?: boolean
   showChangeEmail?: boolean
+  value?: string
 }
 
-export const FullNameInput = ({ name, placeholder = 'Enter Your Full Name' }: InputProps) => {
+export const FullNameInput = ({ name, placeholder = 'Enter Your Full Name', }: InputProps) => {
   return (
     <div className="relative">
       <label className="block font-semibold" htmlFor={name}>
@@ -31,7 +32,7 @@ export const FullNameInput = ({ name, placeholder = 'Enter Your Full Name' }: In
   );
 };
 
-export const EmailInput = ({ name, placeholder = 'Enter Your Email', showChangeEmail = false, disabled }: InputProps) => {
+export const EmailInput = ({ name, placeholder = 'Enter Your Email', showChangeEmail = false }: InputProps) => {
 
   return (
     <div className="relative">
@@ -52,7 +53,6 @@ export const EmailInput = ({ name, placeholder = 'Enter Your Email', showChangeE
         name={name}
         type="email"
         placeholder={placeholder}
-        disabled={disabled}
       />
     </div>
   );
