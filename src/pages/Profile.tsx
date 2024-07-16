@@ -4,10 +4,11 @@ import Navbar from "../components/Navbar";
 import ProfileCard from "../components/ProfileCard";
 import { AddressInput, EmailInput, FullNameInput, PhoneInput, PasswordInput, ConfirmPasswordInput } from "../components/InputForm";
 import { Button } from "../components/Buttons";
-import { useStoreDispatch, useStoreSelector } from '../redux/hooks';
+import { useStoreSelector } from '../redux/hooks';
 import { RootState } from '../redux/store';
-import { profileThunk } from '../redux/slices/profile';
+// import { profileAction } from '../redux/slices/profile';
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 interface DataProps {
   fullName: string;
@@ -19,15 +20,16 @@ interface DataProps {
 
 const Profile: React.FC = () => {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
-  const dispatch = useStoreDispatch();
+  // const dispatch = useStoreDispatch();
 
   const { token } = useStoreSelector((state: RootState) => state.auth);
+  console.log(token);
 
   const [profileData, setProfileData] = useState<DataProps>({
-    fullName: 'Enter Your Fullname Here',
-    email: 'Enter Your Email Here',
-    phone: 'Enter Your Phone Number Here',
-    address: 'Enter Your Address Here',
+    fullName: '',
+    email: '',
+    phone: '',
+    address: '',
     image: '',
   });
 
@@ -35,31 +37,65 @@ const Profile: React.FC = () => {
   useEffect(() => {
     if (token) {
       const decodedToken = jwtDecode(token) as { uuid: string };
-      setUuid(decodedToken.uuid); // Store uuid in state
+      setUuid(decodedToken.uuid);
     }
   }, [token]);
 
   useEffect(() => {
-    if (uuid) {
-      dispatch(profileThunk(uuid))
-        .unwrap()
-        .then((result) => {
-          if (result.results) {
-            const profileResult = result.results[0];
-            console.log(profileResult);
-            setProfileData({
-              fullName: profileResult.fullName || '',
-              email: profileResult.email || '',
-              phone: profileResult.phone || 'Enter Your Phone Number Here',
-              address: profileResult.address || 'Enter Your ',
-              image: profileResult.image || '',
-            });
-          } else {
-            console.error("No profile data found.");
+    const getPosts = async () => {
+      try {
+        const url = `https://coffee-shop-backend-with-typescript.vercel.app/users/${uuid}`;
+        const res = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
-        })
+        });
+        if (res.data && res.data.results && res.data.results.length > 0) {
+          const profileResult = res.data.results[0]
+          setProfileData({
+            fullName: profileResult.fullName || '',
+            email: profileResult.email || '',
+            phone: profileResult.phone || 'Enter Your Phone Number Here',
+            address: profileResult.address || 'Enter Your Address Here',
+            image: profileResult.image || '',
+          });
+        } else {
+          console.error("Invalid API response structure:", res.data);
+        }
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
     }
-  }, [dispatch, uuid]);
+    if (uuid) {
+      getPosts();
+    } else {
+      console.error("UUID is undefined");
+    }
+  }, [token, uuid]);
+
+
+
+  // useEffect(() => {
+  //   if (uuid) {
+  //     dispatch(profileAction.profileThunk(uuid))
+  //       .unwrap()
+  //       .then((result) => {
+  //         if (result.results) {
+  //           const profileResult = result.results[0];
+  //           console.log(profileResult);
+  //           setProfileData({
+  //             fullName: profileResult.fullName || '',
+  //             email: profileResult.email || '',
+  //             phone: profileResult.phone || 'Enter Your Phone Number Here',
+  //             address: profileResult.address || 'Enter Your Address Here',
+  //             image: profileResult.image || '',
+  //           });
+  //         } else {
+  //           console.error("No profile data found.");
+  //         }
+  //       })
+  //   }
+  // }, [dispatch, uuid]);
 
   const { fullName, email, image } = profileData;
 

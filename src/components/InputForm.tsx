@@ -32,7 +32,7 @@ export const FullNameInput = ({ name, placeholder = 'Enter Your Full Name', }: I
   );
 };
 
-export const EmailInput = ({ name, placeholder = 'Enter Your Email', showChangeEmail = false }: InputProps) => {
+export const EmailInput = ({ name, placeholder = 'Enter Your Email', showChangeEmail = false, disabled = false }: InputProps) => {
 
   return (
     <div className="relative">
@@ -47,13 +47,20 @@ export const EmailInput = ({ name, placeholder = 'Enter Your Email', showChangeE
           <FeatherIcon icon="mail" className="h-5 w-5 text-gray-500" />
         </i>
       </label>
-      <input
-        className="border rounded-lg w-full h-11 pl-10 outline-none"
-        id={name}
-        name={name}
-        type="email"
-        placeholder={placeholder}
-      />
+      {disabled ? (
+        <div className="border rounded-lg border-gray-200 w-full h-12 pl-10 flex items-center text-gray-400">
+          {placeholder}
+        </div>
+      ) :
+        <input
+          className="border rounded-lg w-full h-11 pl-10 outline-none"
+          id={name}
+          name={name}
+          type="email"
+          placeholder={placeholder}
+        />
+
+      }
     </div>
   );
 };

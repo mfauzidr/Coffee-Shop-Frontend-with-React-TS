@@ -3,7 +3,7 @@ import { persistStore, persistReducer, PersistConfig } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import authReducer, { AuthState } from "./slices/auth";
-import profileReducer, { ProfileState } from "./slices/profile";
+// import profileReducer, { ProfileState } from "./slices/profile";
 
 // Persist config for auth slice
 const authPersistConfig: PersistConfig<AuthState> = {
@@ -13,19 +13,19 @@ const authPersistConfig: PersistConfig<AuthState> = {
 };
 
 // Persist config for profile slice
-const profilePersistConfig: PersistConfig<ProfileState> = {
-  key: "profile:coffeeShop",
-  storage,
-  whitelist: [], // Optionally, you can specify which fields to persist
-};
+// const profilePersistConfig: PersistConfig<ProfileState> = {
+//   key: "profile:coffeeShop",
+//   storage,
+//   whitelist: [], // Optionally, you can specify which fields to persist
+// };
 
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
-const persistedProfileReducer = persistReducer(profilePersistConfig, profileReducer);
+// const persistedProfileReducer = persistReducer(profilePersistConfig, profileReducer);
 
 export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
-    profile: persistedProfileReducer,
+    // profile: persistedProfileReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

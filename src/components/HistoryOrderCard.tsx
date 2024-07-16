@@ -6,7 +6,7 @@ import { faGlassWater, faArrowsSpin, faRepeat } from '@fortawesome/free-solid-sv
 import { faCalendarDays } from '@fortawesome/free-regular-svg-icons'
 
 interface HistoryOrderCardProps {
-  imageUrl: string;
+  imageUrl?: string;
   orderNumber: string;
   date: string;
   total: number;
@@ -45,10 +45,11 @@ const HistoryOrderCard: React.FC<HistoryOrderCardProps> = ({ imageUrl, orderNumb
               <div className="font-bold">Idr {total}</div>
             </div>
             <div className="flex flex-col gap-2.5">
-              <div className="flex items-center gap-2">
-                <FontAwesomeIcon icon={faArrowsSpin as IconProp} />
-                Status
-              </div>
+              {status && (
+                <div className="flex items-center gap-2">
+                  <FontAwesomeIcon icon={faArrowsSpin as IconProp} />
+                  Status
+                </div>)}
               <div className="py-1 px-2.5 bg-orange-200 text-amber-600 rounded-full text-xs font-bold">
                 {status}
               </div>

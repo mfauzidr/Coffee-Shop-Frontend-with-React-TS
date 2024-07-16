@@ -1,32 +1,95 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import OrderStatus from "../components/OrderStatus";
 import DatePicker from "../components/DatePicker";
 import HistoryOrderCard from "../components/HistoryOrderCard";
-import Image1 from '../assets/img/home-p-1.png';
-import Image2 from '../assets/img/home-p-2.png';
-import Image3 from '../assets/img/home-p-3.png';
-import Image4 from '../assets/img/home-p-4.png';
 import PagePagination from "../components/PagePagination";
 import MessageSection from "../components/MessageSection";
+import { useStoreSelector } from '../redux/hooks';
+import { RootState } from '../redux/store';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+import { parseISO, format } from 'date-fns';
+import { id } from 'date-fns/locale';
+
 
 interface HistoryOrderData {
-    imageUrl: string;
+    imageUrl?: string;
     orderNumber: string;
     date: string;
     total: string;
     status: string;
 }
+
+interface HistoryPostData {
+    imageUrl?: string;
+    orderNumber: string;
+    createdAt: string;
+    subtotal: string;
+    status: string;
+}
+
 interface PageInfo {
     currentPage: number;
     totalPage: number;
 }
 
 const HistoryOrder: React.FC = () => {
+    const [posts, setPosts] = useState<HistoryOrderData[]>([]);
     const [orderStatus, setOrderStatus] = useState<string>('onProgress');
-    const pageInfo = { currentPage: 1, totalPage: 1 } as PageInfo
+    const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(1);
+
+    const { token } = useStoreSelector((state: RootState) => state.auth);
+    const [userId, setUserId] = useState<string>();
+
+    useEffect(() => {
+        if (token) {
+            const decodedToken = jwtDecode<{ id: string }>(token);
+            setUserId(decodedToken.id);
+        }
+    }, [token]);
+    console.log(userId);
+
+    useEffect(() => {
+        const getOrders = async () => {
+            try {
+                const url = `https://coffee-shop-backend-with-typescript.vercel.app/orders`;
+                const res = await axios.get(url, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                    data: {
+                        userId: userId
+                    }
+                });
+                console.log(res);
+                if (res.data && res.data.results) {
+                    setPosts(res.data.results.map((order: HistoryPostData) => ({
+                        imageUrl: order.imageUrl || '',
+                        orderNumber: order.orderNumber || '',
+                        date: format(parseISO(order.createdAt), 'dd MMMM yyyy', { locale: id }) || '',
+                        total: order.subtotal || '',
+                        status: order.status || ''
+                    })));
+                    setPageInfo({
+                        currentPage: res.data.currentPage,
+                        totalPage: res.data.totalPages
+                    });
+                } else {
+                    console.error("Invalid API response structure:", res.data);
+                }
+            } catch (error) {
+                console.error("Error fetching order data:", error);
+            }
+        }
+        if (userId) {
+            getOrders();
+        } else {
+            console.error("User ID is undefined");
+        }
+    }, [token, userId, currentPage]);
 
     const statusChange = (newStatus: string) => {
         setOrderStatus(newStatus);
@@ -37,44 +100,13 @@ const HistoryOrder: React.FC = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    const historyData: HistoryOrderData[] = [
-        {
-            imageUrl: Image1,
-            orderNumber: '#12354-09893',
-            date: '21 January 2023',
-            total: '20000',
-            status: 'On Progress',
-        },
-        {
-            imageUrl: Image2,
-            orderNumber: '#12354-09894',
-            date: '22 January 2023',
-            total: '30000',
-            status: 'On Progress',
-        },
-        {
-            imageUrl: Image3,
-            orderNumber: '#12354-09895',
-            date: '23 January 2023',
-            total: '40000',
-            status: 'On Progress',
-        },
-        {
-            imageUrl: Image4,
-            orderNumber: '#12354-09896',
-            date: '24 January 2023',
-            total: '50000',
-            status: 'On Progress',
-        },
-    ];
-
     return (
         <>
             <Navbar bgColor={'bg-black'} position="static" />
             <div className="flex flex-col mx-16 lg:mx-32 my-8 md:my-16 h-auto gap-2.5 lg:gap-5">
                 <div className="flex w-full items-end gap-5 lg:gap-7 mb-5 lg:mb-9">
                     <h1 className="text-2xl lg:text-5xl font-medium">History Order</h1>
-                    <div className="bg-gray-200 px-2 lg:px-4 py-1 lg:py-2.5 text-sm lg:text-base">2</div>
+                    <div className="bg-gray-200 px-2 lg:px-4 py-1 lg:py-2.5 text-sm lg:text-base">{posts.length}</div>
                 </div>
                 <div className="flex flex-col lg:flex-row gap-5">
                     <div className="flex flex-col">
@@ -86,7 +118,7 @@ const HistoryOrder: React.FC = () => {
                             </form>
                         </div>
                         <div className="flex flex-col gap-3 mt-9">
-                            {historyData.map((history, index) => (
+                            {posts.map((history, index) => (
                                 <HistoryOrderCard key={index} {...history} total={Number(history.total)} />
                             ))}
                         </div>
