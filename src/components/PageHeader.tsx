@@ -1,10 +1,9 @@
-import React from 'react';
 
 interface PageHeaderProps {
     pageName: string;
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ pageName }) => {
+const PageHeader = ({ pageName }: PageHeaderProps) => {
     return (
         <div className="flex w-full">
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-medium">{pageName}</h1>

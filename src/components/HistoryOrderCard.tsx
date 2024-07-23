@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
@@ -13,7 +12,7 @@ interface HistoryOrderCardProps {
   status: string;
 }
 
-const HistoryOrderCard: React.FC<HistoryOrderCardProps> = ({ imageUrl, orderNumber, date, total, status }) => {
+const HistoryOrderCard = ({ imageUrl, orderNumber, date, total, status }: HistoryOrderCardProps) => {
   return (
     <div className="flex flex-col gap-3 px-3 py-2.5 bg-gray-100">
       <div className="flex justify-between gap-6 md:gap-8">

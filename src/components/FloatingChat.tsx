@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import FeatherIcon from 'feather-icons-react';
 
-const FloatingChat: React.FC = () => {
+const FloatingChat = () => {
   const [chatOpen, setChatOpen] = useState(false);
 
   return (

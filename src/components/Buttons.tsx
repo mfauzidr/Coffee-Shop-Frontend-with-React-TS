@@ -1,20 +1,20 @@
-import React from 'react';
 import FeatherIcon from 'feather-icons-react';
 import { Link } from 'react-router-dom';
 
 interface SubmitButtonProps {
   buttonName?: string;
+  disabled?: boolean
 }
 
-export const SubmitButton: React.FC<SubmitButtonProps> = ({ buttonName = 'Button Name' }) => {
+export const SubmitButton = ({ buttonName = 'Button Name', disabled }: SubmitButtonProps) => {
   return (
-    <button className="border mt-4 w-full h-12 rounded-md bg-amber-500" type="submit">
+    <button className="border mt-4 w-full h-12 rounded-md bg-amber-500" type="submit" disabled={disabled}>
       {buttonName}
     </button>
   );
 };
 
-export const LoginMethod: React.FC = () => {
+export const LoginMethod = () => {
   return (
     <div className="flex gap-x-3.5 items-center justify-center">
       <button className="flex-1 border shadow-md w-full h-16 rounded-xl flex items-center justify-center" type="button">
@@ -35,7 +35,7 @@ interface SignButtonProps {
   styling: string;
 }
 
-export const SignButton: React.FC<SignButtonProps> = ({ value, href, styling }) => {
+export const SignButton = ({ value, href, styling }: SignButtonProps) => {
   return (
     <Link to={href}>
       <input
@@ -51,7 +51,7 @@ interface ProfileButtonProps {
   href: string;
 }
 
-export const ProfileButton: React.FC<ProfileButtonProps> = ({ href }) => {
+export const ProfileButton = ({ href }: ProfileButtonProps) => {
   return (
     <Link to={href} className="border h-12 w-24 rounded-md text-white flex items-center justify-center bg-none hover:bg-slate-600" type="button">
       Profile
@@ -63,7 +63,7 @@ interface LogoutButtonProps {
   onClick: () => void;
 }
 
-export const LogoutButton: React.FC<LogoutButtonProps> = ({ onClick }) => {
+export const LogoutButton = ({ onClick }: LogoutButtonProps) => {
   return (
     <button onClick={onClick} className="h-12 w-24 rounded-md bg-amber-500 hover:bg-amber-900 text-white flex items-center justify-center" type="button">
       Logout
@@ -77,7 +77,7 @@ interface CartButtonProps {
   size?: string;
 }
 
-export const CartButton: React.FC<CartButtonProps> = ({ padding, border, size }) => {
+export const CartButton = ({ padding, border, size }: CartButtonProps) => {
   return (
     <button className={`${padding} ${border} ${size}`} onClick={() => (window.location.href = "/checkout-product")}>
       <FeatherIcon icon="shopping-cart" className="text-amber-500 w-5 lg:w-6 h-5 lg:h-6" />
@@ -90,14 +90,54 @@ interface ButtonProps {
   buttonName: string;
   size?: string;
   link?: string;
+  onClick?: () => void
 }
 
-export const Button: React.FC<ButtonProps> = ({ type, buttonName, size, link = '#' }) => {
+export const Button = ({ type, buttonName, size, link = '#' }: ButtonProps) => {
   return (
     <Link to={link} className={`flex-1 ${size} py-1 lg:py-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center text-xs md:text-base`}>
       <button type={type}>
         {buttonName}
       </button>
     </Link>
+  );
+};
+
+interface FileUploadButtonProps {
+  buttonName: string;
+  onFileChange: (file: File | null) => void;
+  size?: string;
+}import React from 'react';
+
+interface FileUploadButtonProps {
+  buttonName: string;
+  onFileChange: (file: File | null) => void;
+  size?: string;
+}
+
+export const FileUploadButton = ({ buttonName, onFileChange, size = 'px-8 text-sm' }: FileUploadButtonProps) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
+    onFileChange(file);
+  };
+
+  return (
+    <div className="relative">
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        id="file-upload-input"
+      />
+      <label htmlFor="file-upload-input">
+        <button
+          type="button"
+          className={`flex-1 ${size} py-1 lg:py-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center text-xs md:text-base`}
+        >
+          {buttonName}
+        </button>
+      </label>
+    </div>
   );
 };

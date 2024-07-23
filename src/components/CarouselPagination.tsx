@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import FeatherIcon from 'feather-icons-react';
 
 interface ArrowButtonProps {
@@ -6,7 +6,7 @@ interface ArrowButtonProps {
   onClick: () => void;
 }
 
-const ArrowButton: React.FC<ArrowButtonProps> = ({ direction, onClick }) => {
+const ArrowButton = ({ direction, onClick }: ArrowButtonProps) => {
   const buttonColor = direction === 'left' ? 'gray-200' : 'amber-500';
 
   return (
@@ -24,7 +24,7 @@ interface PageIndicatorProps {
   onClick: () => void;
 }
 
-const PageIndicator: React.FC<PageIndicatorProps> = ({ active, onClick }) => {
+const PageIndicator = ({ active, onClick }: PageIndicatorProps) => {
   const indicatorSize = active ? 'w-6' : 'w-2';
   const indicatorColor = active ? 'amber-500' : 'gray-200';
 
@@ -36,10 +36,12 @@ const PageIndicator: React.FC<PageIndicatorProps> = ({ active, onClick }) => {
   );
 };
 
-export const CarouselButton: React.FC<{
+interface CarrouselProps {
   handlePrevClick: () => void;
   handleNextClick: () => void;
-}> = ({ handlePrevClick, handleNextClick }) => {
+}
+
+export const CarouselButton = ({ handlePrevClick, handleNextClick }: CarrouselProps) => {
   return (
     <div className='flex gap-2.5 md:mb-2.5'>
       <ArrowButton direction="left" onClick={handlePrevClick} />
@@ -48,10 +50,12 @@ export const CarouselButton: React.FC<{
   );
 };
 
-export const CarouselIndicator: React.FC<{
+interface IndicatorProps {
   activePage: number;
   handlePageIndicatorClick: (page: number) => void;
-}> = ({ activePage, handlePageIndicatorClick }) => {
+}
+
+export const CarouselIndicator = ({ activePage, handlePageIndicatorClick }: IndicatorProps) => {
   return (
     <div className="hidden md:flex gap-3 mt-8 md:mt-0">
       {[1, 2, 3, 4].map((page) => (
@@ -65,7 +69,7 @@ export const CarouselIndicator: React.FC<{
   );
 };
 
-const CarouselPagination: React.FC = () => {
+const CarouselPagination = () => {
   const [activePage, setActivePage] = useState(1);
 
   const handlePrevClick = () => {

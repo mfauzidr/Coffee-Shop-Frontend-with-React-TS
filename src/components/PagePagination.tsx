@@ -1,5 +1,5 @@
 import FeatherIcon from 'feather-icons-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface PagePaginationProps {
   pages: number;
@@ -7,7 +7,7 @@ interface PagePaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const PagePagination: React.FC<PagePaginationProps> = ({ pages, currentPage, onPageChange }) => {
+const PagePagination = ({ pages, currentPage, onPageChange }: PagePaginationProps) => {
   const [pageArray, setPageArray] = useState<(number | string)[]>([]);
 
   useEffect(() => {

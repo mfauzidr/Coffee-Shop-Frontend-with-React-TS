@@ -12,7 +12,7 @@ export interface OrderCardProps {
   price: number;
 }
 
-const OrderCard: React.FC<OrderCardProps> = ({
+const OrderCard = ({
   imageUrl,
   isFlashSale,
   name,
@@ -21,7 +21,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
   variant,
   type,
   price,
-}) => {
+}: OrderCardProps) => {
   const discount = price / 2;
 
   const [isHidden, setIsHidden] = React.useState(false);

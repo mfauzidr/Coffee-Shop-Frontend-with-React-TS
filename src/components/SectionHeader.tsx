@@ -1,11 +1,10 @@
-import React from 'react';
 
 interface SectionHeaderProps {
   title?: string | JSX.Element;
   text?: string;
 }
 
-const SectionHeader: React.FC<SectionHeaderProps> = ({ title = 'Header Title', text = 'Header Text' }) => {
+const SectionHeader = ({ title = 'Header Title', text = 'Header Text' }: SectionHeaderProps) => {
   return (
     <div className="flex flex-col items-center gap-6">
       <div className="text-2xl md:text-5xl text-center">

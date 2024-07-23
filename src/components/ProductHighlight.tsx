@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SectionHeader from './SectionHeader';
 import ProductCard from './ProductCard';
 import axios from 'axios';
@@ -14,7 +14,7 @@ interface Product {
   ratingProduct?: number;
 }
 
-const ProductHighlight: React.FC = () => {
+const ProductHighlight = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
   const getProducts = async () => {

@@ -18,7 +18,7 @@ interface PageInfo {
   totalPage: number;
 }
 
-const ProductRec: React.FC = () => {
+const ProductRec = () => {
 
   const [products, setProducts] = useState<Product[]>([]);
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);

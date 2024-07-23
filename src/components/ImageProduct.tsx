@@ -1,4 +1,3 @@
-import React from 'react';
 import NoImg from '../assets/img/no-image.png';
 
 interface ImageProductProps {
@@ -8,7 +7,7 @@ interface ImageProductProps {
   };
 }
 
-const ImageProduct: React.FC<ImageProductProps> = ({ image, smallImages }) => {
+const ImageProduct = ({ image, smallImages }: ImageProductProps) => {
   const { small } = smallImages;
   const defaultImage = NoImg;
 

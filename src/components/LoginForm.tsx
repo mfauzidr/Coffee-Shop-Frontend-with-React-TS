@@ -43,9 +43,7 @@ function LoginForm() {
     }
 
     try {
-      const resultAction = await dispatch(authAction.loginThunk({ email, password }));
-      console.log(resultAction);
-
+      await dispatch(authAction.loginThunk({ email, password }))
 
     } catch (err) {
       setIsError(true);

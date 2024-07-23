@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowsSpin } from '@fortawesome/free-solid-svg-icons'
@@ -14,7 +13,7 @@ interface CustomerDetailsProps {
   total: number;
 }
 
-const CustomerDetails: React.FC<CustomerDetailsProps> = ({ fullName, address, phone, payment, shipping, status, total }) => {
+const CustomerDetails = ({ fullName, address, phone, payment, shipping, status, total }: CustomerDetailsProps) => {
   return (
     <div className="flex flex-col divide-y">
       <div className="flex justify-between px-2.5 py-5">

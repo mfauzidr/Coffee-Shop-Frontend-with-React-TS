@@ -4,7 +4,7 @@ interface DatePickerProps {
   responsiveDisplay: string;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ responsiveDisplay }) => {
+const DatePicker = ({ responsiveDisplay }: DatePickerProps) => {
   const [date, setDate] = React.useState<string>('');
 
   const handleDate = (event: ChangeEvent<HTMLInputElement>) => {

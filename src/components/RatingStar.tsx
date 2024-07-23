@@ -9,7 +9,7 @@ interface RatingStarProps {
   size?: string
 }
 
-const RatingStar: React.FC<RatingStarProps> = ({ rating, gap = '', size = '' }) => {
+const RatingStar = ({ rating, gap = '', size = '' }: RatingStarProps) => {
   const maxRating = 5
   const starElements = []
 

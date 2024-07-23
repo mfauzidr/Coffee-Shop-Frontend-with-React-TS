@@ -1,4 +1,3 @@
-import React from 'react';
 import Image1 from '../assets/img/payment-1.png';
 import Image2 from '../assets/img/payment-2.png';
 import Image3 from '../assets/img/payment-3.png';
@@ -12,7 +11,7 @@ interface OrderSummaryProps {
   orders: OrderCardProps[];
 }
 
-const OrderSummary: React.FC<OrderSummaryProps> = ({ orders }) => {
+const OrderSummary = ({ orders }: OrderSummaryProps) => {
   const orderTotal = orders.reduce((total, order) => total + order.price, 0);
 
   const delivery = 0;

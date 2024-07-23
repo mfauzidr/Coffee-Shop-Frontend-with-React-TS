@@ -1,4 +1,3 @@
-import React from 'react';
 
 interface PromoCardProps {
   imgSrc: string;
@@ -8,7 +7,7 @@ interface PromoCardProps {
   bgColor: string;
 }
 
-const PromoCard: React.FC<PromoCardProps> = ({ imgSrc, title, description, claimLink, bgColor }) => {
+const PromoCard = ({ imgSrc, title, description, claimLink, bgColor }: PromoCardProps) => {
   return (
     <div className="flex-shrink-0 md:w-80 overflow-hidden">
       <div className={`flex items-center ${bgColor} rounded-3xl px-3 pb-0`}>

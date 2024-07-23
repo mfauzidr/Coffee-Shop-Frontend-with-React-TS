@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import OrderStatus from "../components/OrderStatus";
@@ -35,7 +35,7 @@ interface PageInfo {
     totalPage: number;
 }
 
-const HistoryOrder: React.FC = () => {
+const HistoryOrder = () => {
     const [posts, setPosts] = useState<HistoryOrderData[]>([]);
     const [orderStatus, setOrderStatus] = useState<string>('onProgress');
     const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
@@ -50,7 +50,6 @@ const HistoryOrder: React.FC = () => {
             setUserId(decodedToken.id);
         }
     }, [token]);
-    console.log(userId);
 
     useEffect(() => {
         const getOrders = async () => {
@@ -64,7 +63,6 @@ const HistoryOrder: React.FC = () => {
                         userId: userId
                     }
                 });
-                console.log(res);
                 if (res.data && res.data.results) {
                     setPosts(res.data.results.map((order: HistoryPostData) => ({
                         imageUrl: order.imageUrl || '',

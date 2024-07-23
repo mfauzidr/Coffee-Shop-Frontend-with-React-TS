@@ -5,7 +5,7 @@ import { ConfirmPasswordInput, EmailInput, FullNameInput, PasswordInput } from '
 import { LoginMethod, SubmitButton } from './Buttons';
 import Brand from './Brand';
 
-const RegisterForm: React.FC = () => {
+const RegisterForm = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');

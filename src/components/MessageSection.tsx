@@ -1,9 +1,8 @@
-import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMessage } from '@fortawesome/free-solid-svg-icons';
 import { Button } from './Buttons';
 
-const MessageSection: React.FC = () => {
+const MessageSection = () => {
   return (
     <div className="flex p-5 border border-gray-200 h-fit lg:max-w-sm">
       <div className="flex flex-col gap-2.5">

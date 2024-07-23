@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface StatCardProps {
   label: string;
@@ -6,7 +6,7 @@ interface StatCardProps {
   duration: number;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ label, max, duration }) => {
+const StatCard = ({ label, max, duration }: StatCardProps) => {
   const [currentValue, setCurrentValue] = useState(0);
 
   useEffect(() => {

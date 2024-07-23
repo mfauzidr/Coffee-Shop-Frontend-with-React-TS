@@ -1,11 +1,10 @@
-import React from 'react'
 
 interface OrderStatusProps {
   status: string;
   onStatusChange: (status: string) => void;
 }
 
-const OrderStatus: React.FC<OrderStatusProps> = ({ status, onStatusChange }) => {
+const OrderStatus = ({ status, onStatusChange }: OrderStatusProps) => {
   const statuses = [
     { id: 'onProgress', label: 'On Progress' },
     { id: 'sendingGoods', label: 'Sending Goods' },

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from './Buttons';
 import Slider from 'react-slider'
 
@@ -6,7 +6,7 @@ interface CheckboxFilterProps {
   label: string;
 }
 
-const CheckboxFilter: React.FC<CheckboxFilterProps> = ({ label }) => {
+const CheckboxFilter = ({ label }: CheckboxFilterProps) => {
   return (
     <li className="flex gap-2.5 items-center">
       <div className="relative">
@@ -20,7 +20,7 @@ const CheckboxFilter: React.FC<CheckboxFilterProps> = ({ label }) => {
   );
 };
 
-const PriceRangeSlider: React.FC = () => {
+const PriceRangeSlider = () => {
   const minPrice = 1000
   const maxPrice = 50000
 
@@ -44,7 +44,7 @@ interface ListFilterProps {
   items: { label: string }[];
 }
 
-const ListFilter: React.FC<ListFilterProps> = ({ id, items }) => {
+const ListFilter = ({ id, items }: ListFilterProps) => {
   return (
     <ul id={id} className="flex flex-col gap-8">
       {items.map((item, index) => (
@@ -54,7 +54,7 @@ const ListFilter: React.FC<ListFilterProps> = ({ id, items }) => {
   );
 };
 
-const FilterSidebar: React.FC = () => {
+const FilterSidebar = () => {
   const categoryItems = [
     { label: 'Favorite Product' },
     { label: 'Coffee' },

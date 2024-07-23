@@ -17,7 +17,7 @@ interface PageInfo {
   totalPage: number;
 }
 
-const ProductGrid: React.FC = () => {
+const ProductGrid = () => {
   const [posts, setPosts] = useState<Product[]>([]);
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);

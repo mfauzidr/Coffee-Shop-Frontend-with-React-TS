@@ -28,7 +28,6 @@ const loginThunk = createAsyncThunk<
   try {
     const url = "https://coffee-shop-backend-with-typescript.vercel.app/login";
     const result: AxiosResponse<AuthResponse> = await axios.post(url, form);
-    console.log(result);
     return result.data.results[0].token;
   } catch (error) {
     if (error instanceof AxiosError) return rejectWithValue({ error: error.response?.data, status: error.status });

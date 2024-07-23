@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Footer from "../components/Footer";
@@ -19,7 +19,7 @@ interface Product {
     isRecommended: boolean;
 }
 
-const DetailProduct: React.FC = () => {
+const DetailProduct = () => {
     const productImages = {
         small: [SmallImg1, SmallImg2, SmallImg3]
     };
@@ -31,7 +31,6 @@ const DetailProduct: React.FC = () => {
         const getPost = async (uuid: string) => {
             try {
                 const res = await axios.get(`https://coffee-shop-backend-with-typescript.vercel.app/products/${uuid}`);
-                console.log("API Response:", res.data);
                 if (res.data && res.data.results && res.data.results.length > 0) {
                     setProduct(res.data.results[0]);
                 } else {

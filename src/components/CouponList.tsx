@@ -12,7 +12,7 @@ interface PromoData {
   bgColor: string;
 }
 
-const CouponList: React.FC = () => {
+const CouponList = () => {
   const promo: PromoData[] = [
     {
       imgSrc: Promo1,

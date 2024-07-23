@@ -1,4 +1,3 @@
-import React from 'react';
 
 interface Option {
   value: string;
@@ -12,7 +11,7 @@ interface RadioGroupProps {
   options?: Option[];
 }
 
-const RadioGroup: React.FC<RadioGroupProps> = ({ groupName, label, options }) => {
+const RadioGroup = ({ groupName, label, options }: RadioGroupProps) => {
   return (
     <fieldset className="flex flex-col gap-4">
       <label className="font-bold" htmlFor={groupName}>

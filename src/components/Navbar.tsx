@@ -6,7 +6,12 @@ import { Link } from 'react-router-dom';
 import { useStoreSelector, useStoreDispatch } from "../redux/hooks";
 import { authAction } from "../redux/slices/auth";
 
-const Navbar: React.FC<{ bgColor: string; position: string }> = ({ bgColor, position }) => {
+interface NavbarProps {
+  bgColor: string
+  position: string
+}
+
+const Navbar = ({ bgColor, position }: NavbarProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useStoreDispatch();
   const { token } = useStoreSelector((state) => state.auth);

@@ -1,9 +1,8 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import StatCard from './StatCard';
 import bgMain from '../assets/img/bg-main.png';
 
-const Main: React.FC = () => {
+const Main = () => {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {

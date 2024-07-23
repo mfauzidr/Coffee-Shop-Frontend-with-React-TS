@@ -10,9 +10,12 @@ interface InputProps {
   disabled?: boolean
   showChangeEmail?: boolean
   value?: string
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export const FullNameInput = ({ name, placeholder = 'Enter Your Full Name', }: InputProps) => {
+export const FullNameInput = ({ name, placeholder = 'Enter Your Full Name', value, onChange }: InputProps) => {
+
+  const inputValue = value === "" ? undefined : value;
   return (
     <div className="relative">
       <label className="block font-semibold" htmlFor={name}>
@@ -26,7 +29,9 @@ export const FullNameInput = ({ name, placeholder = 'Enter Your Full Name', }: I
         id={name}
         name={name}
         type="text"
+        value={inputValue}
         placeholder={placeholder}
+        onChange={onChange}
       />
     </div>
   );
@@ -133,7 +138,9 @@ export const ConfirmPasswordInput = ({ name, placeholder = 'Enter Your Password 
   );
 };
 
-export const AddressInput = ({ name, placeholder = 'Enter Your Address' }: InputProps) => {
+export const AddressInput = ({ name, placeholder = 'Enter Your Address', value, onChange }: InputProps) => {
+
+  const inputValue = value === "" ? undefined : value;
   return (
     <div className="relative">
       <label className="block font-semibold" htmlFor="address">
@@ -147,13 +154,17 @@ export const AddressInput = ({ name, placeholder = 'Enter Your Address' }: Input
         id="address"
         name={name}
         type="text"
+        value={inputValue}
         placeholder={placeholder}
+        onChange={onChange}
       />
     </div>
   );
 };
 
-export const PhoneInput = ({ name, placeholder = 'Enter Your Phone Number' }: InputProps) => {
+export const PhoneInput = ({ name, placeholder = 'Enter Your Phone Number', value, onChange }: InputProps) => {
+
+  const inputValue = value === "" ? undefined : value;
   return (
     <div className="relative">
       <label className="block font-semibold" htmlFor="phone">
@@ -168,7 +179,9 @@ export const PhoneInput = ({ name, placeholder = 'Enter Your Phone Number' }: In
         name={name}
         type="tel"
         pattern="[0-9]{1,13}"
+        value={inputValue}
         placeholder={placeholder}
+        onChange={onChange}
       />
     </div>
   );

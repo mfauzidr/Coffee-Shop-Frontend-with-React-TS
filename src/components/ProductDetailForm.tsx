@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import RatingStar from './RatingStar';
 import { Button, CartButton } from './Buttons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,7 +21,7 @@ interface Option {
   required?: boolean;
 }
 
-const ProductDetailForm: React.FC<ProductDetailFormProps> = ({ isFlashSale, name, price, ratingProduct, isRecommended, desc }) => {
+const ProductDetailForm = ({ isFlashSale, name, price, ratingProduct, isRecommended, desc }: ProductDetailFormProps) => {
   const [sizes, setSizes] = useState<Option[]>([]);
   const [variants, setVariants] = useState<Option[]>([]);
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button, CartButton } from './Buttons';
 import RatingStar from './RatingStar';
 import { Link } from 'react-router-dom';
@@ -19,7 +18,7 @@ interface ProductCardProps extends Omit<Product, 'uuid'> {
   uuid: string;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ uuid, image, productName, description, price, isFlashSale, ratingProduct }) => {
+const ProductCard = ({ uuid, image, productName, description, price, isFlashSale, ratingProduct }: ProductCardProps) => {
   const discount = price / 2;
   const defaultImage = NoImg;
 
