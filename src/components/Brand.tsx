@@ -8,8 +8,8 @@ interface BrandProps {
 
 function Brand({ textColor }: BrandProps) {
   return (
-    <Link to='/'>
-      <div className={`flex text-${textColor} font-brand flex-shrink-0`}>
+    <Link to='/' className='w-fit'>
+      <div className={`flex text-${textColor} font-brand flex-shrink-0 w-fit`}>
         <i>
           <FeatherIcon icon="coffee" className="h-5 w-5" />
         </i>

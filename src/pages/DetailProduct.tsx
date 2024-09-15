@@ -30,7 +30,7 @@ const DetailProduct = () => {
     useEffect(() => {
         const getPost = async (uuid: string) => {
             try {
-                const res = await axios.get(`https://coffee-shop-backend-with-typescript.vercel.app/products/${uuid}`);
+                const res = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/products/${uuid}`);
                 if (res.data && res.data.results && res.data.results.length > 0) {
                     setProduct(res.data.results[0]);
                 } else {

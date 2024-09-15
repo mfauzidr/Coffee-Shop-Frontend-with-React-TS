@@ -32,7 +32,7 @@ const ProductCard = ({ uuid, image, productName, description, price, isFlashSale
       <div className="flex flex-1 h-32 lg:h-64 min-w-40 lg:w-full justify-center overflow-hidden">
         <img className='flex-1 object-cover object-center' src={image ? `${image}` : defaultImage} alt={productName} />
       </div>
-      <div className="relative flex-1 bg-white shadow-md mx-3 lg:mx-6 p-3 -mt-8">
+      <div className="relative flex-1 bg-white shadow-md mx-3 lg:mx-6 p-3 -mt-8 text-black">
         <div className="flex flex-col gap-2">
           <h2 className="text-xs lg:text-2xl font-bold">
             <Link to={`/detail-product/${uuid}`}>{productName}</Link>

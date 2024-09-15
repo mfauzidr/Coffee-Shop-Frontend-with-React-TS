@@ -54,7 +54,7 @@ const HistoryOrder = () => {
     useEffect(() => {
         const getOrders = async () => {
             try {
-                const url = `https://coffee-shop-backend-with-typescript.vercel.app/orders`;
+                const url = `${import.meta.env.VITE_REACT_APP_API_URL}/orders`;
                 const res = await axios.get(url, {
                     headers: {
                         Authorization: `Bearer ${token}`

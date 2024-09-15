@@ -45,7 +45,7 @@ export const updateProfileData = createAsyncThunk<IProfileState, ProfileData>(
     try {
       const { uuid, ...data } = formData;
       const { auth: { token } } = thunkAPI.getState() as RootState;
-      const url = `https://coffee-shop-backend-with-typescript.vercel.app/users/${uuid}`;
+      const url = `${import.meta.env.VITE_REACT_APP_API_URL}/users/${uuid}`;
       const response: AxiosResponse<IProfileState> = await axios.patch(url, data, {
         headers: {
           Authorization: `Bearer ${token}`,

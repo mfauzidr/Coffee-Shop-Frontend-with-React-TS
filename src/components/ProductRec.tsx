@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
 import axios from 'axios';
 import PagePagination from './PagePagination';
@@ -28,24 +28,17 @@ const ProductRec = () => {
     const getProducts = async (page: number | string) => {
       let res;
       try {
-        if (page === 'next') {
-          res = await axios.get('https://coffee-shop-backend-with-t-git-396322-mochammad-fauzis-projects.vercel.app/products', {
-            params: {
-              page: currentPage + 1,
-              limit: 3
-            },
-          });
-        } else {
-          res = await axios.get('https://coffee-shop-backend-with-t-git-396322-mochammad-fauzis-projects.vercel.app/products', {
-            params: {
-              page,
-              limit: 3
-            },
-          });
-          setPageInfo(res.data.meta);
-          setProducts(res.data.results);
-          setCurrentPage(res.data.meta.currentPage);
+        const url = `${import.meta.env.VITE_REACT_APP_API_URL}/products`
+        const params = {
+          ...(page === 'next' ? { page: currentPage + 1, limit: 3 } : { page, limit: 3 })
         }
+        res = await axios.get(url, {
+          params
+        });
+        setPageInfo(res.data.meta);
+        setProducts(res.data.results);
+        setCurrentPage(res.data.meta.currentPage);
+
       } catch (error) {
         console.error("Error fetching products:", error);
       }

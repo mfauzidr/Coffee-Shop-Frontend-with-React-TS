@@ -103,6 +103,14 @@ export const Button = ({ type, buttonName, size, link = '#' }: ButtonProps) => {
   );
 };
 
+export const ApplyButton = ({ buttonName, type, size, onClick }: ButtonProps) => {
+  return (
+    <button onClick={onClick} type={type} className={`flex-1 ${size} py-1 lg:py-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center text-xs md:text-base`}>
+      {buttonName}
+    </button>
+  );
+}
+
 interface FileUploadButtonProps {
   buttonName: string;
   onFileChange: (file: File | null) => void;

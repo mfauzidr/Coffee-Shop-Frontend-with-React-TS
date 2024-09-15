@@ -19,7 +19,7 @@ const ProductHighlight = () => {
 
   const getProducts = async () => {
     try {
-      const res = await axios.get('https://coffee-shop-backend-with-t-git-396322-mochammad-fauzis-projects.vercel.app/products', {
+      const res = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/products`, {
         params: {
           limit: 4,
         },

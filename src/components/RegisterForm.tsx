@@ -49,7 +49,7 @@ const RegisterForm = () => {
     };
 
     try {
-      await axios.post('https://coffee-shop-backend-with-typescript.vercel.app/register', formData);
+      await axios.post('${import.meta.env.VITE_REACT_APP_API_URL}/register', formData);
 
       setIsSuccess(true);
       setIsError(false);

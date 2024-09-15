@@ -28,7 +28,7 @@ const ProductDetailForm = ({ isFlashSale, name, price, ratingProduct, isRecommen
   useEffect(() => {
     const getSizes = async () => {
       try {
-        const res = await axios.get(`https://coffee-shop-backend-with-typescript.vercel.app/size`);
+        const res = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/size`);
         const sizeOptions = res.data.results.map((size: { id: number; size: string }) => ({
           value: size.size,
           label: size.size,
@@ -44,7 +44,7 @@ const ProductDetailForm = ({ isFlashSale, name, price, ratingProduct, isRecommen
   useEffect(() => {
     const getVariants = async () => {
       try {
-        const res = await axios.get(`https://coffee-shop-backend-with-typescript.vercel.app/variant`);
+        const res = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/variant`);
         const variantOptions = res.data.results.map((variant: { id: number; name: string }) => ({
           value: variant.name,
           label: variant.name,

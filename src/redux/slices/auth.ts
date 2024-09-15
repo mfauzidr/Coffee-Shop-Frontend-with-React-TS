@@ -26,7 +26,7 @@ const loginThunk = createAsyncThunk<
   { rejectValue: { error: Error; status?: number } }
 >("auth/login", async (form, { rejectWithValue }) => {
   try {
-    const url = "https://coffee-shop-backend-with-typescript.vercel.app/login";
+    const url = "${import.meta.env.VITE_REACT_APP_API_URL}/login";
     const result: AxiosResponse<AuthResponse> = await axios.post(url, form);
     return result.data.results[0].token;
   } catch (error) {

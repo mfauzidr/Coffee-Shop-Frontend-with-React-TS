@@ -48,7 +48,7 @@ const Profile = () => {
       if (!uuid || !token) return;
 
       try {
-        const url = `https://coffee-shop-backend-with-typescript.vercel.app/users/${uuid}`;
+        const url = `${import.meta.env.VITE_REACT_APP_API_URL}/users/${uuid}`;
         const res = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -125,7 +125,7 @@ const Profile = () => {
         }
       }
 
-      const response = await axios.patch(`https://coffee-shop-backend-with-typescript.vercel.app/users/${uuid}`, formData, {
+      const response = await axios.patch(`${import.meta.env.VITE_REACT_APP_API_URL}/users/${uuid}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`
