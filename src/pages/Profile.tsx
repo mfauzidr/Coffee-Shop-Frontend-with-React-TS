@@ -1,38 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import ProfileCard from "../components/ProfileCard";
-import { AddressInput, EmailInput, FullNameInput, PhoneInput, PasswordInput, ConfirmPasswordInput } from "../components/InputForm";
+import { AddressInput, EmailInput, PhoneInput, PasswordInput, ConfirmPasswordInput, FullNameInput } from "../components/InputForm";
 import { SubmitButton } from "../components/Buttons";
-import { useStoreSelector, useStoreDispatch } from '../redux/hooks';
+import { useStoreSelector } from '../redux/hooks';
 import { RootState } from '../redux/store';
 import axios from 'axios';
-import { updateProfileData } from '../redux/slices/profile';
 import { jwtDecode } from 'jwt-decode';
+import Swal from 'sweetalert2'
 
-interface DataProps {
-  fullName: string;
-  email: string;
-  phoneNumber: string;
-  address: string;
-  image: string;
+interface IProfileBody {
+  id?: number;
+  email?: string;
+  image?: string;
+  fullName?: string;
+  password?: string
+  phoneNumber?: string;
+  address?: string;
 }
 
 const Profile = () => {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
-  const [profileData, setProfileData] = useState<DataProps>({
-    fullName: '',
-    email: '',
-    phoneNumber: '',
-    address: '',
-    image: '',
-  });
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [profile, setProfile] = useState<IProfileBody[]>([]);
+  const [changedImage, setSelectedImage] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  // const [errorMessage, setErrorMessage] = useState('');
+  const [form, setForm] = useState<IProfileBody>();
 
-  const dispatch = useStoreDispatch();
+
   const { token } = useStoreSelector((state: RootState) => state.auth);
   const [uuid, setUuid] = useState<string>('');
 
@@ -43,60 +40,41 @@ const Profile = () => {
     }
   }, [token]);
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      if (!uuid || !token) return;
 
-      try {
-        const url = `${import.meta.env.VITE_REACT_APP_API_URL}/users/${uuid}`;
-        const res = await axios.get(url, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
 
-        if (res.data && res.data.results && res.data.results.length > 0) {
-          const profileResult = res.data.results[0];
-          console.log(profileResult);
-          setProfileData({
-            fullName: profileResult.fullName || '',
-            email: profileResult.email || '',
-            phoneNumber: profileResult.phone || '',
-            address: profileResult.address || '',
-            image: profileResult.image || '',
-          });
-        } else {
-          console.error("Invalid API response structure:", res.data);
+  const fetchprofile = useCallback(async () => {
+    if (!uuid || !token) return;
+    const url = `${import.meta.env.VITE_REACT_APP_API_URL}/users/${uuid}`;
+
+    try {
+      const res = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-      }
-    }
+      });
 
-    fetchProfileData();
+
+      setProfile(res.data.results);
+      setForm(res.data.results[0]);
+
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
   }, [uuid, token]);
 
-  const handleImageChange = (file: File | null) => {
-    if (file) {
-      setSelectedImage(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileData((prevData) => ({
-          ...prevData,
-          image: reader.result as string
-        }));
-      };
-      reader.readAsDataURL(file); // Read the file as a Data URL for preview
+  useEffect(() => {
+    fetchprofile();
+  }, [fetchprofile]);
+
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setSelectedImage(event.target.files[0]);
     }
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    const form = event.target as HTMLFormElement;
-    const password = form.password.value;
-    const confirmPassword = form.confirmPassword.value;
-
 
     if (!uuid) {
       console.error("UUID is not defined");
@@ -107,57 +85,70 @@ const Profile = () => {
 
     try {
       const formData = new FormData();
-      formData.append('fullName', profileData.fullName);
-      formData.append('email', profileData.email);
-      formData.append('phoneNumber', profileData.phoneNumber);
-      formData.append('address', profileData.address);
-
-      if (selectedImage) {
-        formData.append('image', selectedImage); // Send the image as a File object
+      if (form?.fullName) {
+        formData.append('fullName', form.fullName)
+      }
+      if (form?.email) {
+        formData.append('email', form.email);
+      }
+      if (form?.phoneNumber) {
+        formData.append('phoneNumber', form.phoneNumber);
+      }
+      if (form?.address) {
+        formData.append('address', form.address);
       }
 
-      // Add new password to FormData if applicable
-      if (showPasswordForm && password) {
-        if (password !== confirmPassword) {
-          setErrorMessage('Passwords do not match!');
-          setIsError(true);
-          return;
-        }
+      if (changedImage) {
+        formData.append('image', changedImage);
       }
 
-      const response = await axios.patch(`${import.meta.env.VITE_REACT_APP_API_URL}/users/${uuid}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`
+      if (showPasswordForm && form?.password) {
+        formData.append('password', form.password);
+      }
+
+      await axios.patch(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/users/${uuid}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`
+          }
         }
+      );
+
+      Swal.fire({
+        title: "Success!",
+        text: "Update Success",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
+        position: "top-end",
+        customClass: {
+          popup: "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
+        },
+        toast: true,
       });
-
-      if (response.data.success) {
-        // Extract the image URL from the backend response
-        const imageUrl = response.data.results[0]?.image;
-
-        // Update the profile data with the image URL
-        const updatedData = {
-          fullName: profileData.fullName,
-          email: profileData.email,
-          phoneNumber: profileData.phoneNumber,
-          address: profileData.address,
-          image: imageUrl || profileData.image // Use the image URL from the backend response
-        };
-
-        await dispatch(updateProfileData({ uuid, ...updatedData })).unwrap();
-        alert('Profile updated successfully!');
-      } else {
-        console.error("Error updating profile:", response.data.message);
-        alert(`Error: ${response.data.message}`);
-      }
+      fetchprofile()
     } catch (error: unknown) {
       console.error("Error updating profile:", error);
-      alert(`Error: ${error instanceof Error ? error.message : 'An unexpected error occurred'}`);
+      Swal.fire({
+        title: "Failed!",
+        text: "Update Failed!",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+        position: "top-end",
+        customClass: {
+          popup: "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
+        },
+        toast: true,
+      });
     } finally {
       setIsLoading(false);
     }
   };
+
 
   const togglePasswordForm = () => {
     setShowPasswordForm(!showPasswordForm);
@@ -165,14 +156,13 @@ const Profile = () => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setProfileData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setForm((form) => {
+      return {
+        ...form,
+        [e.target.name]: e.target.value,
+      };
+    });
   };
-
-  const { fullName, email, phoneNumber, address, image } = profileData;
 
   return (
     <>
@@ -184,17 +174,17 @@ const Profile = () => {
         </div>
         <div className="flex flex-col md:flex-row gap-6 mt-6 lg:mt-12">
           <ProfileCard
-            name={fullName || ''}
-            email={email}
-            profileImage={image}
+            name={profile[0]?.fullName}
+            email={profile[0]?.email}
+            profileImage={changedImage ? URL.createObjectURL(changedImage) : profile[0]?.image}
             joinDate='20 January 2022'
             onImageChange={handleImageChange}
           />
           <form id="form" className="flex flex-1 flex-col border rounded gap-4 py-4 md:py-6 px-3 md:px-12" onSubmit={handleSubmit}>
-            <FullNameInput name='fullName' placeholder={fullName || 'Enter Your Full Name'} onChange={handleInputChange} />
-            <EmailInput name='email' disabled={true} placeholder={email} showChangeEmail={true} />
-            <PhoneInput name='phoneNumber' placeholder={phoneNumber || 'Enter Your Phone Number'} onChange={handleInputChange} />
-            <AddressInput name='address' placeholder={address || 'Enter Your Address'} onChange={handleInputChange} />
+            <FullNameInput value={form?.fullName} name='fullName' placeholder={profile[0]?.fullName || 'Enter Your Full Name'} onChange={handleInputChange} />
+            <EmailInput value={form?.email} name='email' disabled={true} placeholder={profile[0]?.email} showChangeEmail={true} />
+            <PhoneInput value={form?.phoneNumber} name='phoneNumber' placeholder={profile[0]?.phoneNumber || 'Enter Your Phone Number'} onChange={handleInputChange} />
+            <AddressInput value={form?.address} name='address' placeholder={profile[0]?.address || 'Enter Your Address'} onChange={handleInputChange} />
             <div className={`transition-all duration-500 ease-in-out ${showPasswordForm ? 'max-h-screen opacity-100' : 'max-h-0 overflow-hidden opacity-0'}`}>
               {showPasswordForm && (
                 <>
@@ -208,7 +198,7 @@ const Profile = () => {
                 id="alert-error"
                 className={`flex text-red-400 text-base ${isError ? 'block' : 'invisible'}`}
               >
-                {errorMessage}
+                {/* {errorMessage} */}
               </div>
               <div className="flex items-center self-end pr-3 text-amber-500 cursor-pointer" onClick={togglePasswordForm}>
                 {showPasswordForm ? 'Cancel' : 'Set New Password'}

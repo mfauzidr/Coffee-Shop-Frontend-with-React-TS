@@ -22,6 +22,13 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
     window.location.href = '/';
   };
 
+  const showModal = (): void => {
+    const modal = document.getElementById("my_modal_4") as HTMLDialogElement | null;
+    if (modal) {
+      modal.showModal();
+    }
+  };
+
   return (
     <nav id="navbar" className={`flex flex-col lg:flex-row lg:h-20 w-full ${bgColor} text-white items-center px-8 md:px-16 lg:px-32 gap-4 lg:gap-0 py-6 lg:py-0 ${position} overflow-hidden ${menuOpen ? 'h-auto' : 'h-20'} transition-all duration-500 ease-in-out`}>
       <div className="flex flex-col lg:flex-row flex-1 items-center justify-between w-full lg:w-auto">
@@ -58,7 +65,19 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
           {isLoggedIn ? (
             <>
               <ProfileButton href="/profile" />
-              <LogoutButton onClick={handleLogout} />
+              <LogoutButton onClick={showModal} />
+              <dialog id="my_modal_4" className="modal">
+                <div className="text-black modal-box w-11/12 max-w-lg">
+                  <h3 className="text-lg font-bold">Are you sure you want to log out?</h3>
+                  <p className="py-4">Click the button below to confirm logout</p>
+                  <div className="modal-action">
+                    <button className="btn bg-white border-amber-500 text-red-600 hover:bg-red-500 hover:text-white" onClick={handleLogout}>Confirm Logout</button>
+                    <form method="dialog">
+                      <button className="btn">Cancel</button>
+                    </form>
+                  </div>
+                </div>
+              </dialog>
             </>
           ) : (
             <>

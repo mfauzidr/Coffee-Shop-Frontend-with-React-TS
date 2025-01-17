@@ -49,7 +49,7 @@ const RegisterForm = () => {
     };
 
     try {
-      await axios.post('${import.meta.env.VITE_REACT_APP_API_URL}/register', formData);
+      await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/register`, formData);
 
       setIsSuccess(true);
       setIsError(false);

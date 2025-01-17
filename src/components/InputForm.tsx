@@ -36,7 +36,7 @@ export const FullNameInput = ({ name, placeholder = 'Enter Your Full Name', valu
   );
 };
 
-export const EmailInput = ({ name, placeholder = 'Enter Your Email', showChangeEmail = false, disabled = false }: InputProps) => {
+export const EmailInput = ({ value, name, placeholder = 'Enter Your Email', showChangeEmail = false, disabled = false }: InputProps) => {
 
   return (
     <div className="relative">
@@ -59,6 +59,7 @@ export const EmailInput = ({ name, placeholder = 'Enter Your Email', showChangeE
         <input
           className="border rounded-lg w-full h-11 pl-10 outline-none"
           id={name}
+          value={value}
           name={name}
           type="email"
           placeholder={placeholder}
@@ -69,7 +70,7 @@ export const EmailInput = ({ name, placeholder = 'Enter Your Email', showChangeE
   );
 };
 
-export const PasswordInput = ({ label, name, placeholder = 'Enter Your Password' }: InputProps & { showSetNew?: boolean }) => {
+export const PasswordInput = ({ value, label, name, placeholder = 'Enter Your Password' }: InputProps & { showSetNew?: boolean }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => {
@@ -90,7 +91,7 @@ export const PasswordInput = ({ label, name, placeholder = 'Enter Your Password'
           id={name}
           name={name}
           type={showPassword ? 'text' : 'password'}
-
+          value={value}
           placeholder={placeholder}
         />
         <button onClick={togglePassword} id="reveal-password" className="justify-self-end" type="button">
@@ -103,7 +104,7 @@ export const PasswordInput = ({ label, name, placeholder = 'Enter Your Password'
   );
 };
 
-export const ConfirmPasswordInput = ({ name, placeholder = 'Enter Your Password Again' }: InputProps) => {
+export const ConfirmPasswordInput = ({ value, name, placeholder = 'Enter Your Password Again' }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => {
@@ -124,7 +125,7 @@ export const ConfirmPasswordInput = ({ name, placeholder = 'Enter Your Password 
           id={name}
           name={name}
           type={showPassword ? 'text' : 'password'}
-
+          value={value}
           placeholder={placeholder}
         />
         <button onClick={togglePassword} id="reveal-confirm-password" className="justify-self-end" type="button">
@@ -139,7 +140,6 @@ export const ConfirmPasswordInput = ({ name, placeholder = 'Enter Your Password 
 
 export const AddressInput = ({ name, placeholder = 'Enter Your Address', value, onChange }: InputProps) => {
 
-  const inputValue = value === "" ? undefined : value;
   return (
     <div className="relative">
       <label className="block font-semibold" htmlFor="address">
@@ -153,7 +153,7 @@ export const AddressInput = ({ name, placeholder = 'Enter Your Address', value, 
         id="address"
         name={name}
         type="text"
-        value={inputValue}
+        value={value}
         placeholder={placeholder}
         onChange={onChange}
       />
@@ -163,7 +163,6 @@ export const AddressInput = ({ name, placeholder = 'Enter Your Address', value, 
 
 export const PhoneInput = ({ name, placeholder = 'Enter Your Phone Number', value, onChange }: InputProps) => {
 
-  const inputValue = value === "" ? undefined : value;
   return (
     <div className="relative">
       <label className="block font-semibold" htmlFor="phone">
@@ -178,7 +177,7 @@ export const PhoneInput = ({ name, placeholder = 'Enter Your Phone Number', valu
         name={name}
         type="tel"
         pattern="[0-9]{1,13}"
-        value={inputValue}
+        value={value}
         placeholder={placeholder}
         onChange={onChange}
       />

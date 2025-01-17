@@ -1,11 +1,10 @@
-import { FileUploadButton } from './Buttons';
 
 interface ProfileCardProps {
-  name: string;
-  email: string;
-  profileImage: string;
+  name?: string;
+  email?: string;
+  profileImage?: string | undefined;
   joinDate: string;
-  onImageChange: (file: File | null) => void;
+  onImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ProfileCard = ({ name, email, profileImage, joinDate, onImageChange }: ProfileCardProps) => {
@@ -14,10 +13,26 @@ const ProfileCard = ({ name, email, profileImage, joinDate, onImageChange }: Pro
       <div>{name}</div>
       <div>{email}</div>
       <div className="flex w-28 h-28 rounded-full border bg-white overflow-hidden">
-        <img className="object-cover w-full h-full" src={profileImage} alt="Profile" />
+        <img className="object-cover w-full h-full" src={profileImage ? profileImage : undefined} alt="Profile" />
       </div>
       <div className="flex flex-col items-center gap-2">
-        <FileUploadButton buttonName="Upload New Photo" onFileChange={onImageChange} />
+        <div className="relative">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={onImageChange}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            id="file-upload-input"
+          />
+          <label htmlFor="file-upload-input">
+            <button
+              type="button"
+              className={`flex-1 py-1 lg:py-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center text-xs md:text-base`}
+            >
+              Upload New Photo
+            </button>
+          </label>
+        </div>
       </div>
       <div className="text-sm">
         Since <span className="font-bold">{joinDate}</span>
