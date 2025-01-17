@@ -8,7 +8,7 @@ interface PromoData {
   imgSrc: string;
   title: string;
   description: string;
-  claimLink?: string; // Make claimLink optional here
+  claimLink?: string;
   bgColor: string;
 }
 

@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import RatingStar from './RatingStar';
-import { Button, CartButton } from './Buttons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
-import RadioGroup from './RadioGroup';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import RatingStar from "./RatingStar";
+import { Button, CartButton } from "./Buttons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
+import RadioGroup from "./RadioGroup";
+import axios from "axios";
 
 interface ProductDetailFormProps {
   isFlashSale: boolean;
@@ -21,21 +21,32 @@ interface Option {
   required?: boolean;
 }
 
-const ProductDetailForm = ({ isFlashSale, name, price, ratingProduct, isRecommended, desc }: ProductDetailFormProps) => {
+const ProductDetailForm = ({
+  isFlashSale,
+  name,
+  price,
+  ratingProduct,
+  isRecommended,
+  desc,
+}: ProductDetailFormProps) => {
   const [sizes, setSizes] = useState<Option[]>([]);
   const [variants, setVariants] = useState<Option[]>([]);
 
   useEffect(() => {
     const getSizes = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/size`);
-        const sizeOptions = res.data.results.map((size: { id: number; size: string }) => ({
-          value: size.size,
-          label: size.size,
-        }));
+        const res = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_API_URL}/size`
+        );
+        const sizeOptions = res.data.results.map(
+          (size: { id: number; size: string }) => ({
+            value: size.size,
+            label: size.size,
+          })
+        );
         setSizes(sizeOptions);
       } catch (error) {
-        console.error('Error fetching sizes:', error);
+        console.error("Error fetching sizes:", error);
       }
     };
     getSizes();
@@ -44,15 +55,19 @@ const ProductDetailForm = ({ isFlashSale, name, price, ratingProduct, isRecommen
   useEffect(() => {
     const getVariants = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/variant`);
-        const variantOptions = res.data.results.map((variant: { id: number; name: string }) => ({
-          value: variant.name,
-          label: variant.name,
-          required: true, // If you want to set required property
-        }));
+        const res = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_API_URL}/variant`
+        );
+        const variantOptions = res.data.results.map(
+          (variant: { id: number; name: string }) => ({
+            value: variant.name,
+            label: variant.name,
+            required: true,
+          })
+        );
         setVariants(variantOptions);
       } catch (error) {
-        console.error('Error fetching variants:', error);
+        console.error("Error fetching variants:", error);
       }
     };
     getVariants();
@@ -78,15 +93,19 @@ const ProductDetailForm = ({ isFlashSale, name, price, ratingProduct, isRecommen
             Flash Sale!
           </div>
         )}
-        <h2 className="text-2xl md:text-5xl font-normal md:font-medium">{name}</h2>
+        <h2 className="text-2xl md:text-5xl font-normal md:font-medium">
+          {name}
+        </h2>
         <div className="flex items-center text-lg md:text-2xl text-amber-500">
           {isFlashSale ? (
             <div>
-              <span className="text-xs font-bold text-red-500 line-through">IDR {price?.toLocaleString('id')}</span>
-              IDR {discount.toLocaleString('id')}
+              <span className="text-xs font-bold text-red-500 line-through">
+                IDR {price?.toLocaleString("id")}
+              </span>
+              IDR {discount.toLocaleString("id")}
             </div>
           ) : (
-            `Rp. ${price?.toLocaleString('id')} ,-`
+            `Rp. ${price?.toLocaleString("id")} ,-`
           )}
         </div>
         <RatingStar rating={ratingProduct} />
@@ -96,7 +115,10 @@ const ProductDetailForm = ({ isFlashSale, name, price, ratingProduct, isRecommen
             <div className="flex items-left border-l border-black">
               <div className="flex items-center ml-2 md:ml-6 gap-1 md:gap-2">
                 Recommendation
-                <FontAwesomeIcon icon={faThumbsUp} style={{ color: "#f59e0b" }} />
+                <FontAwesomeIcon
+                  icon={faThumbsUp}
+                  style={{ color: "#f59e0b" }}
+                />
               </div>
             </div>
           )}
@@ -132,7 +154,7 @@ const ProductDetailForm = ({ isFlashSale, name, price, ratingProduct, isRecommen
       </div>
       <div className="block md:flex md:gap-x-7 md:mt-14">
         <div className="flex flex-1 justify-center items-center h-11 text-sm font-medium border border-amber-500 rounded-md mt-4 md:mt-0 bg-amber-500">
-          <Button buttonName={'Buy'} type={'button'} link='/checkout-product' />
+          <Button buttonName={"Buy"} type={"button"} link="/checkout-product" />
         </div>
         <label className="flex flex-1 justify-center items-center h-11 text-sm font-medium text-amber-500 border border-amber-500 rounded-md mt-4 md:mt-0 bg-white gap-2.5 cursor-pointer">
           <CartButton />
@@ -140,6 +162,6 @@ const ProductDetailForm = ({ isFlashSale, name, price, ratingProduct, isRecommen
       </div>
     </form>
   );
-}
+};
 
 export default ProductDetailForm;

@@ -3,12 +3,12 @@ import axios, { AxiosResponse } from "axios";
 import { RootState } from "../store";
 
 interface ProfileData {
-  uuid?: string
+  uuid?: string;
   fullName?: string;
   email?: string;
   phone?: string;
   address?: string;
-  image?: string; // Image field for profile photo
+  image?: string;
 }
 
 interface IProfileState {
@@ -22,21 +22,21 @@ interface IProfileState {
   isLoading?: boolean;
   isRejected?: boolean;
   isFulfilled?: boolean;
-  error?: string; // Add error field
+  error?: string;
 }
 
 const initialState: IProfileState = {
-  id: '',
-  uuid: '',
-  fullName: '',
-  email: '',
-  phone: '',
-  address: '',
-  image: '',
+  id: "",
+  uuid: "",
+  fullName: "",
+  email: "",
+  phone: "",
+  address: "",
+  image: "",
   isLoading: false,
   isFulfilled: false,
   isRejected: false,
-  error: '', // Initialize error field
+  error: "",
 };
 
 export const updateProfileData = createAsyncThunk<IProfileState, ProfileData>(
@@ -44,13 +44,19 @@ export const updateProfileData = createAsyncThunk<IProfileState, ProfileData>(
   async (formData, thunkAPI) => {
     try {
       const { uuid, ...data } = formData;
-      const { auth: { token } } = thunkAPI.getState() as RootState;
+      const {
+        auth: { token },
+      } = thunkAPI.getState() as RootState;
       const url = `${import.meta.env.VITE_REACT_APP_API_URL}/users/${uuid}`;
-      const response: AxiosResponse<IProfileState> = await axios.patch(url, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response: AxiosResponse<IProfileState> = await axios.patch(
+        url,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -72,7 +78,7 @@ const profileSlice = createSlice({
         state.isLoading = true;
         state.isFulfilled = false;
         state.isRejected = false;
-        state.error = ''; // Clear previous errors
+        state.error = "";
       })
       .addCase(updateProfileData.fulfilled, (state, { payload }) => {
         state.id = payload.id;
@@ -90,7 +96,7 @@ const profileSlice = createSlice({
         state.isLoading = false;
         state.isFulfilled = false;
         state.isRejected = true;
-        state.error = payload as string; // Store the error message
+        state.error = payload as string;
       });
   },
 });

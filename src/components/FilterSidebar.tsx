@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { ApplyButton } from "./Buttons";
 import Slider from "react-slider";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
+import { fetchProducts } from "../redux/slices/products";
 import axios from "axios";
 
 interface CheckboxFilterProps {
@@ -13,22 +16,13 @@ interface RadioFilterProps {
   label: string;
   checked: boolean;
   onChange: () => void;
-  name: string; // Added to group the radio buttons
-  value: string; // Unique value for each radio button
+  name: string;
+  value: string;
 }
 
 interface Categories {
   id: number;
   name: string;
-}
-
-interface FilterSidebarProps {
-  onApplyFilters: (filters: {
-    search: string;
-    category: string[];
-    sortBy: string;
-    priceRange: [number, number];
-  }) => void;
 }
 
 const CheckboxFilter = ({ label, checked, onChange }: CheckboxFilterProps) => {
@@ -60,11 +54,11 @@ const RadioFilter = ({
         <input
           className="h-6 w-6 rounded-lg appearance-none border-2 checked:bg-amber-500 checkbox-custom"
           type="radio"
-          id={value} // Unique ID for each radio button
+          id={value}
           checked={checked}
           onChange={onChange}
-          name={name} // Same name for all radio buttons in a group
-          value={value} // Each radio button gets its own value
+          name={name}
+          value={value}
         />
         <label htmlFor={value} className="ml-3 ">
           {label}
@@ -123,11 +117,12 @@ const ListFilter = ({ id, items }: ListFilterProps) => {
   );
 };
 
-const FilterSidebar = ({ onApplyFilters }: FilterSidebarProps) => {
+const FilterSidebar = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const [categories, setCategories] = useState<Categories[]>([]);
   const [search, setSearch] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState<string>(""); // Keep the sortBy state as a string
+  const [sortBy, setSortBy] = useState<string>("");
   const [priceRange, setPriceRange] = useState<[number, number]>([1000, 50000]);
 
   useEffect(() => {
@@ -146,7 +141,12 @@ const FilterSidebar = ({ onApplyFilters }: FilterSidebarProps) => {
     onChange: () => handleCategoryChange(category.name),
   }));
 
-  const sortByItems = [
+  const sortByItems: {
+    label: string;
+    checked: boolean;
+    onChange: () => void;
+    value: string;
+  }[] = [
     {
       label: "Alphabet",
       checked: sortBy === "Alphabet",
@@ -167,53 +167,53 @@ const FilterSidebar = ({ onApplyFilters }: FilterSidebarProps) => {
     },
     {
       label: "Price",
-      checked:
-        sortBy === "Price" || sortBy === "Price-ASC" || sortBy === "Price-DESC",
-      onChange: () => {
-        if (sortBy === "Price-ASC") {
-          setSortBy("Price-DESC");
-        } else {
-          setSortBy("Price-ASC");
-        }
-      },
+      checked: sortBy === "Price-ASC" || sortBy === "Price-DESC",
+      onChange: () =>
+        setSortBy(sortBy === "Price-ASC" ? "Price-DESC" : "Price-ASC"),
       value: "Price",
     },
   ];
 
   const handleCategoryChange = (name: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(name)
-        ? prev.filter((categoryName) => categoryName !== name)
-        : [...prev, name]
-    );
+    setSelectedCategories((prev) => {
+      if (prev.includes(name)) {
+        return prev.filter((categoryName) => categoryName !== name);
+      } else {
+        return [...prev, name];
+      }
+    });
   };
 
   const handleApply = () => {
     if (sortBy === "Price-ASC") {
       setSortBy("Price-DESC");
-    } else if (sortBy === "Price-DESC") {
+    } else {
       setSortBy("Price-ASC");
     }
 
+    const categoryString = selectedCategories.join(",");
+
     const filters = {
       search,
-      category: selectedCategories,
-      sortBy, // Send the updated sortBy value
+      category: categoryString,
+      sortBy,
       priceRange,
     };
 
-    onApplyFilters(filters);
+    dispatch(fetchProducts({ page: 1, filters }));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  console.log(sortBy);
-  console.log(priceRange);
-
   const handleReset = () => {
-    setSearch("");
-    setSelectedCategories([]);
-    setSortBy("");
-    setPriceRange([1000, 50000]);
-    handleApply();
+    const filters = {
+      search: "",
+      category: "",
+      sortBy: "",
+      priceRange: [1000, 50000] as [number, number],
+    };
+
+    dispatch(fetchProducts({ page: 1, filters }));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

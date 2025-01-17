@@ -1,11 +1,11 @@
-import Image1 from '../assets/img/payment-1.png';
-import Image2 from '../assets/img/payment-2.png';
-import Image3 from '../assets/img/payment-3.png';
-import Image4 from '../assets/img/payment-4.png';
-import Image5 from '../assets/img/payment-5.png';
-import Image6 from '../assets/img/payment-6.png';
-import { Button } from './Buttons';
-import { OrderCardProps } from './OrderCard'; // Import the type correctly
+import Image1 from "../assets/img/payment-1.png";
+import Image2 from "../assets/img/payment-2.png";
+import Image3 from "../assets/img/payment-3.png";
+import Image4 from "../assets/img/payment-4.png";
+import Image5 from "../assets/img/payment-5.png";
+import Image6 from "../assets/img/payment-6.png";
+import { Button } from "./Buttons";
+import { OrderCardProps } from "./OrderCard";
 
 interface OrderSummaryProps {
   orders: OrderCardProps[];
@@ -28,20 +28,20 @@ const OrderSummary = ({ orders }: OrderSummaryProps) => {
       <div className="flex flex-col p-2.5 gap-3 md:gap-5 bg-gray-100 text-sm md:text-lg font-bold">
         <div className="flex justify-between">
           <div className="text-gray-700">Order</div>
-          <div>IDR {orderTotal.toLocaleString('id')}</div>
+          <div>IDR {orderTotal.toLocaleString("id")}</div>
         </div>
         <div className="flex justify-between">
           <div className="text-gray-700">Delivery</div>
-          <div>IDR {delivery.toLocaleString('id')}</div>
+          <div>IDR {delivery.toLocaleString("id")}</div>
         </div>
         <div className="flex justify-between">
           <div className="text-gray-700">Tax</div>
-          <div>IDR {tax.toLocaleString('id')}</div>
+          <div>IDR {tax.toLocaleString("id")}</div>
         </div>
         <hr />
         <div className="flex justify-between">
           <div className="text-gray-700">Subtotal</div>
-          <div>IDR {subtotal.toLocaleString('id')}</div>
+          <div>IDR {subtotal.toLocaleString("id")}</div>
         </div>
         <Button buttonName="Checkout" type="button" link="/history-order" />
         <div className="flex flex-col gap-3 md:gap-5 text-gray-600 text-sm font-medium">

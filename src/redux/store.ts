@@ -3,18 +3,31 @@ import { persistStore, persistReducer, PersistConfig } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import authReducer, { AuthState } from "./slices/auth";
+import productReducer, { ProductsState } from "./slices/products";
+
 const authPersistConfig: PersistConfig<AuthState> = {
   key: "auth:coffeeShop",
   storage,
-  whitelist: ["token"], // Only persist 'token' from auth slice
+  whitelist: ["token"],
 };
 
-
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
+
+const productPersistConfig: PersistConfig<ProductsState> = {
+  key: "product:coffeeShop",
+  storage,
+  whitelist: [],
+};
+
+const persistedProductReducer = persistReducer(
+  productPersistConfig,
+  productReducer
+);
 
 export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
+    products: persistedProductReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

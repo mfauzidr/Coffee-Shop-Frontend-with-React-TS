@@ -1,112 +1,57 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import ProductCard from './ProductCard'
-import PagePagination from './PagePagination'
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../redux/slices/products";
+import { RootState, AppDispatch } from "../redux/store";
+import ProductCard from "./ProductCard";
+import PagePagination from "./PagePagination";
 
-interface Product {
-  uuid: string
-  image: string
-  productName: string
-  description: string
-  price: number
-  rating: number
-}
-
-interface PageInfo {
-  currentPage: number
-  pages: number
-}
-
-interface ProductGridProps {
-  filters: {
-    search: string
-    category: string[]
-    sortBy: string
-    priceRange: [number, number]
-  }
-}
-
-interface FilterParams {
-  page: number;
-  limit: number;
+interface ProductFilters {
   search?: string;
   category?: string;
   sortBy?: string;
-  minPrice?: number;
-  maxPrice?: number;
+  priceRange?: [number, number];
 }
 
+interface ProductGridProps {
+  filters: ProductFilters;
+}
 
 const ProductGrid = ({ filters }: ProductGridProps) => {
-  const [posts, setPosts] = useState<Product[]>([])
-  const [pageInfo, setPageInfo] = useState<PageInfo | null>(null)
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
+  const dispatch = useDispatch<AppDispatch>();
+  const { products, pageInfo, isLoading, isRejected, error } = useSelector(
+    (state: RootState) => state.products
+  );
+
+  const currentPage = pageInfo?.currentPage || 1;
 
   useEffect(() => {
-    const getPosts = async (page: number | string) => {
-      setLoading(true)
-      setError(null)
-
-      try {
-        const url = `${import.meta.env.VITE_REACT_APP_API_URL}/products`
-        const filterParams: FilterParams = {
-          page: typeof page === 'number' ? page : currentPage,
-          limit: 6,
-          minPrice: filters.priceRange[0],
-          maxPrice: filters.priceRange[1],
-        };
-
-        if (filters.search) {
-          filterParams.search = filters.search;
-        }
-
-        if (filters.category.length) {
-          filterParams.category = filters.category.join(',');
-        }
-
-        if (filters.sortBy) {
-          filterParams.sortBy = filters.sortBy;
-        }
-
-
-        const res = await axios.get(url, { params: filterParams })
-        setPageInfo(res.data.meta)
-        setPosts(res.data.results)
-        setCurrentPage(res.data.meta.currentPage)
-      } catch (err) {
-        setError('Failed to fetch products. Please try again later.')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    getPosts(currentPage)
-  }, [currentPage, filters])
+    dispatch(fetchProducts({ page: currentPage, filters }));
+  }, [dispatch, filters, currentPage]);
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage)
-    window.scrollTo({ top: 650, behavior: 'smooth' })
-  }
+    dispatch(fetchProducts({ page: newPage, filters }));
+    window.scrollTo({ top: 650, behavior: "smooth" });
+  };
 
   return (
     <div>
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-      {!loading && !error && (
+      {isLoading && <p>Loading...</p>}
+      {isRejected && (
+        <p className="text-red-500">{error || "An error occurred."}</p>
+      )}
+      {!isLoading && !isRejected && products.length > 0 && (
         <>
           <div className="relative grid grid-flow-row grid-cols-2 gap-2 md:gap-8">
-            {posts.map((product) => (
+            {products.map((product) => (
               <ProductCard
                 key={product.uuid}
                 uuid={product.uuid}
-                isFlashSale={true}
                 image={product.image}
                 productName={product.productName}
                 description={product.description}
                 price={product.price}
-                ratingProduct={product.rating}
+                isFlashSale={product.isFlashSale}
+                ratingProduct={product.ratingProduct}
               />
             ))}
           </div>
@@ -119,8 +64,11 @@ const ProductGrid = ({ filters }: ProductGridProps) => {
           )}
         </>
       )}
+      {!isLoading && !isRejected && products.length === 0 && (
+        <p>No products found for the selected filters.</p>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default ProductGrid
+export default ProductGrid;

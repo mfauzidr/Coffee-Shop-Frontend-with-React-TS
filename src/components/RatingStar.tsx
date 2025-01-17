@@ -1,20 +1,18 @@
-// import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { IconProp } from '@fortawesome/fontawesome-svg-core'
-import { faStar } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-regular-svg-icons";
 
 interface RatingStarProps {
-  rating: number
-  gap?: string
-  size?: string
+  rating: number;
+  gap?: string;
+  size?: string;
 }
 
-const RatingStar = ({ rating, gap = '', size = '' }: RatingStarProps) => {
-  const maxRating = 5
-  const starElements = []
+const RatingStar = ({ rating, gap = "", size = "" }: RatingStarProps) => {
+  const maxRating = 5;
+  const starElements = [];
 
   for (let i = 1; i <= maxRating; i++) {
-    const starColor = i <= rating ? '#F59E0B' : '#ECEEF0'
+    const starColor = i <= rating ? "#F59E0B" : "#ECEEF0";
 
     starElements.push(
       <FontAwesomeIcon
@@ -23,7 +21,7 @@ const RatingStar = ({ rating, gap = '', size = '' }: RatingStarProps) => {
         style={{ color: starColor }}
         className="text-lg"
       />
-    )
+    );
   }
 
   return (
@@ -31,7 +29,7 @@ const RatingStar = ({ rating, gap = '', size = '' }: RatingStarProps) => {
       {starElements}
       <span>{rating}</span>
     </div>
-  )
-}
+  );
+};
 
-export default RatingStar
+export default RatingStar;
