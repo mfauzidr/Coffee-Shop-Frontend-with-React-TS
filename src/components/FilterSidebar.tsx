@@ -1,12 +1,20 @@
-import { useEffect, useState } from 'react';
-import { ApplyButton } from './Buttons';
-import Slider from 'react-slider';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import { ApplyButton } from "./Buttons";
+import Slider from "react-slider";
+import axios from "axios";
 
 interface CheckboxFilterProps {
   label: string;
   checked: boolean;
   onChange: () => void;
+}
+
+interface RadioFilterProps {
+  label: string;
+  checked: boolean;
+  onChange: () => void;
+  name: string; // Added to group the radio buttons
+  value: string; // Unique value for each radio button
 }
 
 interface Categories {
@@ -26,7 +34,7 @@ interface FilterSidebarProps {
 const CheckboxFilter = ({ label, checked, onChange }: CheckboxFilterProps) => {
   return (
     <li className="flex gap-2.5 items-center">
-      <div className="relative">
+      <div className="relative flex items-center">
         <input
           className="h-6 w-6 rounded-lg appearance-none border-2 checked:bg-amber-500 checkbox-custom"
           type="checkbox"
@@ -39,7 +47,40 @@ const CheckboxFilter = ({ label, checked, onChange }: CheckboxFilterProps) => {
   );
 };
 
-const PriceRangeSlider = ({ values, onChange }: { values: [number, number]; onChange: (values: [number, number]) => void }) => {
+const RadioFilter = ({
+  label,
+  checked,
+  onChange,
+  name,
+  value,
+}: RadioFilterProps) => {
+  return (
+    <li className="flex gap-2.5 items-center">
+      <div className="relative flex items-center">
+        <input
+          className="h-6 w-6 rounded-lg appearance-none border-2 checked:bg-amber-500 checkbox-custom"
+          type="radio"
+          id={value} // Unique ID for each radio button
+          checked={checked}
+          onChange={onChange}
+          name={name} // Same name for all radio buttons in a group
+          value={value} // Each radio button gets its own value
+        />
+        <label htmlFor={value} className="ml-3 ">
+          {label}
+        </label>
+      </div>
+    </li>
+  );
+};
+
+const PriceRangeSlider = ({
+  values,
+  onChange,
+}: {
+  values: [number, number];
+  onChange: (values: [number, number]) => void;
+}) => {
   const minPrice = 1000;
   const maxPrice = 50000;
 
@@ -54,7 +95,7 @@ const PriceRangeSlider = ({ values, onChange }: { values: [number, number]; onCh
         max={maxPrice}
         onChange={onChange}
       />
-      <div className='flex justify-between mt-3 text-sm'>
+      <div className="flex justify-between mt-3 text-sm">
         <span>Min: {values[0]}</span>
         <span>Max: {values[1]}</span>
       </div>
@@ -71,7 +112,12 @@ const ListFilter = ({ id, items }: ListFilterProps) => {
   return (
     <ul id={id} className="flex flex-col gap-8">
       {items.map((item, index) => (
-        <CheckboxFilter key={index} label={item.label} checked={item.checked} onChange={item.onChange} />
+        <CheckboxFilter
+          key={index}
+          label={item.label}
+          checked={item.checked}
+          onChange={item.onChange}
+        />
       ))}
     </ul>
   );
@@ -79,9 +125,9 @@ const ListFilter = ({ id, items }: ListFilterProps) => {
 
 const FilterSidebar = ({ onApplyFilters }: FilterSidebarProps) => {
   const [categories, setCategories] = useState<Categories[]>([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState('');
+  const [sortBy, setSortBy] = useState<string>(""); // Keep the sortBy state as a string
   const [priceRange, setPriceRange] = useState<[number, number]>([1000, 50000]);
 
   useEffect(() => {
@@ -96,39 +142,78 @@ const FilterSidebar = ({ onApplyFilters }: FilterSidebarProps) => {
   const categoryItems = categories.map((category) => ({
     id: category.id,
     label: category.name,
-    checked: selectedCategories.includes(category.name), // Check by name
-    onChange: () => handleCategoryChange(category.name), // Pass name here
+    checked: selectedCategories.includes(category.name),
+    onChange: () => handleCategoryChange(category.name),
   }));
 
   const sortByItems = [
-    { label: 'Alphabet', checked: sortBy === 'Alphabet', onChange: () => setSortBy('Alphabet') },
-    { label: 'Latest', checked: sortBy === 'Latest', onChange: () => setSortBy('Latest') },
-    { label: 'Oldest', checked: sortBy === 'Oldest', onChange: () => setSortBy('Oldest') },
-    { label: 'Price', checked: sortBy === 'Price', onChange: () => setSortBy('Price') },
+    {
+      label: "Alphabet",
+      checked: sortBy === "Alphabet",
+      onChange: () => setSortBy("Alphabet"),
+      value: "Alphabet",
+    },
+    {
+      label: "Latest",
+      checked: sortBy === "Latest",
+      onChange: () => setSortBy("Latest"),
+      value: "Latest",
+    },
+    {
+      label: "Oldest",
+      checked: sortBy === "Oldest",
+      onChange: () => setSortBy("Oldest"),
+      value: "Oldest",
+    },
+    {
+      label: "Price",
+      checked:
+        sortBy === "Price" || sortBy === "Price-ASC" || sortBy === "Price-DESC",
+      onChange: () => {
+        if (sortBy === "Price-ASC") {
+          setSortBy("Price-DESC");
+        } else {
+          setSortBy("Price-ASC");
+        }
+      },
+      value: "Price",
+    },
   ];
 
   const handleCategoryChange = (name: string) => {
     setSelectedCategories((prev) =>
-      prev.includes(name) ? prev.filter((categoryName) => categoryName !== name) : [...prev, name]
+      prev.includes(name)
+        ? prev.filter((categoryName) => categoryName !== name)
+        : [...prev, name]
     );
   };
 
   const handleApply = () => {
+    if (sortBy === "Price-ASC") {
+      setSortBy("Price-DESC");
+    } else if (sortBy === "Price-DESC") {
+      setSortBy("Price-ASC");
+    }
+
     const filters = {
       search,
       category: selectedCategories,
-      sortBy,
+      sortBy, // Send the updated sortBy value
       priceRange,
     };
+
     onApplyFilters(filters);
   };
 
+  console.log(sortBy);
+  console.log(priceRange);
+
   const handleReset = () => {
-    setSearch('');
+    setSearch("");
     setSelectedCategories([]);
-    setSortBy('');
+    setSortBy("");
     setPriceRange([1000, 50000]);
-    handleApply()
+    handleApply();
   };
 
   return (
@@ -136,9 +221,13 @@ const FilterSidebar = ({ onApplyFilters }: FilterSidebarProps) => {
       <form className="flex flex-col gap-6" action="">
         <div className="flex justify-between">
           <div>Filter</div>
-          <button type="reset" onClick={handleReset}>Reset Filter</button>
+          <button type="reset" onClick={handleReset}>
+            Reset Filter
+          </button>
         </div>
-        <label className="font-bold" htmlFor="search">Search</label>
+        <label className="font-bold" htmlFor="search">
+          Search
+        </label>
         <input
           className="h-10 rounded p-5 text-black text-sm"
           id="search"
@@ -147,15 +236,36 @@ const FilterSidebar = ({ onApplyFilters }: FilterSidebarProps) => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <label className="font-bold" htmlFor="category">Category</label>
+        <label className="font-bold" htmlFor="category">
+          Category
+        </label>
         <ListFilter id="category" items={categoryItems} />
-        <label className="font-bold" htmlFor="sort-by">Sort By</label>
-        <ListFilter id="sortBy" items={sortByItems} />
+        <label className="font-bold" htmlFor="sort-by">
+          Sort By
+        </label>
+        <ul className="flex flex-col gap-4">
+          {sortByItems.map((item, index) => (
+            <RadioFilter
+              key={index}
+              label={item.label}
+              checked={item.checked}
+              onChange={item.onChange}
+              name="sortBy"
+              value={item.value}
+            />
+          ))}
+        </ul>
         <div className="mt-4">
           <label className="font-bold">Range Price</label>
           <PriceRangeSlider values={priceRange} onChange={setPriceRange} />
         </div>
-        <ApplyButton buttonName="Apply" type="button" size="py-2" link="#" onClick={handleApply} />
+        <ApplyButton
+          buttonName="Apply"
+          type="button"
+          size="py-2"
+          link="#"
+          onClick={handleApply}
+        />
       </form>
     </aside>
   );

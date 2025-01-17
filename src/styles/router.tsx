@@ -1,63 +1,92 @@
-import { createBrowserRouter } from 'react-router-dom'
-import Register from '../pages/Register'
-import Login from '../pages/Login'
-import ForgotPassword from '../pages/ForgotPassword'
-import Home from '../pages/Home'
-import Product from '../pages/Product'
-import DetailProduct from '../pages/DetailProduct'
-import CheckoutProduct from '../pages/CheckoutProduct'
-import HistoryOrder from '../pages/HistoryOrder'
-import DetailOrder from '../pages/DetailOrder'
-import Profile from '../pages/Profile'
-import { NotFound } from '../pages/NotFound'
+import { createBrowserRouter } from "react-router-dom";
+import Register from "../pages/Register";
+import Login from "../pages/Login";
+import ForgotPassword from "../pages/ForgotPassword";
+import Home from "../pages/Home";
+import Product from "../pages/Product";
+import DetailProduct from "../pages/DetailProduct";
+import CheckoutProduct from "../pages/CheckoutProduct";
+import HistoryOrder from "../pages/HistoryOrder";
+import DetailOrder from "../pages/DetailOrder";
+import Profile from "../pages/Profile";
+import { NotFound } from "../pages/NotFound";
 
-
+import GuestGuard from "../guards/GuestGuard";
+import AuthGuard from "../guards/AuthGuard";
 
 const router = createBrowserRouter([
   {
-    path: '/register',
-    element: <Register />
+    path: "/register",
+    element: (
+      <GuestGuard>
+        <Register />
+      </GuestGuard>
+    ),
   },
   {
-    path: '/login',
-    element: <Login />
+    path: "/login",
+    element: (
+      <GuestGuard>
+        <Login />
+      </GuestGuard>
+    ),
   },
   {
-    path: '/forgot-password',
-    element: <ForgotPassword />
+    path: "/forgot-password",
+    element: (
+      <GuestGuard>
+        <ForgotPassword />
+      </GuestGuard>
+    ),
   },
   {
-    path: '/',
-    element: <Home />
+    path: "/",
+    element: <Home />,
   },
   {
-    path: '/product',
-    element: <Product />
+    path: "/product",
+    element: <Product />,
   },
   {
-    path: '/detail-product/:uuid',
-    element: <DetailProduct />
+    path: "/detail-product/:uuid",
+    element: <DetailProduct />,
   },
   {
-    path: '/checkout-product',
-    element: <CheckoutProduct />
+    path: "/checkout-product",
+    element: (
+      <AuthGuard>
+        <CheckoutProduct />
+      </AuthGuard>
+    ),
   },
   {
-    path: '/history-order',
-    element: <HistoryOrder />
+    path: "/history-order",
+    element: (
+      <AuthGuard>
+        <HistoryOrder />
+      </AuthGuard>
+    ),
   },
   {
-    path: '/detail-order',
-    element: <DetailOrder />
+    path: "/detail-order",
+    element: (
+      <AuthGuard>
+        <DetailOrder />
+      </AuthGuard>
+    ),
   },
   {
-    path: '/profile',
-    element: <Profile />
+    path: "/profile",
+    element: (
+      <AuthGuard>
+        <Profile />
+      </AuthGuard>
+    ),
   },
   {
     path: "*",
     element: <NotFound />,
   },
-])
+]);
 
-export default router
+export default router;
