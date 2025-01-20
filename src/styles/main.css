@@ -549,8 +549,8 @@ html {
   --bc: 27.8078% 0.029596 256.847952;
 }
 
-html{
-  font-family: 'Plus Jakarta Sans', sans-serif;
+html {
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 *, ::before, ::after {
@@ -2103,10 +2103,10 @@ html{
   align-items: center;
 }
 
-.slider{
+.slider {
   width: 100%;
   height: 4px;
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
   margin-top: 20px;
 }
 
@@ -2114,10 +2114,14 @@ html{
   width: 16px;
   height: 16px;
   cursor: grab;
-  background-color: #F59E0B;
+  background-color: #f59e0b;
   border-radius: 50%;
   top: -6px;
   right: 6px;
+}
+
+.visible {
+  visibility: visible;
 }
 
 .invisible {
@@ -2193,12 +2197,48 @@ html{
   top: 0.5rem;
 }
 
+.top-12 {
+  top: 3rem;
+}
+
+.top-16 {
+  top: 4rem;
+}
+
+.right-2 {
+  right: 0.5rem;
+}
+
+.right-4 {
+  right: 1rem;
+}
+
+.right-20 {
+  right: 5rem;
+}
+
+.top-20 {
+  top: 5rem;
+}
+
+.top-14 {
+  top: 3.5rem;
+}
+
 .z-20 {
   z-index: 20;
 }
 
 .z-50 {
   z-index: 50;
+}
+
+.z-30 {
+  z-index: 30;
+}
+
+.z-\[9999\] {
+  z-index: 9999;
 }
 
 .mx-1 {
@@ -2328,6 +2368,10 @@ html{
   margin-right: 0.875rem;
 }
 
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
 .mt-20 {
   margin-top: 5rem;
 }
@@ -2360,8 +2404,16 @@ html{
   margin-top: 2.25rem;
 }
 
-.mt-2 {
-  margin-top: 0.5rem;
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
+.-mt-3 {
+  margin-top: -0.75rem;
+}
+
+.mr-4 {
+  margin-right: 1rem;
 }
 
 .block {
@@ -2493,6 +2545,10 @@ html{
   max-height: 100vh;
 }
 
+.max-h-96 {
+  max-height: 24rem;
+}
+
 .min-h-screen {
   min-height: 100vh;
 }
@@ -2551,10 +2607,6 @@ html{
 
 .w-6 {
   width: 1.5rem;
-}
-
-.w-64 {
-  width: 16rem;
 }
 
 .w-8 {
@@ -2794,12 +2846,20 @@ html{
   overflow: hidden;
 }
 
+.overflow-visible {
+  overflow: visible;
+}
+
 .overflow-scroll {
   overflow: scroll;
 }
 
 .overflow-x-auto {
   overflow-x: auto;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
 }
 
 .rounded {
@@ -2840,6 +2900,10 @@ html{
 
 .border-2 {
   border-width: 2px;
+}
+
+.border-8 {
+  border-width: 8px;
 }
 
 .border-b {
@@ -3535,6 +3599,11 @@ html{
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.hover\:text-gray-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity));
+}
+
 .focus\:outline-none:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -3898,6 +3967,10 @@ html{
 }
 
 @media (min-width: 1024px) {
+  .lg\:absolute {
+    position: absolute;
+  }
+
   .lg\:top-1\/2 {
     top: 50%;
   }

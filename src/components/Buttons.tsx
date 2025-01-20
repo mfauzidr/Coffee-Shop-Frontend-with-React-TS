@@ -1,7 +1,5 @@
 import FeatherIcon from "feather-icons-react";
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import ShoppingCart from "./ShoppingCart";
 
 interface SubmitButtonProps {
   buttonName?: string;
@@ -107,40 +105,8 @@ interface CartButtonProps {
   isMobile?: boolean;
 }
 
-export const CartButton = ({
-  padding,
-  border,
-  size,
-  isMobile,
-}: CartButtonProps) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setDropdownOpen((prev) => !prev);
-  };
-
-  const sampleCartItems = [
-    {
-      id: "1",
-      name: "Item 1",
-      quantity: 2,
-      size: "Large",
-      variant: "Ice",
-      type: "Dine In",
-      price: 10000.0,
-    },
-    {
-      id: "2",
-      name: "Item 2",
-      quantity: 2,
-      size: "Small",
-      variant: "Hot",
-      type: "Dine In",
-      price: 50000.0,
-    },
-  ];
-
-  return isMobile ? (
+export const CartButton = ({ padding, border, size }: CartButtonProps) => {
+  return (
     <button
       className={`${padding} ${border} ${size}`}
       onClick={() => (window.location.href = "/checkout-product")}
@@ -150,23 +116,6 @@ export const CartButton = ({
         className="text-amber-500 w-5 lg:w-6 h-5 lg:h-6"
       />
     </button>
-  ) : (
-    <div className="relative">
-      <button
-        className={`${padding} ${border} ${size}`}
-        onClick={toggleDropdown}
-      >
-        <FeatherIcon
-          icon="shopping-cart"
-          className="text-amber-500 w-5 lg:w-6 h-5 lg:h-6"
-        />
-      </button>
-      {dropdownOpen && (
-        <div className="absolute mt-2 w-1/3 bg-white shadow-lg rounded-md p-4 text-black z-50">
-          <ShoppingCart items={sampleCartItems} />
-        </div>
-      )}
-    </div>
   );
 };
 
