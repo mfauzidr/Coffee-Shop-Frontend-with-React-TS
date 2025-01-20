@@ -117,7 +117,16 @@ const ListFilter = ({ id, items }: ListFilterProps) => {
   );
 };
 
-const FilterSidebar = () => {
+interface FilterSidebarProps {
+  onApplyFilters: (filters: {
+    search: string;
+    category: string;
+    sortBy: string;
+    priceRange: [number, number];
+  }) => void;
+}
+
+const FilterSidebar = ({ onApplyFilters }: FilterSidebarProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [categories, setCategories] = useState<Categories[]>([]);
   const [search, setSearch] = useState("");
@@ -190,7 +199,6 @@ const FilterSidebar = () => {
     } else {
       setSortBy("Price-ASC");
     }
-
     const categoryString = selectedCategories.join(",");
 
     const filters = {
@@ -200,6 +208,7 @@ const FilterSidebar = () => {
       priceRange,
     };
 
+    onApplyFilters(filters); // Panggil fungsi dari props
     dispatch(fetchProducts({ page: 1, filters }));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };

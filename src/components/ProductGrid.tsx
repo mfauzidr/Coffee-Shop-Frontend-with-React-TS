@@ -7,7 +7,7 @@ import PagePagination from "./PagePagination";
 
 interface ProductFilters {
   search?: string;
-  category?: string;
+  category: string;
   sortBy?: string;
   priceRange?: [number, number];
 }

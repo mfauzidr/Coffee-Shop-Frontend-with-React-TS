@@ -1,6 +1,5 @@
 import CouponList from "../components/CouponList";
 import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
 import ProductGrid from "../components/ProductGrid";
 import ProductHeader from "../components/ProductHeader";
 import FilterSidebar from "../components/FilterSidebar";
@@ -11,24 +10,25 @@ import { useState } from "react";
 const Product = () => {
   const [filters, setFilters] = useState({
     search: "",
-    category: [] as string[],
+    category: "",
     sortBy: "",
     priceRange: [1000, 50000] as [number, number],
   });
 
   const handleApplyFilters = (newFilters: {
     search: string;
-    category: string[];
+    category: string;
     sortBy: string;
     priceRange: [number, number];
   }) => {
-    setFilters(newFilters);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      ...newFilters,
+    }));
   };
 
   return (
     <>
-      <Navbar bgColor="bg-black" position="static" />
-
       <ProductHeader />
       <div className="flex lg:hidden px-6 md:px-16 gap-4 py-2 md:py-4 border-b-2 items-center">
         <div className="flex-1 relative">
@@ -41,6 +41,7 @@ const Product = () => {
             name="search"
             type="text"
             placeholder="Find Products"
+            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
           />
         </div>
         <button

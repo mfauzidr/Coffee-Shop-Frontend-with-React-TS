@@ -13,6 +13,7 @@ import { NotFound } from "../pages/NotFound";
 
 import GuestGuard from "../guards/GuestGuard";
 import AuthGuard from "../guards/AuthGuard";
+import Layout from "../components/Layout";
 
 const router = createBrowserRouter([
   {
@@ -44,45 +45,52 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "/product",
-    element: <Product />,
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "/product",
+        element: <Product />,
+      },
+      {
+        path: "/detail-product/:uuid",
+        element: <DetailProduct />,
+      },
+      {
+        path: "/checkout-product",
+        element: (
+          <AuthGuard>
+            <CheckoutProduct />
+          </AuthGuard>
+        ),
+      },
+      {
+        path: "/history-order",
+        element: (
+          <AuthGuard>
+            <HistoryOrder />
+          </AuthGuard>
+        ),
+      },
+      {
+        path: "/detail-order",
+        element: (
+          <AuthGuard>
+            <DetailOrder />
+          </AuthGuard>
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <AuthGuard>
+            <Profile />
+          </AuthGuard>
+        ),
+      },
+    ],
   },
-  {
-    path: "/detail-product/:uuid",
-    element: <DetailProduct />,
-  },
-  {
-    path: "/checkout-product",
-    element: (
-      <AuthGuard>
-        <CheckoutProduct />
-      </AuthGuard>
-    ),
-  },
-  {
-    path: "/history-order",
-    element: (
-      <AuthGuard>
-        <HistoryOrder />
-      </AuthGuard>
-    ),
-  },
-  {
-    path: "/detail-order",
-    element: (
-      <AuthGuard>
-        <DetailOrder />
-      </AuthGuard>
-    ),
-  },
-  {
-    path: "/profile",
-    element: (
-      <AuthGuard>
-        <Profile />
-      </AuthGuard>
-    ),
-  },
+
   {
     path: "*",
     element: <NotFound />,

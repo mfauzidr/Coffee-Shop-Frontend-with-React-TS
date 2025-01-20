@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
 import ProfileCard from "../components/ProfileCard";
 import {
   AddressInput,
@@ -167,8 +166,6 @@ const Profile = () => {
 
   return (
     <>
-      <Navbar bgColor={"bg-black"} position="static" />
-
       <div className="flex flex-col mx-16 lg:mx-32 my-8 lg:my-16 h-auto gap-4">
         <div className="flex flex-col w-full gap-2.5">
           <h1 className="text-3xl lg:text-5xl font-medium">Profile</h1>
