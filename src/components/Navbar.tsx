@@ -19,7 +19,6 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
   const dispatch = useStoreDispatch();
   const { token } = useStoreSelector((state) => state.auth);
   const isLoggedIn = !!token;
-  const isMobile = window.innerWidth < 768;
 
   const handleLogout = () => {
     dispatch(authAction.removeToken());
@@ -33,10 +32,6 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
     if (modal) {
       modal.showModal();
     }
-  };
-
-  const toggleDropdown = () => {
-    setCartOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -65,21 +60,13 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
       <div className="flex flex-col lg:flex-row flex-1 items-center justify-between w-full lg:w-auto">
         <div className="flex text-white justify-between lg:justify-normal w-full lg:w-auto mb-6 lg:mb-0 overflow-visible">
           <Brand textColor={"white"} />
-          <div className="flex gap-6 lg:hidden ">
-            <button
-              onClick={() => {
-                if (isMobile) {
-                  window.location.href = "/checkout-product";
-                } else {
-                  toggleDropdown();
-                }
-              }}
-            >
+          <div className="flex items-center gap-6 lg:hidden ">
+            <Link to="/checkout-product">
               <FeatherIcon
                 icon="shopping-cart"
                 className="text-amber-500 w-5 lg:w-6 h-5 lg:h-6"
               />
-            </button>
+            </Link>
             <button onClick={() => setMenuOpen(!menuOpen)}>
               <FeatherIcon icon={menuOpen ? "x" : "menu"} />
             </button>
@@ -118,8 +105,13 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
           <button onClick={() => (window.location.href = "/product")}>
             <FeatherIcon icon="search" className="text-amber-500" />
           </button>
-          <div ref={dropdownRef} className="relative">
-            <button onClick={toggleDropdown}>
+          <div
+            ref={dropdownRef}
+            className="relative"
+            onMouseEnter={() => setCartOpen(true)}
+            onMouseLeave={() => setCartOpen(false)}
+          >
+            <button>
               <FeatherIcon
                 icon="shopping-cart"
                 className="text-amber-500 w-5 lg:w-6 h-5 lg:h-6 mt-1"

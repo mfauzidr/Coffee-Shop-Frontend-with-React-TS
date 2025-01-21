@@ -18,6 +18,7 @@ interface ProductDetailFormProps {
 interface Option {
   value: string;
   label: string;
+  additionalPrice: number;
   required?: boolean;
 }
 
@@ -39,9 +40,10 @@ const ProductDetailForm = ({
           `${import.meta.env.VITE_REACT_APP_API_URL}/size`
         );
         const sizeOptions = res.data.results.map(
-          (size: { id: number; size: string }) => ({
+          (size: { id: number; size: string; additionalPrice: number }) => ({
             value: size.size,
             label: size.size,
+            additionalPrice: size.additionalPrice,
           })
         );
         setSizes(sizeOptions);
@@ -59,9 +61,10 @@ const ProductDetailForm = ({
           `${import.meta.env.VITE_REACT_APP_API_URL}/variant`
         );
         const variantOptions = res.data.results.map(
-          (variant: { id: number; name: string }) => ({
+          (variant: { id: number; name: string; additionalPrice: number }) => ({
             value: variant.name,
             label: variant.name,
+            additionalPrice: variant.additionalPrice,
             required: true,
           })
         );

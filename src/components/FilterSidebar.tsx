@@ -133,6 +133,7 @@ const FilterSidebar = ({ onApplyFilters }: FilterSidebarProps) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>("");
   const [priceRange, setPriceRange] = useState<[number, number]>([1000, 50000]);
+  // const [currentPage, setCurrentPage] = useState<number>
 
   useEffect(() => {
     const getCategories = async () => {
@@ -196,7 +197,7 @@ const FilterSidebar = ({ onApplyFilters }: FilterSidebarProps) => {
   const handleApply = () => {
     if (sortBy === "Price-ASC") {
       setSortBy("Price-DESC");
-    } else {
+    } else if (sortBy === "Price-DESC") {
       setSortBy("Price-ASC");
     }
     const categoryString = selectedCategories.join(",");
@@ -208,8 +209,8 @@ const FilterSidebar = ({ onApplyFilters }: FilterSidebarProps) => {
       priceRange,
     };
 
-    onApplyFilters(filters); // Panggil fungsi dari props
-    dispatch(fetchProducts({ page: 1, filters }));
+    onApplyFilters(filters);
+    dispatch(fetchProducts({ currentPage: 1, filters }));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -221,7 +222,7 @@ const FilterSidebar = ({ onApplyFilters }: FilterSidebarProps) => {
       priceRange: [1000, 50000] as [number, number],
     };
 
-    dispatch(fetchProducts({ page: 1, filters }));
+    dispatch(fetchProducts({ currentPage: 1, filters }));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 

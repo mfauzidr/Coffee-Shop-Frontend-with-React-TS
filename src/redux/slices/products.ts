@@ -45,20 +45,32 @@ const initialState: ProductsState = {
 
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
-  async (params: { page: number; filters: ProductFilters }) => {
-    const { filters } = params;
+  async (params: {
+    page?: string | number;
+    filters: ProductFilters;
+    currentPage: number;
+  }) => {
+    const { page, filters, currentPage } = params;
     const modifiedFilters = { ...filters };
 
     if (Array.isArray(filters.category)) {
       modifiedFilters.category = filters.category.join(",");
     }
 
+    const newPage =
+      page === "next"
+        ? currentPage + 1
+        : page === "previous"
+        ? currentPage - 1
+        : page;
+
     const response = await axios.get(
       `${import.meta.env.VITE_REACT_APP_API_URL}/products`,
       {
         params: {
           ...modifiedFilters,
-          page: params.page,
+          page: newPage,
+          limit: 6,
         },
       }
     );
@@ -93,7 +105,10 @@ const productSlice = createSlice({
         state.isLoading = false;
         state.isRejected = false;
         state.products = action.payload.results;
-        state.pageInfo = action.payload.pageInfo;
+        state.pageInfo = {
+          currentPage: action.payload.meta.currentPage,
+          pages: action.payload.meta.totalPage,
+        };
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.isLoading = false;

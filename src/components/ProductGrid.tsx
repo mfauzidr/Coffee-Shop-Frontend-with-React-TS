@@ -25,11 +25,11 @@ const ProductGrid = ({ filters }: ProductGridProps) => {
   const currentPage = pageInfo?.currentPage || 1;
 
   useEffect(() => {
-    dispatch(fetchProducts({ page: currentPage, filters }));
+    dispatch(fetchProducts({ page: currentPage, filters, currentPage }));
   }, [dispatch, filters, currentPage]);
 
-  const handlePageChange = (newPage: number) => {
-    dispatch(fetchProducts({ page: newPage, filters }));
+  const handlePageChange = (page: string | number) => {
+    dispatch(fetchProducts({ page, filters, currentPage }));
     window.scrollTo({ top: 650, behavior: "smooth" });
   };
 
