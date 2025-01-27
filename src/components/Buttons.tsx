@@ -103,14 +103,17 @@ interface CartButtonProps {
   border?: string;
   size?: string;
   isMobile?: boolean;
+  onClick?: () => void;
 }
 
-export const CartButton = ({ padding, border, size }: CartButtonProps) => {
+export const CartButton = ({
+  padding,
+  border,
+  size,
+  onClick,
+}: CartButtonProps) => {
   return (
-    <button
-      className={`${padding} ${border} ${size}`}
-      onClick={() => (window.location.href = "/checkout-product")}
-    >
+    <button className={`${padding} ${border} ${size}`} onClick={onClick}>
       <FeatherIcon
         icon="shopping-cart"
         className="text-amber-500 w-5 lg:w-6 h-5 lg:h-6"

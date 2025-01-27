@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 
 import authReducer, { AuthState } from "./slices/auth";
 import productReducer, { ProductsState } from "./slices/products";
+import cartReducer, { CartState } from "./slices/cart";
 
 const authPersistConfig: PersistConfig<AuthState> = {
   key: "auth:coffeeShop",
@@ -24,10 +25,19 @@ const persistedProductReducer = persistReducer(
   productReducer
 );
 
+const cartPersistConfig: PersistConfig<CartState> = {
+  key: "cart:coffeeShop",
+  storage,
+  whitelist: [],
+};
+
+const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
+
 export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     products: persistedProductReducer,
+    cart: persistedCartReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

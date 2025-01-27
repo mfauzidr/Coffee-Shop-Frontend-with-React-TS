@@ -1,53 +1,31 @@
+import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
-import ProductImg from "../assets/img/prod-2.png";
 import OrderCard from "../components/OrderCard";
 import OrderSummary from "../components/OrderSummary";
 import PageHeader from "../components/PageHeader";
 import PaymentInfo from "../components/PaymentInfo";
+import { useStoreSelector } from "../redux/hooks";
+import { AppDispatch, RootState } from "../redux/store";
+import { fetchCarts } from "../redux/slices/cart";
+import { useDispatch } from "react-redux";
+import { jwtDecode } from "jwt-decode";
 
 const CheckoutProduct = () => {
-  const orderData = [
-    {
-      imageUrl: ProductImg,
-      isFlashSale: true,
-      name: "Hazelnut Latte",
-      quantity: 2,
-      size: "Regular",
-      variant: "Ice",
-      type: "Dine In",
-      price: 40000,
-    },
-    {
-      imageUrl: ProductImg,
-      isFlashSale: true,
-      name: "Hazelnut Latte",
-      quantity: 2,
-      size: "Regular",
-      variant: "Ice",
-      type: "Dine In",
-      price: 40000,
-    },
-    {
-      imageUrl: ProductImg,
-      isFlashSale: true,
-      name: "Hazelnut Latte",
-      quantity: 2,
-      size: "Regular",
-      variant: "Ice",
-      type: "Dine In",
-      price: 40000,
-    },
-    {
-      imageUrl: ProductImg,
-      isFlashSale: true,
-      name: "Hazelnut Latte",
-      quantity: 2,
-      size: "Regular",
-      variant: "Ice",
-      type: "Dine In",
-      price: 40000,
-    },
-  ];
+  const { carts } = useStoreSelector((state: RootState) => state.cart);
+  const { token } = useStoreSelector((state: RootState) => state.auth);
+  const [uuid, setUuid] = useState<string>("");
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (token) {
+      const decodedToken = jwtDecode<{ uuid: string }>(token);
+      setUuid(decodedToken.uuid);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    dispatch(fetchCarts({ uuid }));
+  }, [dispatch, uuid]);
 
   return (
     <>
@@ -65,12 +43,15 @@ const CheckoutProduct = () => {
               </button>
             </div>
             <div className="flex flex-col h-80 md:h-[450px] gap-2 md:gap-4 overflow-scroll md:p-3 bg-slate-50">
-              {orderData.map((order, index) => (
-                <OrderCard key={index} {...order} />
+              {carts.map((items, index) => (
+                <OrderCard
+                  key={items.id || `${items.productName}-${index}`}
+                  {...items}
+                />
               ))}
             </div>
           </div>
-          <OrderSummary orders={orderData} />
+          <OrderSummary orders={carts} />
         </div>
         <PaymentInfo />
       </div>

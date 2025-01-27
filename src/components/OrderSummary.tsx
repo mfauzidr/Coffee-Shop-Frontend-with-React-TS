@@ -12,7 +12,10 @@ interface OrderSummaryProps {
 }
 
 const OrderSummary = ({ orders }: OrderSummaryProps) => {
-  const orderTotal = orders.reduce((total, order) => total + order.price, 0);
+  const orderTotal = orders.reduce(
+    (total, order) => total + Number(order.subtotal),
+    0
+  );
 
   const delivery = 0;
 
@@ -28,20 +31,20 @@ const OrderSummary = ({ orders }: OrderSummaryProps) => {
       <div className="flex flex-col p-2.5 gap-3 md:gap-5 bg-gray-100 text-sm md:text-lg font-bold">
         <div className="flex justify-between">
           <div className="text-gray-700">Order</div>
-          <div>IDR {orderTotal.toLocaleString("id")}</div>
+          <div>Rp. {orderTotal.toLocaleString("id")}</div>
         </div>
         <div className="flex justify-between">
           <div className="text-gray-700">Delivery</div>
-          <div>IDR {delivery.toLocaleString("id")}</div>
+          <div>Rp. {delivery.toLocaleString("id")}</div>
         </div>
         <div className="flex justify-between">
           <div className="text-gray-700">Tax</div>
-          <div>IDR {tax.toLocaleString("id")}</div>
+          <div>Rp. {tax.toLocaleString("id")}</div>
         </div>
         <hr />
         <div className="flex justify-between">
           <div className="text-gray-700">Subtotal</div>
-          <div>IDR {subtotal.toLocaleString("id")}</div>
+          <div>Rp. {subtotal.toLocaleString("id")}</div>
         </div>
         <Button buttonName="Checkout" type="button" link="/history-order" />
         <div className="flex flex-col gap-3 md:gap-5 text-gray-600 text-sm font-medium">

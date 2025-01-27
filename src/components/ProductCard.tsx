@@ -11,6 +11,7 @@ interface Product {
   price: number;
   isFlashSale: boolean;
   ratingProduct?: number;
+  onAddToCart?: () => void;
 }
 
 interface ProductCardProps extends Omit<Product, "uuid"> {
@@ -25,6 +26,7 @@ const ProductCard = ({
   price,
   isFlashSale,
   ratingProduct,
+  onAddToCart,
 }: ProductCardProps) => {
   const discount = price / 2;
   const defaultImage = NoImg;
@@ -77,6 +79,7 @@ const ProductCard = ({
               size="14px lg:24px"
               padding="px-4 py-px"
               border="border border-amber-500 rounded"
+              onClick={onAddToCart}
             />
           </div>
         </div>
