@@ -36,9 +36,9 @@ const ShoppingCart = () => {
             {carts.map((item, index) => (
               <li
                 key={item.id || `${item.productName}-${index}`}
-                className="flex w-full justify-between items-center"
+                className="flex w-full justify-between items-center gap-2"
               >
-                <div className="flex w-full items-center gap-3">
+                <div className="flex w-full items-center gap-3 mb-2">
                   <img
                     src={item.image ? `${item.image}` : defaultImage}
                     alt={item.productName}
@@ -70,12 +70,20 @@ const ShoppingCart = () => {
             ))}
           </ul>
         ) : (
-          <p className="text-gray-500">Your cart is empty.</p>
+          <p className="text-gray-500 text-xs">
+            You haven't ordered anything. Let's order first!
+          </p>
         )}
       </div>
-      <Link to="/checkout-product" className="mt-2 text-xs text-amber-500">
-        Lihat Semua Pesanan
-      </Link>
+      {carts.length > 0 ? (
+        <Link to="/checkout-product" className="mt-2 text-xs text-amber-500">
+          See All Orders.
+        </Link>
+      ) : (
+        <Link to="/product" className="mt-2 text-xs text-amber-500">
+          Order Now!
+        </Link>
+      )}
     </div>
   );
 };
