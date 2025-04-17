@@ -48,6 +48,7 @@ const DetailProduct = () => {
       console.error("UUID is undefined");
     }
   }, [uuid]);
+
   return (
     <>
       <div className="block md:flex mx-8 md:mx-16 lg:mx-32 my-8 md:my-16 lg:my-32 h-auto gap-5">
@@ -58,6 +59,7 @@ const DetailProduct = () => {
               image={product.image}
             />
             <ProductDetailForm
+              productId={uuid as string}
               isFlashSale={true}
               name={product.name}
               desc={product.description}

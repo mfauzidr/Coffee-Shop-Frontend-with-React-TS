@@ -70,11 +70,13 @@ const ProductCard = ({
           </div>
           <div className="flex flex-1 gap-2">
             <Button
-              buttonName="Buy"
               type="button"
+              buttonName="Buy Now"
               size="w-full"
               link={`/detail-product/${uuid}`}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             />
+
             <CartButton
               size="14px lg:24px"
               padding="px-4 py-px"

@@ -9,9 +9,15 @@ interface RadioGroupProps {
   groupName: string;
   label: string;
   options?: Option[];
+  onChange?: (selectedIndex: number, selectedOption: Option) => void;
 }
 
-const RadioGroup = ({ groupName, label, options }: RadioGroupProps) => {
+const RadioGroup = ({
+  groupName,
+  label,
+  options,
+  onChange,
+}: RadioGroupProps) => {
   return (
     <fieldset className="flex flex-col gap-4">
       <label className="font-bold" htmlFor={groupName}>
@@ -21,19 +27,22 @@ const RadioGroup = ({ groupName, label, options }: RadioGroupProps) => {
         className="flex text-xs md:text-base w-auto gap-x-3 md:gap-x-7"
         id={groupName}
       >
-        {options?.map((option) => (
+        {options?.map((option, index) => (
           <li key={option.value} className="flex flex-1">
             <input
               type="radio"
               className="hidden peer"
               name={groupName}
-              id={option.value}
-              value={option.value}
+              id={`${groupName}-${index}`}
+              value={index}
               required={option.required}
+              onChange={() => {
+                onChange?.(index, option);
+              }}
             />
             <label
-              htmlFor={option.value}
-              className={`flex flex-col w-full h-12 justify-center items-center border border-gray-300 bg-white active:border-amber-500 cursor-pointer hover:bg-amber-300 peer-checked:border-amber-500`}
+              htmlFor={`${groupName}-${index}`}
+              className="flex flex-col w-full h-12 justify-center items-center border border-gray-300 bg-white active:border-amber-500 peer-checked:bg-amber-300 cursor-pointer hover:bg-amber-300 peer-checked:border-amber-500 rounded-md"
             >
               {option.label}
               {option.additionalPrice !== 0 && (

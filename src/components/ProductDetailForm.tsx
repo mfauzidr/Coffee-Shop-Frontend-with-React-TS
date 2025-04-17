@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import RatingStar from "./RatingStar";
-import { Button, CartButton } from "./Buttons";
+import { BuyButton, CartButton } from "./Buttons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import RadioGroup from "./RadioGroup";
 import axios from "axios";
+import { addToCart } from "../redux/slices/cart";
+import { useStoreSelector } from "../redux/hooks";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "../redux/store";
+import { useNavigate } from "react-router-dom";
 
 interface ProductDetailFormProps {
   isFlashSale: boolean;
@@ -13,6 +19,7 @@ interface ProductDetailFormProps {
   ratingProduct: number;
   isRecommended: boolean;
   desc: string;
+  productId: string;
 }
 
 interface Option {
@@ -29,9 +36,23 @@ const ProductDetailForm = ({
   ratingProduct,
   isRecommended,
   desc,
+  productId,
 }: ProductDetailFormProps) => {
   const [sizes, setSizes] = useState<Option[]>([]);
   const [variants, setVariants] = useState<Option[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
+  const { token } = useStoreSelector((state: RootState) => state.auth);
+  const [uuid, setUuid] = useState<string>("");
+  const navigate = useNavigate();
+  const [selectedSize, setSelectedSize] = useState<number | null>(null);
+  const [selectedVariant, setSelectedVariant] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (token) {
+      const decodedToken = jwtDecode<{ uuid: string }>(token);
+      setUuid(decodedToken.uuid);
+    }
+  }, [token]);
 
   useEffect(() => {
     const getSizes = async () => {
@@ -87,6 +108,40 @@ const ProductDetailForm = ({
   };
 
   const discount = price / 2;
+
+  const handleBuy = async (productId: string) => {
+    try {
+      const userId = uuid;
+
+      const sizeId = Array.isArray(selectedSize)
+        ? selectedSize.map((val) => Number(val))
+        : [Number(selectedSize)];
+
+      const variantId = Array.isArray(selectedVariant)
+        ? selectedVariant.map((val) => Number(val))
+        : [Number(selectedVariant)];
+
+      const qty = Array.isArray(quantity)
+        ? quantity.map((val) => Number(val))
+        : [Number(quantity)];
+
+      console.log("Payload:", { userId, productId, sizeId, variantId, qty });
+
+      await dispatch(
+        addToCart({ userId, productId, sizeId, variantId, qty })
+      ).unwrap();
+
+      alert("Product added to cart successfully!");
+
+      setTimeout(() => {
+        navigate("/checkout-product");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 100);
+    } catch (error) {
+      console.error("Failed to add product to cart:", error);
+      alert("Failed to add product to cart.");
+    }
+  };
 
   return (
     <form className="flex flex-col flex-1 w-full h-auto mt-5 md:mt-0">
@@ -152,12 +207,22 @@ const ProductDetailForm = ({
             </button>
           </div>
         </div>
-        <RadioGroup groupName="size" label="Choose Size" options={sizes} />
-        <RadioGroup groupName="variant" label="Hot/Ice?" options={variants} />
+        <RadioGroup
+          groupName="size"
+          label="Choose Size"
+          options={sizes}
+          onChange={(index) => setSelectedSize(index)}
+        />
+        <RadioGroup
+          groupName="variant"
+          label="Hot/Ice?"
+          options={variants}
+          onChange={(index) => setSelectedVariant(index)}
+        />
       </div>
       <div className="block md:flex md:gap-x-7 md:mt-14">
         <div className="flex flex-1 justify-center items-center h-11 text-sm font-medium border border-amber-500 rounded-md mt-4 md:mt-0 bg-amber-500">
-          <Button buttonName={"Buy"} type={"button"} link="/checkout-product" />
+          <BuyButton onClick={() => handleBuy(productId)} />
         </div>
         <label className="flex flex-1 justify-center items-center h-11 text-sm font-medium text-amber-500 border border-amber-500 rounded-md mt-4 md:mt-0 bg-white gap-2.5 cursor-pointer">
           <CartButton />
