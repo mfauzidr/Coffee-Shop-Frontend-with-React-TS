@@ -1,22 +1,24 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-function useLocalStorage<S = undefined>(initialValue: S | (() => S), key: string): [S, Dispatch<SetStateAction<S>>] {
+function useSessionStorage<S = undefined>(
+  initialValue: S | (() => S),
+  key: string
+): [S, Dispatch<SetStateAction<S>>] {
   const [value, setValue] = useState<S>(() => {
-    const valueLocal = localStorage.getItem(key);
-    if (!valueLocal) {
-      if (initialValue instanceof Function) return initialValue();
-      return initialValue;
+    const valueSession = sessionStorage.getItem(key);
+    if (!valueSession) {
+      return initialValue instanceof Function ? initialValue() : initialValue;
     }
-    return JSON.parse(valueLocal);
+    return JSON.parse(valueSession);
   });
 
   useEffect(() => {
-    const newValueLocal = JSON.stringify(value);
-    localStorage.setItem(key, newValueLocal);
+    const newValueSession = JSON.stringify(value);
+    sessionStorage.setItem(key, newValueSession);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return [value, setValue];
 }
 
-export default useLocalStorage;
+export default useSessionStorage;

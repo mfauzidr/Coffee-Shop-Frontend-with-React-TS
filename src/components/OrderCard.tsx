@@ -20,8 +20,6 @@ const OrderCard = ({
   variant,
   subtotal,
 }: OrderCardProps) => {
-  // const discount = subtotal / 2;
-
   const [isHidden, setIsHidden] = React.useState(false);
   const removeCard = () => {
     setIsHidden(true);

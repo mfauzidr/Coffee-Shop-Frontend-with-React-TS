@@ -7,7 +7,7 @@ type GuestGuardProps = {
 };
 
 const GuestGuard = ({ children }: GuestGuardProps) => {
-  const token = useStoreSelector((state) => state.auth.token); // Pastikan hanya mengambil token
+  const token = useStoreSelector((state) => state.auth.token);
 
   if (token && token.trim() !== "") {
     return <Navigate to="/" />;

@@ -7,6 +7,7 @@ import PagePagination from "./PagePagination";
 import { addToCart } from "../redux/slices/cart";
 import { useStoreSelector } from "../redux/hooks";
 import { jwtDecode } from "jwt-decode";
+import Swal from "sweetalert2";
 
 interface ProductFilters {
   search?: string;
@@ -58,10 +59,34 @@ const ProductGrid = ({ filters }: ProductGridProps) => {
         addToCart({ userId, productId, sizeId, variantId, qty })
       ).unwrap();
 
-      alert("Product added to cart successfully!");
+      Swal.fire({
+        title: "Success!",
+        text: "Product has been added to cart!",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
+        position: "top-end",
+        customClass: {
+          popup:
+            "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
+        },
+        toast: true,
+      });
     } catch (error) {
       console.error("Failed to add product to cart:", error);
-      alert("Failed to add product to cart.");
+      Swal.fire({
+        title: "Failed!",
+        text: "Failed to add product to cart.",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+        position: "top-end",
+        customClass: {
+          popup:
+            "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
+        },
+        toast: true,
+      });
     }
   };
 

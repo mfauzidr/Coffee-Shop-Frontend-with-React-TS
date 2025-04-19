@@ -11,6 +11,8 @@ import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
 import { useNavigate } from "react-router-dom";
+import { Option } from "./RadioGroup";
+import Swal from "sweetalert2";
 
 interface ProductDetailFormProps {
   isFlashSale: boolean;
@@ -20,13 +22,6 @@ interface ProductDetailFormProps {
   isRecommended: boolean;
   desc: string;
   productId: string;
-}
-
-interface Option {
-  value: string;
-  label: string;
-  additionalPrice: number;
-  required?: boolean;
 }
 
 const ProductDetailForm = ({
@@ -44,8 +39,12 @@ const ProductDetailForm = ({
   const { token } = useStoreSelector((state: RootState) => state.auth);
   const [uuid, setUuid] = useState<string>("");
   const navigate = useNavigate();
-  const [selectedSize, setSelectedSize] = useState<number | null>(null);
-  const [selectedVariant, setSelectedVariant] = useState<number | null>(null);
+  const [selectedSize, setSelectedSize] = useState<Option | undefined>(
+    undefined
+  );
+  const [selectedVariant, setSelectedVariant] = useState<Option | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     if (token) {
@@ -62,11 +61,13 @@ const ProductDetailForm = ({
         );
         const sizeOptions = res.data.results.map(
           (size: { id: number; size: string; additionalPrice: number }) => ({
+            id: size.id,
             value: size.size,
             label: size.size,
             additionalPrice: size.additionalPrice,
           })
         );
+
         setSizes(sizeOptions);
       } catch (error) {
         console.error("Error fetching sizes:", error);
@@ -83,12 +84,14 @@ const ProductDetailForm = ({
         );
         const variantOptions = res.data.results.map(
           (variant: { id: number; name: string; additionalPrice: number }) => ({
+            id: variant.id,
             value: variant.name,
             label: variant.name,
             additionalPrice: variant.additionalPrice,
             required: true,
           })
         );
+
         setVariants(variantOptions);
       } catch (error) {
         console.error("Error fetching variants:", error);
@@ -110,36 +113,51 @@ const ProductDetailForm = ({
   const discount = price / 2;
 
   const handleBuy = async (productId: string) => {
+    if (!selectedSize || !selectedVariant) {
+      Swal.fire({
+        title: "Failed!",
+        text: "Please select size and variant first.",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+        position: "top-end",
+        customClass: {
+          popup:
+            "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
+        },
+        toast: true,
+      });
+      return;
+    }
+
     try {
       const userId = uuid;
-
-      const sizeId = Array.isArray(selectedSize)
-        ? selectedSize.map((val) => Number(val))
-        : [Number(selectedSize)];
-
-      const variantId = Array.isArray(selectedVariant)
-        ? selectedVariant.map((val) => Number(val))
-        : [Number(selectedVariant)];
-
-      const qty = Array.isArray(quantity)
-        ? quantity.map((val) => Number(val))
-        : [Number(quantity)];
-
-      console.log("Payload:", { userId, productId, sizeId, variantId, qty });
+      const sizeId = [selectedSize.id];
+      const variantId = [selectedVariant.id];
+      const qty = [quantity];
 
       await dispatch(
         addToCart({ userId, productId, sizeId, variantId, qty })
       ).unwrap();
-
-      alert("Product added to cart successfully!");
 
       setTimeout(() => {
         navigate("/checkout-product");
         window.scrollTo({ top: 0, behavior: "smooth" });
       }, 100);
     } catch (error) {
-      console.error("Failed to add product to cart:", error);
-      alert("Failed to add product to cart.");
+      Swal.fire({
+        title: "Failed!",
+        text: "Failed to add product to cart.",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+        position: "top-end",
+        customClass: {
+          popup:
+            "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
+        },
+        toast: true,
+      });
     }
   };
 
@@ -211,13 +229,13 @@ const ProductDetailForm = ({
           groupName="size"
           label="Choose Size"
           options={sizes}
-          onChange={(index) => setSelectedSize(index)}
+          onChange={(option) => setSelectedSize(option)}
         />
         <RadioGroup
           groupName="variant"
           label="Hot/Ice?"
           options={variants}
-          onChange={(index) => setSelectedVariant(index)}
+          onChange={(option) => setSelectedVariant(option)}
         />
       </div>
       <div className="block md:flex md:gap-x-7 md:mt-14">

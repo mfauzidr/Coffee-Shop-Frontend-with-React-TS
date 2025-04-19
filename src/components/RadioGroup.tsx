@@ -1,4 +1,5 @@
-interface Option {
+export interface Option {
+  id: number;
   value: string;
   label: string;
   additionalPrice?: number;
@@ -9,7 +10,7 @@ interface RadioGroupProps {
   groupName: string;
   label: string;
   options?: Option[];
-  onChange?: (selectedIndex: number, selectedOption: Option) => void;
+  onChange?: (selectedOption: Option) => void;
 }
 
 const RadioGroup = ({
@@ -37,7 +38,7 @@ const RadioGroup = ({
               value={index}
               required={option.required}
               onChange={() => {
-                onChange?.(index, option);
+                onChange?.(option);
               }}
             />
             <label

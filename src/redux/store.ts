@@ -1,14 +1,23 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer, PersistConfig } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import storageSession from "redux-persist/lib/storage/session";
 
 import authReducer, { AuthState } from "./slices/auth";
 import productReducer, { ProductsState } from "./slices/products";
 import cartReducer, { CartState } from "./slices/cart";
 
+const token = sessionStorage.getItem("token");
+const expiration = sessionStorage.getItem("tokenExpiration");
+const isTokenValid = token && expiration && Date.now() < parseInt(expiration);
+
+if (!isTokenValid) {
+  sessionStorage.removeItem("token");
+  sessionStorage.removeItem("tokenExpiration");
+}
+
 const authPersistConfig: PersistConfig<AuthState> = {
   key: "auth:coffeeShop",
-  storage,
+  storage: storageSession,
   whitelist: ["token"],
 };
 
@@ -16,7 +25,7 @@ const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 
 const productPersistConfig: PersistConfig<ProductsState> = {
   key: "product:coffeeShop",
-  storage,
+  storage: storageSession,
   whitelist: [],
 };
 
@@ -27,7 +36,7 @@ const persistedProductReducer = persistReducer(
 
 const cartPersistConfig: PersistConfig<CartState> = {
   key: "cart:coffeeShop",
-  storage,
+  storage: storageSession,
   whitelist: [],
 };
 

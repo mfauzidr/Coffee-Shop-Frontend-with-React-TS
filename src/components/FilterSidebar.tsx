@@ -133,7 +133,6 @@ const FilterSidebar = ({ onApplyFilters }: FilterSidebarProps) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>("");
   const [priceRange, setPriceRange] = useState<[number, number]>([1000, 50000]);
-  // const [currentPage, setCurrentPage] = useState<number>
 
   useEffect(() => {
     const getCategories = async () => {
