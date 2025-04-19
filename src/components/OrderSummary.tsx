@@ -12,15 +12,16 @@ interface OrderSummaryProps {
 }
 
 const OrderSummary = ({ orders }: OrderSummaryProps) => {
-  const orderTotal = orders.reduce(
-    (total, order) => total + Number(order.subtotal),
-    0
-  );
+  let orderTotal = 0;
+  if (orders.length > 0) {
+    orderTotal = orders.reduce(
+      (total, order) => total + Number(order.subtotal),
+      0
+    );
+  }
 
   const delivery = 0;
-
   const tax = 0.1 * orderTotal;
-
   const subtotal = orderTotal + delivery + tax;
 
   return (

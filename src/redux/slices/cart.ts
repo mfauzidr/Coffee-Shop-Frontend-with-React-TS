@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { RootState } from "../store";
 
 interface Cart {
@@ -106,6 +106,37 @@ export const addToCart = createAsyncThunk<
   }
 );
 
+export const deleteCarts = createAsyncThunk<
+  Cart[],
+  { id: number },
+  { rejectValue: { error: { message: string }; status?: number } }
+>("carts/deleteCarts", async ({ id }, { rejectWithValue, getState }) => {
+  const {
+    auth: { token },
+  } = getState() as RootState;
+
+  try {
+    const url = `${import.meta.env.VITE_REACT_APP_API_URL}/cart/delete/${id}`;
+    const response: AxiosResponse<Cart[]> = await axios.delete(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return rejectWithValue({
+        error: {
+          message:
+            error.response?.data?.message || "Failed to delete cart item.",
+        },
+        status: error.response?.status,
+      });
+    }
+    throw error;
+  }
+});
+
 const cartSlice = createSlice({
   name: "carts",
   initialState,
@@ -131,6 +162,17 @@ const cartSlice = createSlice({
         state.isLoading = false;
         state.isRejected = true;
         state.error = action.payload?.error.message || "Failed to add to cart.";
+      })
+      .addCase(deleteCarts.fulfilled, (state, action) => {
+        state.carts = action.payload;
+        state.isLoading = false;
+        state.isRejected = false;
+      })
+      .addCase(deleteCarts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isRejected = true;
+        state.error =
+          action.payload?.error.message || "Failed to delete carts.";
       });
   },
 });

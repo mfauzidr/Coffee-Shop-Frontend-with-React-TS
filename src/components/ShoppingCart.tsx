@@ -15,8 +15,6 @@ const ShoppingCart = () => {
 
   const defaultImage = NoImg;
 
-  console.log(carts);
-
   useEffect(() => {
     if (token) {
       const decodedToken = jwtDecode<{ uuid: string }>(token);
