@@ -87,7 +87,6 @@ export const fetchHighlightedProducts = createAsyncThunk(
         params: { limit: 4 },
       }
     );
-    console.log(response);
     return response.data.results;
   }
 );

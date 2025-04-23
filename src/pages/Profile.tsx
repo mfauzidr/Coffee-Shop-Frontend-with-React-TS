@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import ProfileCard from "../components/ProfileCard";
 import {
@@ -11,10 +11,11 @@ import {
 } from "../components/InputForm";
 import { SubmitButton } from "../components/Buttons";
 import { useStoreSelector } from "../redux/hooks";
-import { RootState } from "../redux/store";
-import axios from "axios";
+import { AppDispatch, RootState } from "../redux/store";
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { fetchProfile, updateProfileData } from "../redux/slices/profile";
 
 interface IProfileBody {
   id?: number;
@@ -28,7 +29,7 @@ interface IProfileBody {
 
 const Profile = () => {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
-  const [profile, setProfile] = useState<IProfileBody[]>([]);
+  const { profile } = useStoreSelector((state: RootState) => state.profile);
   const [changedImage, setSelectedImage] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState(false);
@@ -36,6 +37,7 @@ const Profile = () => {
 
   const { token } = useStoreSelector((state: RootState) => state.auth);
   const [uuid, setUuid] = useState<string>("");
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (token) {
@@ -44,27 +46,11 @@ const Profile = () => {
     }
   }, [token]);
 
-  const fetchprofile = useCallback(async () => {
-    if (!uuid || !token) return;
-    const url = `${import.meta.env.VITE_REACT_APP_API_URL}/users/${uuid}`;
-
-    try {
-      const res = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setProfile(res.data.results);
-      setForm(res.data.results[0]);
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    }
-  }, [uuid, token]);
-
   useEffect(() => {
-    fetchprofile();
-  }, [fetchprofile]);
+    if (token && uuid) {
+      dispatch(fetchProfile({ uuid }));
+    }
+  }, [dispatch, token, uuid]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -84,37 +70,16 @@ const Profile = () => {
 
     try {
       const formData = new FormData();
-      if (form?.fullName) {
-        formData.append("fullName", form.fullName);
-      }
-      if (form?.email) {
-        formData.append("email", form.email);
-      }
-      if (form?.phoneNumber) {
-        formData.append("phoneNumber", form.phoneNumber);
-      }
-      if (form?.address) {
-        formData.append("address", form.address);
-      }
-
-      if (changedImage) {
-        formData.append("image", changedImage);
-      }
-
+      if (form?.fullName) formData.append("fullName", form.fullName);
+      if (form?.email) formData.append("email", form.email);
+      if (form?.phoneNumber) formData.append("phoneNumber", form.phoneNumber);
+      if (form?.address) formData.append("address", form.address);
+      if (changedImage) formData.append("image", changedImage);
       if (showPasswordForm && form?.password) {
         formData.append("password", form.password);
       }
 
-      await axios.patch(
-        `${import.meta.env.VITE_REACT_APP_API_URL}/users/${uuid}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await dispatch(updateProfileData({ uuid, formData })).unwrap();
 
       Swal.fire({
         title: "Success!",
@@ -129,8 +94,7 @@ const Profile = () => {
         },
         toast: true,
       });
-      fetchprofile();
-    } catch (error: unknown) {
+    } catch (error) {
       console.error("Error updating profile:", error);
       Swal.fire({
         title: "Failed!",
@@ -147,6 +111,7 @@ const Profile = () => {
       });
     } finally {
       setIsLoading(false);
+      dispatch(fetchProfile({ uuid }));
     }
   };
 
@@ -172,12 +137,10 @@ const Profile = () => {
         </div>
         <div className="flex flex-col md:flex-row gap-6 mt-6 lg:mt-12">
           <ProfileCard
-            name={profile[0]?.fullName}
-            email={profile[0]?.email}
+            name={profile?.fullName}
+            email={profile?.email}
             profileImage={
-              changedImage
-                ? URL.createObjectURL(changedImage)
-                : profile[0]?.image
+              changedImage ? URL.createObjectURL(changedImage) : profile?.image
             }
             joinDate="20 January 2022"
             onImageChange={handleImageChange}
@@ -190,26 +153,26 @@ const Profile = () => {
             <FullNameInput
               value={form?.fullName}
               name="fullName"
-              placeholder={profile[0]?.fullName || "Enter Your Full Name"}
+              placeholder={profile?.fullName || "Enter Your Full Name"}
               onChange={handleInputChange}
             />
             <EmailInput
               value={form?.email}
               name="email"
               disabled={true}
-              placeholder={profile[0]?.email}
+              placeholder={profile?.email}
               showChangeEmail={true}
             />
             <PhoneInput
               value={form?.phoneNumber}
               name="phoneNumber"
-              placeholder={profile[0]?.phoneNumber || "Enter Your Phone Number"}
+              placeholder={profile?.phone || "Enter Your Phone Number"}
               onChange={handleInputChange}
             />
             <AddressInput
               value={form?.address}
               name="address"
-              placeholder={profile[0]?.address || "Enter Your Address"}
+              placeholder={profile?.address || "Enter Your Address"}
               onChange={handleInputChange}
             />
             <div

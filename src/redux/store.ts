@@ -5,6 +5,8 @@ import storageSession from "redux-persist/lib/storage/session";
 import authReducer, { AuthState } from "./slices/auth";
 import productReducer, { ProductsState } from "./slices/products";
 import cartReducer, { CartState } from "./slices/cart";
+import profileReducer, { ProfileState } from "./slices/profile";
+import orderReducer, { OrderState } from "./slices/order";
 
 const token = sessionStorage.getItem("token");
 const expiration = sessionStorage.getItem("tokenExpiration");
@@ -22,6 +24,17 @@ const authPersistConfig: PersistConfig<AuthState> = {
 };
 
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
+
+const profilePersistConfig: PersistConfig<ProfileState> = {
+  key: "profile:coffeeShop",
+  storage: storageSession,
+  whitelist: ["token"],
+};
+
+const persistedProfileReducer = persistReducer(
+  profilePersistConfig,
+  profileReducer
+);
 
 const productPersistConfig: PersistConfig<ProductsState> = {
   key: "product:coffeeShop",
@@ -42,11 +55,21 @@ const cartPersistConfig: PersistConfig<CartState> = {
 
 const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
 
+const orderPersistConfig: PersistConfig<OrderState> = {
+  key: "order:coffeeShop",
+  storage: storageSession,
+  whitelist: [],
+};
+
+const persistedOrderReducer = persistReducer(orderPersistConfig, orderReducer);
+
 export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
+    profile: persistedProfileReducer,
     products: persistedProductReducer,
     cart: persistedCartReducer,
+    order: persistedOrderReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

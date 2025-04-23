@@ -6,19 +6,26 @@ import PageHeader from "../components/PageHeader";
 import PaymentInfo from "../components/PaymentInfo";
 import { useStoreSelector } from "../redux/hooks";
 import { AppDispatch, RootState } from "../redux/store";
-import { deleteCarts, fetchCarts } from "../redux/slices/cart";
+import { deleteAllCarts, deleteCarts, fetchCarts } from "../redux/slices/cart";
 import { useDispatch } from "react-redux";
 import { jwtDecode } from "jwt-decode";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { fetchProfile } from "../redux/slices/profile";
+import { createOrder } from "../redux/slices/order";
+import Swal from "sweetalert2";
 
 const CheckoutProduct = () => {
   const { carts } = useStoreSelector((state: RootState) => state.cart);
   const { token } = useStoreSelector((state: RootState) => state.auth);
+  const { profile } = useStoreSelector((state: RootState) => state.profile);
   const [uuid, setUuid] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
   const [showDeletedSuccessModal, setShowDeletedSuccessModal] = useState(false);
+  const [deliveryAddress, setDeliveryAddress] = useState<string>("");
+  const [deliveryMethod, setDeliveryMethod] = useState<string>("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
@@ -31,6 +38,10 @@ const CheckoutProduct = () => {
     dispatch(fetchCarts({ uuid }));
   }, [dispatch, uuid]);
 
+  useEffect(() => {
+    if (token && uuid) dispatch(fetchProfile({ uuid }));
+  }, [dispatch, token, uuid]);
+
   const handleConfirmDelete = async () => {
     if (selectedId !== null) {
       await dispatch(deleteCarts({ id: selectedId }));
@@ -42,6 +53,67 @@ const CheckoutProduct = () => {
   const handlerConfirmed = async () => {
     setShowDeletedSuccessModal(false);
     await dispatch(fetchCarts({ uuid }));
+  };
+
+  const handleCheckout = async () => {
+    try {
+      const userId = uuid;
+      const fullName = profile.fullName || "";
+      const email = profile.email || "";
+
+      const productId = carts.map((item) => String(item.productId));
+      const sizeId = carts.map((item) => Number(item.sizeId));
+      const variantId = carts.map((item) => Number(item.variantId));
+      const qty = carts.map((item) => Number(item.quantity));
+
+      const orderData = {
+        userId,
+        fullName,
+        email,
+        deliveryAddress,
+        deliveryMethod,
+        productId,
+        sizeId,
+        variantId,
+        qty,
+      };
+
+      await dispatch(createOrder(orderData)).unwrap();
+      Swal.fire({
+        title: "Success!",
+        text: "Product has been added to cart!",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
+        position: "top-end",
+        customClass: {
+          popup:
+            "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
+        },
+        toast: true,
+      });
+
+      await dispatch(deleteAllCarts({ userId: userId })).unwrap();
+      setTimeout(() => {
+        navigate("/history-order");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 500);
+    } catch (error) {
+      console.error("Failed to add product to cart:", error);
+      Swal.fire({
+        title: "Failed!",
+        text: "Failed to add product to cart.",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+        position: "top-end",
+        customClass: {
+          popup:
+            "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
+        },
+        toast: true,
+      });
+    }
   };
   return (
     <>
@@ -58,24 +130,39 @@ const CheckoutProduct = () => {
                 + Add Menu
               </Link>
             </div>
-            <div className="flex flex-col h-80 md:h-[450px] gap-2 md:gap-4 overflow-scroll md:p-3 bg-slate-50">
-              {carts.length > 0
-                ? carts.map((items, index) => (
-                    <OrderCard
-                      key={items.id || `${items.productName}-${index}`}
-                      {...items}
-                      onClick={() => {
-                        setSelectedId(items.id!);
-                        setShowDeleteConfirmModal(true);
-                      }}
-                    />
-                  ))
-                : ""}
+            <div className="flex flex-col max-h-80 md:max-h-[450px] gap-2 md:gap-4 overflow-scroll md:p-3 bg-slate-50">
+              {carts.length > 0 ? (
+                carts.map((items, index) => (
+                  <OrderCard
+                    key={items.id || `${items.productName}-${index}`}
+                    {...items}
+                    onClick={() => {
+                      setSelectedId(items.id!);
+                      setShowDeleteConfirmModal(true);
+                    }}
+                  />
+                ))
+              ) : (
+                <>
+                  <p className="text-sm text-gray-700">
+                    Your cart is empty. Add items to continue!
+                  </p>
+                </>
+              )}
             </div>
           </div>
-          <OrderSummary orders={carts} />
+          <OrderSummary orders={carts} onClick={handleCheckout} />
         </div>
-        <PaymentInfo />
+        <PaymentInfo
+          email={profile.email}
+          fullname={profile.fullName}
+          address={profile.address}
+          deliveryMethod={deliveryMethod}
+          onChange={({ address, deliveryMethod }) => {
+            setDeliveryAddress(address);
+            setDeliveryMethod(deliveryMethod);
+          }}
+        />
       </div>
       <Footer />
       {showDeleteConfirmModal && (

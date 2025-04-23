@@ -9,9 +9,10 @@ import { OrderCardProps } from "./OrderCard";
 
 interface OrderSummaryProps {
   orders: OrderCardProps[];
+  onClick?: () => void;
 }
 
-const OrderSummary = ({ orders }: OrderSummaryProps) => {
+const OrderSummary = ({ orders, onClick }: OrderSummaryProps) => {
   let orderTotal = 0;
   if (orders.length > 0) {
     orderTotal = orders.reduce(
@@ -47,7 +48,7 @@ const OrderSummary = ({ orders }: OrderSummaryProps) => {
           <div className="text-gray-700">Subtotal</div>
           <div>Rp. {subtotal.toLocaleString("id")}</div>
         </div>
-        <Button buttonName="Checkout" type="button" link="/history-order" />
+        <Button buttonName="Checkout" type="button" onClick={onClick} />
         <div className="flex flex-col gap-3 md:gap-5 text-gray-600 text-sm font-medium">
           <div>We accept</div>
           <div className="flex justify-between items-center h-8 w-full">

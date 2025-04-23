@@ -8,6 +8,7 @@ import { addToCart } from "../redux/slices/cart";
 import { useStoreSelector } from "../redux/hooks";
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 interface ProductFilters {
   search?: string;
@@ -27,6 +28,8 @@ const ProductGrid = ({ filters }: ProductGridProps) => {
   );
   const { token } = useStoreSelector((state: RootState) => state.auth);
   const [uuid, setUuid] = useState<string>("");
+  const navigate = useNavigate();
+  const isLoggedIn = !!token;
 
   useEffect(() => {
     if (token) {
@@ -47,13 +50,15 @@ const ProductGrid = ({ filters }: ProductGridProps) => {
   };
 
   const handleAddToCart = async (productId: string) => {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
     try {
       const userId = uuid;
       const sizeId = [1];
       const variantId = [1];
       const qty = [1];
-
-      console.log(uuid);
 
       await dispatch(
         addToCart({ userId, productId, sizeId, variantId, qty })

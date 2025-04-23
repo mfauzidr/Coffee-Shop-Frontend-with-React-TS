@@ -102,9 +102,9 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
         } lg:max-h-full overflow-hidden`}
       >
         <div className="hidden items-center lg:flex gap-6">
-          <button onClick={() => (window.location.href = "/product")}>
+          <Link to="/product">
             <FeatherIcon icon="search" className="text-amber-500" />
-          </button>
+          </Link>
           <div
             ref={dropdownRef}
             className="relative"

@@ -6,27 +6,12 @@ import HistoryOrderCard from "../components/HistoryOrderCard";
 import PagePagination from "../components/PagePagination";
 import MessageSection from "../components/MessageSection";
 import { useStoreSelector } from "../redux/hooks";
-import { RootState } from "../redux/store";
-import axios from "axios";
+import { AppDispatch, RootState } from "../redux/store";
 import { jwtDecode } from "jwt-decode";
-import { parseISO, format } from "date-fns";
+import { fetchOrders } from "../redux/slices/order";
+import { useDispatch } from "react-redux";
+import { format, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
-
-interface HistoryOrderData {
-  imageUrl?: string;
-  orderNumber: string;
-  date: string;
-  total: string;
-  status: string;
-}
-
-interface HistoryPostData {
-  imageUrl?: string;
-  orderNumber: string;
-  createdAt: string;
-  subtotal: string;
-  status: string;
-}
 
 interface PageInfo {
   currentPage: number;
@@ -34,63 +19,36 @@ interface PageInfo {
 }
 
 const HistoryOrder = () => {
-  const [posts, setPosts] = useState<HistoryOrderData[]>([]);
   const [orderStatus, setOrderStatus] = useState<string>("onProgress");
-  const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
+  const [pageInfo] = useState<PageInfo | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { token } = useStoreSelector((state: RootState) => state.auth);
-  const [userId, setUserId] = useState<string>();
+  const { orders } = useStoreSelector((state: RootState) => state.order);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const [uuid, setUuid] = useState<string>("");
 
   useEffect(() => {
     if (token) {
-      const decodedToken = jwtDecode<{ id: string }>(token);
-      setUserId(decodedToken.id);
+      const decodedToken = jwtDecode<{ uuid: string }>(token);
+      setUuid(decodedToken.uuid);
     }
   }, [token]);
 
   useEffect(() => {
-    const getOrders = async () => {
-      try {
-        const url = `${import.meta.env.VITE_REACT_APP_API_URL}/orders`;
-        const res = await axios.get(url, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          data: {
-            userId: userId,
-          },
-        });
-        if (res.data && res.data.results) {
-          setPosts(
-            res.data.results.map((order: HistoryPostData) => ({
-              imageUrl: order.imageUrl || "",
-              orderNumber: order.orderNumber || "",
-              date:
-                format(parseISO(order.createdAt), "dd MMMM yyyy", {
-                  locale: id,
-                }) || "",
-              total: order.subtotal || "",
-              status: order.status || "",
-            }))
-          );
-          setPageInfo({
-            currentPage: res.data.currentPage,
-            totalPage: res.data.totalPages,
-          });
-        } else {
-          console.error("Invalid API response structure:", res.data);
-        }
-      } catch (error) {
-        console.error("Error fetching order data:", error);
-      }
-    };
-    if (userId) {
-      getOrders();
-    } else {
-      console.error("User ID is undefined");
+    if (token && uuid) {
+      dispatch(fetchOrders({ userId: uuid }));
     }
-  }, [token, userId, currentPage]);
+  }, [dispatch, token, uuid]);
+
+  const posts = orders.map((order) => ({
+    imageUrl: "",
+    orderNumber: order.orderNumber,
+    date: format(parseISO(order.createdAt), "dd MMMM yyyy", { locale: id }),
+    total: order.subtotal,
+    status: order.status,
+  }));
 
   const statusChange = (newStatus: string) => {
     setOrderStatus(newStatus);

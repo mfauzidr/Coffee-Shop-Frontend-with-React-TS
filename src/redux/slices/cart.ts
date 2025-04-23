@@ -6,10 +6,13 @@ interface Cart {
   id: number;
   uuid: string;
   productName: string;
+  productId: string;
   image: string;
   quantity: number;
   size: string;
+  sizeId: number;
   variant: string;
+  variantId: number;
   subtotal: number;
 }
 
@@ -137,12 +140,48 @@ export const deleteCarts = createAsyncThunk<
   }
 });
 
+export const deleteAllCarts = createAsyncThunk<
+  Cart[],
+  { userId: string },
+  { rejectValue: { error: { message: string }; status?: number } }
+>("carts/deleteAllCarts", async ({ userId }, { rejectWithValue, getState }) => {
+  const {
+    auth: { token },
+  } = getState() as RootState;
+
+  try {
+    const url = `${
+      import.meta.env.VITE_REACT_APP_API_URL
+    }/cart/deleteAll/${userId}`;
+    const response: AxiosResponse<Cart[]> = await axios.delete(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return rejectWithValue({
+        error: {
+          message:
+            error.response?.data?.message || "Failed to delete cart item.",
+        },
+        status: error.response?.status,
+      });
+    }
+    throw error;
+  }
+});
+
 const cartSlice = createSlice({
   name: "carts",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fetchCarts.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(fetchCarts.fulfilled, (state, action) => {
         state.carts = action.payload;
         state.isLoading = false;
@@ -152,6 +191,9 @@ const cartSlice = createSlice({
         state.isLoading = false;
         state.isRejected = true;
         state.error = action.payload?.error.message || "Failed to fetch carts.";
+      })
+      .addCase(addToCart.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.carts = action.payload;
@@ -163,12 +205,29 @@ const cartSlice = createSlice({
         state.isRejected = true;
         state.error = action.payload?.error.message || "Failed to add to cart.";
       })
+      .addCase(deleteCarts.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(deleteCarts.fulfilled, (state, action) => {
         state.carts = action.payload;
         state.isLoading = false;
         state.isRejected = false;
       })
       .addCase(deleteCarts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isRejected = true;
+        state.error =
+          action.payload?.error.message || "Failed to delete carts.";
+      })
+      .addCase(deleteAllCarts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteAllCarts.fulfilled, (state, action) => {
+        state.carts = action.payload;
+        state.isLoading = false;
+        state.isRejected = false;
+      })
+      .addCase(deleteAllCarts.rejected, (state, action) => {
         state.isLoading = false;
         state.isRejected = true;
         state.error =
