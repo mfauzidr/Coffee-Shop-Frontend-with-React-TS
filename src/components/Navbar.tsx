@@ -77,7 +77,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
             menuOpen ? "max-h-20" : "max-h-0"
           } lg:max-h-full overflow-hidden`}
         >
-          <li className="mx-8">
+          <li className="mx-6">
             <Link
               className="pb-2 -mt-2 transition duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
               to="/"
@@ -85,12 +85,20 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
               Home
             </Link>
           </li>
-          <li className="mx-8">
+          <li className="mx-6">
             <Link
               className="pb-2 -mt-2 transition duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
               to="/product"
             >
               Product
+            </Link>
+          </li>
+          <li className="mx-6">
+            <Link
+              className="pb-2 -mt-2 transition duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
+              to="/history-order"
+            >
+              Orders
             </Link>
           </li>
         </ul>
