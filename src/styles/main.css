@@ -2411,6 +2411,10 @@ html {
   display: none;
 }
 
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
 .h-1 {
   height: 0.25rem;
 }
@@ -3136,9 +3140,19 @@ html {
      object-fit: cover;
 }
 
+.object-fill {
+  -o-object-fit: fill;
+     object-fit: fill;
+}
+
 .object-center {
   -o-object-position: center;
      object-position: center;
+}
+
+.object-left {
+  -o-object-position: left;
+     object-position: left;
 }
 
 .p-0 {
@@ -3285,6 +3299,11 @@ html {
 .py-px {
   padding-top: 1px;
   padding-bottom: 1px;
+}
+
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
 }
 
 .pb-0 {
@@ -3766,6 +3785,18 @@ html {
     max-height: 450px;
   }
 
+  .md\:max-h-40 {
+    max-height: 10rem;
+  }
+
+  .md\:max-h-36 {
+    max-height: 9rem;
+  }
+
+  .md\:max-h-32 {
+    max-height: 8rem;
+  }
+
   .md\:w-12 {
     width: 3rem;
   }
@@ -3808,6 +3839,18 @@ html {
 
   .md\:max-w-44 {
     max-width: 11rem;
+  }
+
+  .md\:max-w-40 {
+    max-width: 10rem;
+  }
+
+  .md\:max-w-36 {
+    max-width: 9rem;
+  }
+
+  .md\:max-w-32 {
+    max-width: 8rem;
   }
 
   .md\:flex-1 {
@@ -3963,11 +4006,6 @@ html {
   .md\:text-xl {
     font-size: 1.25rem;
     line-height: 1.75rem;
-  }
-
-  .md\:text-3xl {
-    font-size: 1.875rem;
-    line-height: 2.25rem;
   }
 
   .md\:font-medium {

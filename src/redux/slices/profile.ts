@@ -44,7 +44,6 @@ export const fetchProfile = createAsyncThunk<
       },
       params: { uuid },
     });
-    console.log(response.data.results[0]);
     return response.data.results[0];
   } catch (error) {
     if (axios.isAxiosError(error)) {

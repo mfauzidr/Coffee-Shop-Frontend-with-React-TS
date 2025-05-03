@@ -11,7 +11,7 @@ export interface OrderCardProps {
   quantity: number;
   size: string;
   variant: string;
-  subtotal: number;
+  subtotal?: number;
   isEdit?: boolean;
   onClick?: () => void;
   onUpdate?: (updatedItem: {
@@ -143,7 +143,7 @@ const OrderCard = ({
     <div className="flex p-2 md:p-2.5 gap-1 md:gap-7 bg-gray-100 shadow-md items-center">
       <div>
         <img
-          className="max-w-20 md:max-w-44 max-h-20 md:max-h-44"
+          className="max-w-20 md:max-w-36 max-h-20 md:max-h-36"
           src={image}
           alt={productName}
         />
@@ -220,9 +220,13 @@ const OrderCard = ({
             </div>
           </div>
 
-          <div className="flex text-sm md:text-2xl text-amber-500">
-            RP {subtotal.toLocaleString("id")}
-          </div>
+          {subtotal ? (
+            <div className="flex text-sm md:text-2xl text-amber-500">
+              RP {subtotal.toLocaleString("id")}
+            </div>
+          ) : (
+            ""
+          )}
         </div>
         <div className="flex justify-end">
           {isEdit ? (

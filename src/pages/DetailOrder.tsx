@@ -1,7 +1,5 @@
 import CustomerDetails from "../components/CustomerDetails";
 import Footer from "../components/Footer";
-import OrderCard from "../components/OrderCard";
-import ProductImg from "../assets/img/prod-2.png";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useStoreSelector } from "../redux/hooks";
@@ -9,9 +7,11 @@ import { RootState } from "../redux/store";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import OrderDetailsCard from "../components/OrderDetailsCard";
 
 interface ICustomerDetails {
   orderNumber: string;
+  orderId: number;
   fullName: string;
   address: string;
   phone: string;
@@ -22,14 +22,23 @@ interface ICustomerDetails {
   date: string;
 }
 
+interface IOrderDetails {
+  orderId: number;
+  image: string;
+  productName: string;
+  quantity: number;
+  size: string;
+  variant: string;
+  type: string;
+  showRemoveBtn: boolean;
+}
+
 const DetailOrder = () => {
   const { token } = useStoreSelector((state: RootState) => state.auth);
   const { uuid } = useParams<{ uuid: string }>();
   const [details, setDetails] = useState<ICustomerDetails>();
-
-  const date = format(new Date(details!.date), "dd MMMM yyyy, HH:mm", {
-    locale: id,
-  });
+  const [orders, setOrders] = useState<IOrderDetails[]>([]);
+  const [orderId, setOrderId] = useState<number>();
 
   useEffect(() => {
     const getCustomer = async (uuid: string) => {
@@ -43,6 +52,7 @@ const DetailOrder = () => {
         });
         if (res.data && res.data.results && res.data.results.length > 0) {
           setDetails(res.data.results[0]);
+          setOrderId(res.data.results[0].id);
         } else {
           console.error("Invalid API response structure:", res.data);
         }
@@ -58,34 +68,33 @@ const DetailOrder = () => {
     }
   }, [token, uuid]);
 
-  const orderData = [
-    {
-      id: 1,
-      image: ProductImg,
-      isFlashSale: true,
-      productName: "Hazelnut Latte",
-      quantity: 2,
-      size: "Regular",
-      variant: "Ice",
-      type: "Dine In",
-      subtotal: 40000,
-      showRemoveBtn: false,
-    },
-    {
-      id: 2,
-      image: ProductImg,
-      isFlashSale: true,
-      productName: "Hazelnut Latte",
-      quantity: 2,
-      size: "Regular",
-      variant: "Ice",
-      type: "Dine In",
-      subtotal: 40000,
-      showRemoveBtn: false,
-    },
-  ];
+  useEffect(() => {
+    const getOrders = async (orderId: number) => {
+      try {
+        const url = `${
+          import.meta.env.VITE_REACT_APP_API_URL
+        }/order-details/${orderId}`;
+        const res = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (res.data && res.data.results && res.data.results.length > 0) {
+          setOrders(res.data.results);
+        } else {
+          console.error("Invalid API response structure:", res.data);
+        }
+      } catch (error) {
+        console.error("Error fetching cust data:", error);
+      }
+    };
 
-  // const customer = customerData[0];
+    if (orderId) {
+      getOrders(orderId);
+    } else {
+      console.error("Order Id is undefined");
+    }
+  }, [token, orderId]);
 
   return (
     <>
@@ -95,7 +104,12 @@ const DetailOrder = () => {
             Order :{" "}
             <span className="text-xl md:text-4xl">{details?.orderNumber}</span>
           </h1>
-          <div className="text-sm lg:text-base text-gray-600">{date}</div>
+          <div className="text-sm lg:text-base text-gray-600">
+            {details?.date &&
+              format(new Date(details.date), "dd MMMM yyyy, HH:mm", {
+                locale: id,
+              })}
+          </div>
         </div>
         <div className="flex flex-col lg:flex-row gap-5">
           <div className="flex-1 flex-col ">
@@ -110,8 +124,8 @@ const DetailOrder = () => {
             <div className="flex justify-between items-center h-fit mb-3.5">
               <div className="text-xl font-medium">Your Order</div>
             </div>
-            {orderData.map((order, index) => (
-              <OrderCard key={index} {...order} />
+            {orders.map((order) => (
+              <OrderDetailsCard {...order} />
             ))}
           </div>
         </div>
