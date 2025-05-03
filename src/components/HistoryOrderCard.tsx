@@ -9,6 +9,7 @@ import {
 import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 
 interface HistoryOrderCardProps {
+  uuid: string;
   imageUrl?: string;
   orderNumber: string;
   date: string;
@@ -17,6 +18,7 @@ interface HistoryOrderCardProps {
 }
 
 const HistoryOrderCard = ({
+  uuid,
   imageUrl,
   orderNumber,
   date,
@@ -65,7 +67,7 @@ const HistoryOrderCard = ({
             </div>
           </div>
           <div className="block text-sm text-amber-500 underline">
-            <Link to="/detail-order">View Order Detail</Link>
+            <Link to={`/detail-order/${uuid}`}>View Order Detail</Link>
           </div>
         </div>
       </div>

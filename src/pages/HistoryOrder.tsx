@@ -43,6 +43,7 @@ const HistoryOrder = () => {
   }, [dispatch, token, uuid]);
 
   const posts = orders.map((order) => ({
+    uuid: order.uuid,
     imageUrl: "",
     orderNumber: order.orderNumber,
     date: format(parseISO(order.createdAt), "dd MMMM yyyy", { locale: id }),
@@ -81,9 +82,9 @@ const HistoryOrder = () => {
               </form>
             </div>
             <div className="flex flex-col gap-3 mt-9">
-              {posts.map((history, index) => (
+              {posts.map((history) => (
                 <HistoryOrderCard
-                  key={index}
+                  key={history.uuid}
                   {...history}
                   total={Number(history.total)}
                 />

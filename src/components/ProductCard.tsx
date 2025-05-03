@@ -14,10 +14,6 @@ interface Product {
   onAddToCart?: () => void;
 }
 
-interface ProductCardProps extends Omit<Product, "uuid"> {
-  uuid: string;
-}
-
 const ProductCard = ({
   uuid,
   image,
@@ -27,7 +23,7 @@ const ProductCard = ({
   isFlashSale,
   ratingProduct,
   onAddToCart,
-}: ProductCardProps) => {
+}: Product) => {
   const discount = price / 2;
   const defaultImage = NoImg;
 

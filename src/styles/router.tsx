@@ -73,7 +73,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/detail-order",
+        path: "/detail-order/:uuid",
         element: (
           <AuthGuard>
             <DetailOrder />
