@@ -1,5 +1,5 @@
 export interface Option {
-  id?: number;
+  id: number;
   value: string;
   label: string;
   additionalPrice?: number;

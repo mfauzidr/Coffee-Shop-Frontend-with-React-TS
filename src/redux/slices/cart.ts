@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 import { RootState } from "../store";
 
-interface Cart {
+export interface Cart {
   id: number;
   uuid: string;
   productName: string;
@@ -109,6 +109,45 @@ export const addToCart = createAsyncThunk<
   }
 );
 
+export const editCart = createAsyncThunk<
+  Cart[],
+  {
+    updates: {
+      id: number;
+      productSizeId: number;
+      productVariantId: number;
+      quantity: number;
+    }[];
+  },
+  { rejectValue: { error: Error; status?: number } }
+>("carts/editCart", async ({ updates }, { rejectWithValue, getState }) => {
+  const {
+    auth: { token },
+  } = getState() as RootState;
+
+  try {
+    const url = `${import.meta.env.VITE_REACT_APP_API_URL}/cart/edit`;
+    const response = await axios.patch(
+      url,
+      { updates },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.results;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return rejectWithValue({
+        error: error.response?.data,
+        status: error.response?.status,
+      });
+    }
+    throw error;
+  }
+});
+
 export const deleteCarts = createAsyncThunk<
   Cart[],
   { id: number },
@@ -204,6 +243,20 @@ const cartSlice = createSlice({
         state.isLoading = false;
         state.isRejected = true;
         state.error = action.payload?.error.message || "Failed to add to cart.";
+      })
+      .addCase(editCart.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editCart.fulfilled, (state, action) => {
+        state.carts = action.payload;
+        state.isLoading = false;
+        state.isRejected = false;
+      })
+      .addCase(editCart.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isRejected = true;
+        state.error =
+          action.payload?.error.message || "Failed to edit to cart.";
       })
       .addCase(deleteCarts.pending, (state) => {
         state.isLoading = true;

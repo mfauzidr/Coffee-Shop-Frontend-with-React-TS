@@ -18,25 +18,27 @@ const DetailOrder = () => {
 
   const orderData = [
     {
-      imageUrl: ProductImg,
+      id: 1,
+      image: ProductImg,
       isFlashSale: true,
-      name: "Hazelnut Latte",
+      productName: "Hazelnut Latte",
       quantity: 2,
       size: "Regular",
       variant: "Ice",
       type: "Dine In",
-      price: 40000,
+      subtotal: 40000,
       showRemoveBtn: false,
     },
     {
-      imageUrl: ProductImg,
+      id: 2,
+      image: ProductImg,
       isFlashSale: true,
-      name: "Hazelnut Latte",
+      productName: "Hazelnut Latte",
       quantity: 2,
       size: "Regular",
       variant: "Ice",
       type: "Dine In",
-      price: 40000,
+      subtotal: 40000,
       showRemoveBtn: false,
     },
   ];
@@ -66,12 +68,6 @@ const DetailOrder = () => {
           <div className="flex flex-1 flex-col gap-2.5 mb-10">
             <div className="flex justify-between items-center h-fit mb-3.5">
               <div className="text-xl font-medium">Your Order</div>
-              <button
-                className="w-20 md:w-28 h-8 md:h-10 border border-amber-500 rounded-md bg-amber-500 font-semibold text-xs md:text-sm"
-                onClick={() => (window.location.href = "/product")}
-              >
-                + Add Menu
-              </button>
             </div>
             {orderData.map((order, index) => (
               <OrderCard key={index} {...order} />

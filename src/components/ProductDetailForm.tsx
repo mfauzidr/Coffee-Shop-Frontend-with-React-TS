@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import RatingStar from "./RatingStar";
-import { BuyButton, CartButton } from "./Buttons";
+import { BuyButton } from "./Buttons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import RadioGroup from "./RadioGroup";
@@ -242,9 +242,9 @@ const ProductDetailForm = ({
         <div className="flex flex-1 justify-center items-center h-11 text-sm font-medium border border-amber-500 rounded-md mt-4 md:mt-0 bg-amber-500">
           <BuyButton onClick={() => handleBuy(productId)} />
         </div>
-        <label className="flex flex-1 justify-center items-center h-11 text-sm font-medium text-amber-500 border border-amber-500 rounded-md mt-4 md:mt-0 bg-white gap-2.5 cursor-pointer">
+        {/**<label className="flex flex-1 justify-center items-center h-11 text-sm font-medium text-amber-500 border border-amber-500 rounded-md mt-4 md:mt-0 bg-white gap-2.5 cursor-pointer">
           <CartButton />
-        </label>
+        </label>**/}
       </div>
     </form>
   );

@@ -6,7 +6,12 @@ import PageHeader from "../components/PageHeader";
 import PaymentInfo from "../components/PaymentInfo";
 import { useStoreSelector } from "../redux/hooks";
 import { AppDispatch, RootState } from "../redux/store";
-import { deleteAllCarts, deleteCarts, fetchCarts } from "../redux/slices/cart";
+import {
+  deleteAllCarts,
+  deleteCarts,
+  editCart,
+  fetchCarts,
+} from "../redux/slices/cart";
 import { useDispatch } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import { Link, useNavigate } from "react-router-dom";
@@ -26,6 +31,10 @@ const CheckoutProduct = () => {
   const [deliveryAddress, setDeliveryAddress] = useState<string>("");
   const [deliveryMethod, setDeliveryMethod] = useState<string>("");
   const navigate = useNavigate();
+  const [editToggle, setEditToggle] = useState<boolean>(false);
+  const [editedCarts, setEditedCarts] = useState(carts);
+
+  console.log(deliveryMethod);
 
   useEffect(() => {
     if (token) {
@@ -35,12 +44,45 @@ const CheckoutProduct = () => {
   }, [token]);
 
   useEffect(() => {
-    dispatch(fetchCarts({ uuid }));
+    if (uuid) dispatch(fetchCarts({ uuid }));
   }, [dispatch, uuid]);
 
   useEffect(() => {
     if (token && uuid) dispatch(fetchProfile({ uuid }));
   }, [dispatch, token, uuid]);
+
+  const handleEditItems = () => {
+    setEditToggle(true);
+  };
+
+  const handleSaveItems = async () => {
+    const updatedCarts = editedCarts.map((item) => ({
+      id: item.id,
+      productSizeId: item.sizeId,
+      productVariantId: item.variantId,
+      quantity: item.quantity,
+    }));
+
+    console.log(updatedCarts);
+
+    await dispatch(editCart({ updates: updatedCarts }));
+
+    await dispatch(fetchCarts({ uuid }));
+    setEditToggle(false);
+    Swal.fire({
+      title: "Success!",
+      text: "Cart has been updated.",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 2000,
+      position: "top-end",
+      customClass: {
+        popup:
+          "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
+      },
+      toast: true,
+    });
+  };
 
   const handleConfirmDelete = async () => {
     if (selectedId !== null) {
@@ -56,44 +98,50 @@ const CheckoutProduct = () => {
   };
 
   const handleCheckout = async () => {
-    try {
-      const userId = uuid;
-      const fullName = profile.fullName || "";
-      const email = profile.email || "";
-
-      const productId = carts.map((item) => String(item.productId));
-      const sizeId = carts.map((item) => Number(item.sizeId));
-      const variantId = carts.map((item) => Number(item.variantId));
-      const qty = carts.map((item) => Number(item.quantity));
-
-      const orderData = {
-        userId,
-        fullName,
-        email,
-        deliveryAddress,
-        deliveryMethod,
-        productId,
-        sizeId,
-        variantId,
-        qty,
-      };
-
-      await dispatch(createOrder(orderData)).unwrap();
+    if (!deliveryMethod) {
       Swal.fire({
-        title: "Success!",
-        text: "Product has been added to cart!",
-        icon: "success",
-        showConfirmButton: false,
-        timer: 2000,
-        position: "top-end",
+        title: "Failed!",
+        text: "Please select a delivery method to proceed with checkout.",
+        icon: "error",
+        showConfirmButton: true,
+        confirmButtonText: "Okay",
         customClass: {
           popup:
             "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
         },
-        toast: true,
+      });
+      return;
+    }
+    try {
+      const orderData = {
+        userId: uuid,
+        fullName: profile.fullName || "",
+        email: profile.email || "",
+        deliveryAddress,
+        deliveryMethod,
+        productId: carts.map((item) => String(item.productId)),
+        sizeId: carts.map((item) => Number(item.sizeId)),
+        variantId: carts.map((item) => Number(item.variantId)),
+        qty: carts.map((item) => Number(item.quantity)),
+      };
+
+      await dispatch(createOrder(orderData)).unwrap();
+
+      console.log(orderData);
+
+      Swal.fire({
+        title: "Success!",
+        text: "Order has been created!",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
+        customClass: {
+          popup:
+            "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
+        },
       });
 
-      await dispatch(deleteAllCarts({ userId: userId })).unwrap();
+      await dispatch(deleteAllCarts({ userId: uuid })).unwrap();
       setTimeout(() => {
         navigate("/history-order");
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -104,17 +152,17 @@ const CheckoutProduct = () => {
         title: "Failed!",
         text: "Failed to add product to cart.",
         icon: "error",
-        showConfirmButton: false,
+        showConfirmButton: true,
+        confirmButtonText: "Okay",
         timer: 2000,
-        position: "top-end",
         customClass: {
           popup:
             "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
         },
-        toast: true,
       });
     }
   };
+
   return (
     <>
       <div className="flex flex-col mx-8 md:mx-16 lg:mx-32 mt-8 md:mt-16 h-auto gap-6">
@@ -123,31 +171,48 @@ const CheckoutProduct = () => {
           <div className="flex flex-col lg:w-2/3 gap-2.5 mb:2.5 lg:mb-0">
             <div className="flex justify-between items-center h-fit mb-3.5">
               <div className="text-lg lg:text-xl font-medium">Your Order</div>
-              <Link
-                to="/product"
-                className="flex items-center justify-center w-20 md:w-28 h-8 md:h-10 border border-amber-500 rounded-md bg-amber-500 font-semibold text-xs md:text-sm"
-              >
-                + Add Menu
-              </Link>
+              <div className="flex gap-4">
+                <Link
+                  to="/product"
+                  className="flex items-center justify-center w-20 md:w-28 h-8 md:h-10 border border-amber-500 rounded-md bg-amber-500 font-semibold text-xs md:text-sm"
+                >
+                  + Add Menu
+                </Link>
+                <button
+                  type="button"
+                  className="flex items-center justify-center w-20 md:w-28 h-8 md:h-10 border border-amber-500 rounded-md bg-amber-500 font-semibold text-xs md:text-sm"
+                  onClick={editToggle ? handleSaveItems : handleEditItems}
+                >
+                  {editToggle ? "Save" : "Edit"}
+                </button>
+              </div>
             </div>
             <div className="flex flex-col max-h-80 md:max-h-[450px] gap-2 md:gap-4 overflow-scroll md:p-3 bg-slate-50">
               {carts.length > 0 ? (
                 carts.map((items, index) => (
                   <OrderCard
+                    isEdit={editToggle}
                     key={items.id || `${items.productName}-${index}`}
                     {...items}
                     onClick={() => {
                       setSelectedId(items.id!);
                       setShowDeleteConfirmModal(true);
                     }}
+                    onUpdate={(updatedItem) => {
+                      setEditedCarts((prevCarts) =>
+                        prevCarts.map((item) =>
+                          item.id === updatedItem.id
+                            ? { ...item, ...updatedItem }
+                            : item
+                        )
+                      );
+                    }}
                   />
                 ))
               ) : (
-                <>
-                  <p className="text-sm text-gray-700">
-                    Your cart is empty. Add items to continue!
-                  </p>
-                </>
+                <p className="text-sm text-gray-700">
+                  Your cart is empty. Add items to continue!
+                </p>
               )}
             </div>
           </div>
@@ -188,12 +253,11 @@ const CheckoutProduct = () => {
           </div>
         </div>
       )}
-
       {showDeletedSuccessModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
             <h2 className="text-lg font-semibold mb-4 text-green-600">
-              Item deleted sucessfully!
+              Item deleted successfully!
             </h2>
             <div className="flex justify-end">
               <button

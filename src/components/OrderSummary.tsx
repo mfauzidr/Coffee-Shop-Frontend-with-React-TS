@@ -4,11 +4,11 @@ import Image3 from "../assets/img/payment-3.png";
 import Image4 from "../assets/img/payment-4.png";
 import Image5 from "../assets/img/payment-5.png";
 import Image6 from "../assets/img/payment-6.png";
+import { Cart } from "../redux/slices/cart";
 import { Button } from "./Buttons";
-import { OrderCardProps } from "./OrderCard";
 
 interface OrderSummaryProps {
-  orders: OrderCardProps[];
+  orders: Cart[];
   onClick?: () => void;
 }
 
