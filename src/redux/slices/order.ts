@@ -6,7 +6,7 @@ export interface OrderList {
   id: number;
   uuid: string;
   orderNumber: string;
-  imageUrl?: string;
+  image?: string;
   userId: string;
   productId: string;
   sizeId: string;

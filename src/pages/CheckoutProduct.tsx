@@ -34,8 +34,6 @@ const CheckoutProduct = () => {
   const [editToggle, setEditToggle] = useState<boolean>(false);
   const [editedCarts, setEditedCarts] = useState(carts);
 
-  console.log(deliveryMethod);
-
   useEffect(() => {
     if (token) {
       const decodedToken = jwtDecode<{ uuid: string }>(token);
@@ -62,8 +60,6 @@ const CheckoutProduct = () => {
       productVariantId: item.variantId,
       quantity: item.quantity,
     }));
-
-    console.log(updatedCarts);
 
     await dispatch(editCart({ updates: updatedCarts }));
 
@@ -126,8 +122,6 @@ const CheckoutProduct = () => {
       };
 
       await dispatch(createOrder(orderData)).unwrap();
-
-      console.log(orderData);
 
       Swal.fire({
         title: "Success!",

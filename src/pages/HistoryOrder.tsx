@@ -44,7 +44,7 @@ const HistoryOrder = () => {
 
   const posts = orders.map((order) => ({
     uuid: order.uuid,
-    imageUrl: "",
+    image: order.image,
     orderNumber: order.orderNumber,
     date: format(parseISO(order.createdAt), "dd MMMM yyyy", { locale: id }),
     total: order.subtotal,

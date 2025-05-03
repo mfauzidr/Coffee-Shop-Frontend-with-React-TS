@@ -10,7 +10,7 @@ import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 
 interface HistoryOrderCardProps {
   uuid: string;
-  imageUrl?: string;
+  image?: string;
   orderNumber: string;
   date: string;
   total: number;
@@ -19,7 +19,7 @@ interface HistoryOrderCardProps {
 
 const HistoryOrderCard = ({
   uuid,
-  imageUrl,
+  image,
   orderNumber,
   date,
   total,
@@ -29,7 +29,7 @@ const HistoryOrderCard = ({
     <div className="flex flex-col gap-3 px-3 py-2.5 bg-gray-100 justify-between items-center">
       <div className="flex justify-between gap-6 md:gap-8">
         <div className="hidden md:flex w-28 h-28">
-          <img src={imageUrl} alt="" />
+          <img className="aspect-square object-cover" src={image} alt="" />
         </div>
         <div className="block">
           <div className="grid grid-cols-2 md:flex gap-6 md:gap-8 md:items-center">
