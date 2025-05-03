@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Footer from "../components/Footer";
 import ProfileCard from "../components/ProfileCard";
 import {
@@ -12,7 +12,6 @@ import {
 import { SubmitButton } from "../components/Buttons";
 import { useStoreSelector } from "../redux/hooks";
 import { AppDispatch, RootState } from "../redux/store";
-import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { fetchProfile, updateProfileData } from "../redux/slices/profile";
@@ -34,23 +33,8 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState(false);
   const [form, setForm] = useState<IProfileBody>();
-
-  const { token } = useStoreSelector((state: RootState) => state.auth);
-  const [uuid, setUuid] = useState<string>("");
+  const uuid = profile.uuid;
   const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    if (token) {
-      const decodedToken = jwtDecode<{ uuid: string }>(token);
-      setUuid(decodedToken.uuid);
-    }
-  }, [token]);
-
-  useEffect(() => {
-    if (token && uuid) {
-      dispatch(fetchProfile({ uuid }));
-    }
-  }, [dispatch, token, uuid]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -202,9 +186,7 @@ const Profile = () => {
                 className={`flex text-red-400 text-base ${
                   isError ? "block" : "invisible"
                 }`}
-              >
-                {/* {errorMessage} */}
-              </div>
+              ></div>
               <div
                 className="flex items-center self-end pr-3 text-amber-500 cursor-pointer"
                 onClick={togglePasswordForm}

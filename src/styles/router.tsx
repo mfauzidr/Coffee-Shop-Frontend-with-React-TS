@@ -14,6 +14,9 @@ import { NotFound } from "../pages/NotFound";
 import GuestGuard from "../guards/GuestGuard";
 import AuthGuard from "../guards/AuthGuard";
 import Layout from "../components/Layout";
+import AdminGuard from "../guards/AdminGuard";
+import Dashboard from "../pages/Dashboard";
+import AdminLayout from "../pages/AdminLayout";
 
 const router = createBrowserRouter([
   {
@@ -86,6 +89,20 @@ const router = createBrowserRouter([
           <AuthGuard>
             <Profile />
           </AuthGuard>
+        ),
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        path: "dashboard",
+        element: (
+          <AdminGuard>
+            <Dashboard />
+          </AdminGuard>
         ),
       },
     ],
