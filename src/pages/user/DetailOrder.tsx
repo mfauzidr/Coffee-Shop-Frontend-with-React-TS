@@ -1,13 +1,13 @@
-import CustomerDetails from "../components/CustomerDetails";
-import Footer from "../components/Footer";
+import CustomerDetails from "../../components/CustomerDetails";
+import Footer from "../../components/Footer";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useStoreSelector } from "../redux/hooks";
-import { RootState } from "../redux/store";
+import { useStoreSelector } from "../../redux/hooks";
+import { RootState } from "../../redux/store";
 import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import OrderDetailsCard from "../components/OrderDetailsCard";
+import OrderDetailsCard from "../../components/OrderDetailsCard";
 
 interface ICustomerDetails {
   orderNumber: string;

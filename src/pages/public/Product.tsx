@@ -1,9 +1,9 @@
-import CouponList from "../components/CouponList";
-import Footer from "../components/Footer";
-import ProductGrid from "../components/ProductGrid";
-import ProductHeader from "../components/ProductHeader";
-import FilterSidebar from "../components/FilterSidebar";
-import FilterSvg from "../assets/svg/Filter.svg";
+import CouponList from "../../components/CouponList";
+import Footer from "../../components/Footer";
+import ProductGrid from "../../components/ProductGrid";
+import ProductHeader from "../../components/ProductHeader";
+import FilterSidebar from "../../components/FilterSidebar";
+import FilterSvg from "../../assets/svg/Filter.svg";
 import FeatherIcon from "feather-icons-react";
 import { useState } from "react";
 

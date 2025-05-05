@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { authAction } from "../redux/slices/auth";
+import { authAction } from "../../redux/slices/auth";
 
 const Layout = () => {
   const dispatch = useDispatch();

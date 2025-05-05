@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Footer from "../components/Footer";
-import ProfileCard from "../components/ProfileCard";
+import Footer from "../../components/Footer";
+import ProfileCard from "../../components/ProfileCard";
 import {
   AddressInput,
   EmailInput,
@@ -8,13 +8,13 @@ import {
   PasswordInput,
   ConfirmPasswordInput,
   FullNameInput,
-} from "../components/InputForm";
-import { SubmitButton } from "../components/Buttons";
-import { useStoreSelector } from "../redux/hooks";
-import { AppDispatch, RootState } from "../redux/store";
+} from "../../components/InputForm";
+import { SubmitButton } from "../../components/Buttons";
+import { useStoreSelector } from "../../redux/hooks";
+import { AppDispatch, RootState } from "../../redux/store";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
-import { fetchProfile, updateProfileData } from "../redux/slices/profile";
+import { fetchProfile, updateProfileData } from "../../redux/slices/profile";
 
 interface IProfileBody {
   id?: number;

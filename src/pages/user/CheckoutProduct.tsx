@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
-import Footer from "../components/Footer";
-import OrderCard from "../components/OrderCard";
-import OrderSummary from "../components/OrderSummary";
-import PageHeader from "../components/PageHeader";
-import PaymentInfo from "../components/PaymentInfo";
-import { useStoreSelector } from "../redux/hooks";
-import { AppDispatch, RootState } from "../redux/store";
+import Footer from "../../components/Footer";
+import OrderCard from "../../components/OrderCard";
+import OrderSummary from "../../components/OrderSummary";
+import PageHeader from "../../components/PageHeader";
+import PaymentInfo from "../../components/PaymentInfo";
+import { useStoreSelector } from "../../redux/hooks";
+import { AppDispatch, RootState } from "../../redux/store";
 import {
   deleteAllCarts,
   deleteCarts,
   editCart,
   fetchCarts,
-} from "../redux/slices/cart";
+} from "../../redux/slices/cart";
 import { useDispatch } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchProfile } from "../redux/slices/profile";
-import { createOrder } from "../redux/slices/order";
+import { fetchProfile } from "../../redux/slices/profile";
+import { createOrder } from "../../redux/slices/order";
 import Swal from "sweetalert2";
 
 const CheckoutProduct = () => {

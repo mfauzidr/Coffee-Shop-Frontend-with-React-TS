@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { authAction } from "../redux/slices/auth";
-import { useStoreSelector } from "../redux/hooks";
-import AdminNavBar from "../components/AdminNavBar";
+import { authAction } from "../../redux/slices/auth";
+import { useStoreSelector } from "../../redux/hooks";
+import AdminNavBar from "../../components/admins/AdminNavBar";
+import AdminSideBar from "../../components/admins/AdminSideBar";
 
 const AdminLayout = () => {
   const dispatch = useDispatch();
@@ -37,9 +38,14 @@ const AdminLayout = () => {
   }, [dispatch, navigate, token]);
 
   return (
-    <div>
+    <div className="h-screen w-full flex flex-col">
       <AdminNavBar bgColor="transparent" position="static" />
-      <Outlet />
+      <div className="flex flex-1">
+        <AdminSideBar />
+        <div className="flex-1 overflow-y-auto px-6 py-4">
+          <Outlet />
+        </div>
+      </div>
     </div>
   );
 };

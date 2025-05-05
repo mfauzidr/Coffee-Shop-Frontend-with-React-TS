@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import FeatherIcon from "feather-icons-react";
-import Brand from "./Brand";
+import Brand from "../Brand";
 import { Link } from "react-router-dom";
-import { useStoreDispatch, useStoreSelector } from "../redux/hooks";
-import { authAction } from "../redux/slices/auth";
-import ShoppingCart from "./ShoppingCart";
-import { RootState } from "../redux/store";
+import { useStoreDispatch, useStoreSelector } from "../../redux/hooks";
+import { authAction } from "../../redux/slices/auth";
+import ShoppingCart from "../ShoppingCart";
+import { RootState } from "../../redux/store";
 
 interface NavbarProps {
   bgColor: string;
@@ -52,9 +52,9 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
   return (
     <nav
       id="navbar"
-      className={`flex flex-col lg:flex-row lg:h-20 w-full ${bgColor} text-amber-800 items-center px-8 gap-4 lg:gap-0 py-6 lg:py-0 ${position} border-b`}
+      className={`flex flex-col lg:flex-row lg:h-20 w-full ${bgColor} text-amber-800 items-center px-12 gap-4 lg:gap-0 py-6 lg:py-0 ${position} border-b`}
     >
-      <div className="flex flex-1 items-center justify-betweenw-auto">
+      <div className="flex flex-1 items-center justify-between w-auto">
         <div className="flex text-white justify-normal w-auto mb-0 overflow-visible">
           <Brand textColor={"amber-800"} />
         </div>

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Footer from "../components/Footer";
-import ImageProduct from "../components/ImageProduct";
-import SmallImg1 from "../assets/img/coffee-2.png";
-import SmallImg2 from "../assets/img/coffee-3.png";
-import SmallImg3 from "../assets/img/coffee-4.png";
-import ProductRec from "../components/ProductRec";
-import ProductDetailForm from "../components/ProductDetailForm";
+import Footer from "../../components/Footer";
+import ImageProduct from "../../components/ImageProduct";
+import SmallImg1 from "../../assets/img/coffee-2.png";
+import SmallImg2 from "../../assets/img/coffee-3.png";
+import SmallImg3 from "../../assets/img/coffee-4.png";
+import ProductRec from "../../components/ProductRec";
+import ProductDetailForm from "../../components/ProductDetailForm";
 
 interface Product {
   image: string;
