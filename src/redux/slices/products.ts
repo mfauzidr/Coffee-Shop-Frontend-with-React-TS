@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
-interface Product {
+export interface Product {
+  id: number;
   uuid: string;
   image: string;
   productName: string;
@@ -17,6 +18,7 @@ export interface ProductFilters {
   category?: string;
   sortBy?: string;
   priceRange?: [number, number];
+  limit?: number;
 }
 
 export interface ProductsState {
@@ -45,36 +47,50 @@ const initialState: ProductsState = {
 
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
-  async (params: {
-    page?: string | number;
-    filters: ProductFilters;
-    currentPage: number;
-  }) => {
-    const { page, filters, currentPage } = params;
-    const modifiedFilters = { ...filters };
+  async (
+    params: {
+      page?: string | number;
+      limit?: number;
+      filters: ProductFilters;
+      currentPage: number;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const { page, limit, filters, currentPage } = params;
+      const modifiedFilters = { ...filters };
 
-    if (Array.isArray(filters.category)) {
-      modifiedFilters.category = filters.category.join(",");
-    }
-
-    const newPage =
-      page === "next"
-        ? currentPage + 1
-        : page === "previous"
-        ? currentPage - 1
-        : page;
-
-    const response = await axios.get(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/products`,
-      {
-        params: {
-          ...modifiedFilters,
-          page: newPage,
-          limit: 6,
-        },
+      if (Array.isArray(filters.category)) {
+        modifiedFilters.category = filters.category.join(",");
       }
-    );
-    return response.data;
+
+      const newPage =
+        page === "next"
+          ? currentPage + 1
+          : page === "previous"
+          ? currentPage - 1
+          : page;
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/products`,
+        {
+          params: {
+            ...modifiedFilters,
+            page: newPage,
+            limit,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.status === 404) {
+        return rejectWithValue("Product Not Found.");
+      }
+
+      return rejectWithValue("An error occurred while fetching products.");
+    }
   }
 );
 
@@ -113,7 +129,9 @@ const productSlice = createSlice({
         state.isLoading = false;
         state.isRejected = true;
         state.error =
-          action.error.message || "An error occurred while fetching products.";
+          (action.payload as string) ||
+          action.error.message ||
+          "An error occurred while fetching products.";
       })
       .addCase(fetchHighlightedProducts.pending, (state) => {
         state.isLoading = true;
@@ -126,6 +144,7 @@ const productSlice = createSlice({
         state.isLoading = false;
         state.isRejected = true;
         state.error =
+          (action.payload as string) ||
           action.error.message ||
           "An error occurred while fetching highlighted products.";
       });

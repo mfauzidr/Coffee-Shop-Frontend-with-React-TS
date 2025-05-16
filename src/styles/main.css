@@ -2139,6 +2139,10 @@ html {
   right: 6px;
 }
 
+.visible {
+  visibility: visible;
+}
+
 .invisible {
   visibility: hidden;
 }
@@ -2166,6 +2170,11 @@ html {
 .inset-y-0 {
   top: 0px;
   bottom: 0px;
+}
+
+.inset-x-0 {
+  left: 0px;
+  right: 0px;
 }
 
 .bottom-12 {
@@ -2196,6 +2205,10 @@ html {
   right: 5rem;
 }
 
+.right-3 {
+  right: 0.75rem;
+}
+
 .right-32 {
   right: 8rem;
 }
@@ -2216,16 +2229,24 @@ html {
   top: 0.5rem;
 }
 
-.right-3 {
-  right: 0.75rem;
-}
-
 .z-20 {
   z-index: 20;
 }
 
 .z-50 {
   z-index: 50;
+}
+
+.z-10 {
+  z-index: 10;
+}
+
+.z-40 {
+  z-index: 40;
+}
+
+.z-30 {
+  z-index: 30;
 }
 
 .mx-10 {
@@ -2281,6 +2302,11 @@ html {
 .my-8 {
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .-mt-2 {
@@ -2405,10 +2431,6 @@ html {
 
 .mt-9 {
   margin-top: 2.25rem;
-}
-
-.mt-10 {
-  margin-top: 2.5rem;
 }
 
 .block {
@@ -2604,6 +2626,10 @@ html {
   width: 9rem;
 }
 
+.w-4 {
+  width: 1rem;
+}
+
 .w-4\/6 {
   width: 66.666667%;
 }
@@ -2620,12 +2646,20 @@ html {
   width: 1.25rem;
 }
 
+.w-52 {
+  width: 13rem;
+}
+
 .w-6 {
   width: 1.5rem;
 }
 
 .w-60 {
   width: 15rem;
+}
+
+.w-64 {
+  width: 16rem;
 }
 
 .w-8 {
@@ -2638,10 +2672,6 @@ html {
 
 .w-96 {
   width: 24rem;
-}
-
-.w-\[261px\] {
-  width: 261px;
 }
 
 .w-\[68px\] {
@@ -2661,40 +2691,8 @@ html {
   width: 100%;
 }
 
-.w-screen {
-  width: 100vw;
-}
-
-.w-2\/3 {
-  width: 66.666667%;
-}
-
-.w-1\/2 {
-  width: 50%;
-}
-
-.w-lvw {
-  width: 100lvw;
-}
-
-.w-4 {
-  width: 1rem;
-}
-
-.w-1\/4 {
-  width: 25%;
-}
-
-.w-5\/6 {
-  width: 83.333333%;
-}
-
-.w-64 {
-  width: 16rem;
-}
-
-.w-72 {
-  width: 18rem;
+.w-\[320px\] {
+  width: 320px;
 }
 
 .min-w-40 {
@@ -2719,10 +2717,6 @@ html {
 
 .max-w-sm {
   max-width: 24rem;
-}
-
-.max-w-screen-lg {
-  max-width: 1024px;
 }
 
 .flex-1 {
@@ -2810,10 +2804,6 @@ html {
 
 .justify-between {
   justify-content: space-between;
-}
-
-.justify-items-end {
-  justify-items: end;
 }
 
 .gap-1 {
@@ -2936,10 +2926,6 @@ html {
   overflow-y: auto;
 }
 
-.overflow-y-scroll {
-  overflow-y: scroll;
-}
-
 .rounded {
   border-radius: 0.25rem;
 }
@@ -2966,6 +2952,11 @@ html {
 
 .rounded-xl {
   border-radius: 0.75rem;
+}
+
+.rounded-l-xl {
+  border-top-left-radius: 0.75rem;
+  border-bottom-left-radius: 0.75rem;
 }
 
 .border {
@@ -3059,11 +3050,6 @@ html {
 .border-slate-300 {
   --tw-border-opacity: 1;
   border-color: rgb(203 213 225 / var(--tw-border-opacity));
-}
-
-.border-slate-500 {
-  --tw-border-opacity: 1;
-  border-color: rgb(100 116 139 / var(--tw-border-opacity));
 }
 
 .border-l-amber-500 {
@@ -3174,9 +3160,8 @@ html {
   background-color: rgb(66 32 6 / var(--tw-bg-opacity));
 }
 
-.bg-orange-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(249 115 22 / var(--tw-bg-opacity));
+.bg-opacity-10 {
+  --tw-bg-opacity: 0.1;
 }
 
 .bg-opacity-40 {
@@ -3189,6 +3174,10 @@ html {
 
 .bg-opacity-80 {
   --tw-bg-opacity: 0.8;
+}
+
+.bg-opacity-30 {
+  --tw-bg-opacity: 0.3;
 }
 
 .bg-\[url\(\.\.\/assets\/img\/bg-forgot-pass\.png\)\] {
@@ -3253,6 +3242,10 @@ html {
 
 .p-1 {
   padding: 0.25rem;
+}
+
+.p-1\.5 {
+  padding: 0.375rem;
 }
 
 .p-2 {
@@ -3398,11 +3391,6 @@ html {
   padding-bottom: 1px;
 }
 
-.py-7 {
-  padding-top: 1.75rem;
-  padding-bottom: 1.75rem;
-}
-
 .pb-0 {
   padding-bottom: 0px;
 }
@@ -3423,6 +3411,10 @@ html {
   padding-left: 0.75rem;
 }
 
+.pl-4 {
+  padding-left: 1rem;
+}
+
 .pl-5 {
   padding-left: 1.25rem;
 }
@@ -3431,8 +3423,20 @@ html {
   padding-left: 1.5rem;
 }
 
+.pr-10 {
+  padding-right: 2.5rem;
+}
+
 .pr-3 {
   padding-right: 0.75rem;
+}
+
+.pr-4 {
+  padding-right: 1rem;
+}
+
+.pr-8 {
+  padding-right: 2rem;
 }
 
 .pt-10 {
@@ -3449,14 +3453,6 @@ html {
 
 .pt-9 {
   padding-top: 2.25rem;
-}
-
-.pl-4 {
-  padding-left: 1rem;
-}
-
-.pr-10 {
-  padding-right: 2.5rem;
 }
 
 .text-left {
@@ -3516,6 +3512,10 @@ html {
 
 .font-bold {
   font-weight: 700;
+}
+
+.font-extrabold {
+  font-weight: 800;
 }
 
 .font-medium {
@@ -3649,6 +3649,10 @@ html {
   opacity: 1;
 }
 
+.opacity-5 {
+  opacity: 0.05;
+}
+
 .shadow-lg {
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
@@ -3709,15 +3713,6 @@ html {
 
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
 
 .checked\:bg-amber-500:checked {
@@ -3796,6 +3791,10 @@ html {
 
 .hover\:bg-opacity-10:hover {
   --tw-bg-opacity: 0.1;
+}
+
+.hover\:font-bold:hover {
+  font-weight: 700;
 }
 
 .hover\:text-amber-500:hover {
@@ -4157,11 +4156,6 @@ html {
   .md\:text-xl {
     font-size: 1.25rem;
     line-height: 1.75rem;
-  }
-
-  .md\:text-3xl {
-    font-size: 1.875rem;
-    line-height: 2.25rem;
   }
 
   .md\:font-medium {

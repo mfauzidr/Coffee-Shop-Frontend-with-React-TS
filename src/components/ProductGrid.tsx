@@ -41,7 +41,9 @@ const ProductGrid = ({ filters }: ProductGridProps) => {
   const currentPage = pageInfo?.currentPage || 1;
 
   useEffect(() => {
-    dispatch(fetchProducts({ page: currentPage, filters, currentPage }));
+    dispatch(
+      fetchProducts({ page: currentPage, limit: 6, filters, currentPage })
+    );
   }, [dispatch, filters, currentPage]);
 
   const handlePageChange = (page: string | number) => {

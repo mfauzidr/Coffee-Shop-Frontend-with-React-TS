@@ -42,7 +42,7 @@ const AdminLayout = () => {
       <AdminNavBar bgColor="transparent" position="static" />
       <div className="flex flex-1">
         <AdminSideBar />
-        <div className="flex-1 overflow-y-auto px-6 py-4">
+        <div className="relative flex-1 overflow-y-auto px-6 py-4">
           <Outlet />
         </div>
       </div>
