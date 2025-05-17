@@ -3,9 +3,13 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useStoreSelector } from "../../redux/hooks";
 import { useEffect, useState } from "react";
-import { fetchProducts } from "../../redux/slices/products";
+import { createProduct, fetchProducts } from "../../redux/slices/products";
 import Filter from "../../components/admins/FilterModal";
 import ProductList from "../../components/admins/ProductList";
+import CreateProduct from "../../components/admins/CreateProduct";
+import Swal from "sweetalert2";
+import img from "../../assets/img/no-image.png";
+import { Option } from "../../components/RadioGroup";
 
 interface ProductFilters {
   search: string;
@@ -13,11 +17,20 @@ interface ProductFilters {
   sortBy: string;
 }
 
+interface IProductBody {
+  id?: number;
+  name?: string;
+  image?: string;
+  price?: string;
+  description?: string;
+  categoryId?: string;
+  sizeId?: string;
+}
+
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { products, pageInfo, isLoading, isRejected, error } = useStoreSelector(
-    (state: RootState) => state.products
-  );
+  const { products, dataCount, pageInfo, isLoading, isRejected, error } =
+    useStoreSelector((state: RootState) => state.products);
   const [filters, setFilters] = useState<ProductFilters>({
     search: "",
     category: "",
@@ -25,9 +38,13 @@ const Products = () => {
   });
 
   const currentPage = pageInfo?.currentPage || 1;
+  const [form, setForm] = useState<IProductBody>();
 
   const [showFilter, setShowFilter] = useState<boolean>(false);
-
+  const [showCreateProduct, setShowCreateProduct] = useState<boolean>(false);
+  const [changedImage, setSelectedImage] = useState<File | null>(null);
+  const [, setSelectedSize] = useState<Option>();
+  const [, setSelectedCategory] = useState<Option>();
   useEffect(() => {
     dispatch(
       fetchProducts({ page: currentPage, limit: 5, filters, currentPage })
@@ -37,6 +54,59 @@ const Products = () => {
   const handlePageChange = (page: string | number) => {
     dispatch(fetchProducts({ page, limit: 5, filters, currentPage }));
     window.scrollTo({ top: 650, behavior: "smooth" });
+  };
+
+  const handleApply = async (
+    page: string | number,
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+
+    try {
+      const formData = new FormData();
+      if (form?.name) formData.append("name", form.name);
+      if (form?.price) formData.append("price", form.price);
+      if (form?.description) formData.append("description", form.description);
+      if (form?.categoryId) formData.append("categoryId", form.categoryId);
+      if (form?.sizeId) formData.append("sizeId", form.sizeId);
+      if (changedImage) formData.append("image", changedImage);
+
+      await dispatch(createProduct({ formData })).unwrap();
+
+      Swal.fire({
+        title: "Success!",
+        text: "Create Product Success",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
+        position: "top-end",
+        customClass: {
+          popup:
+            "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
+        },
+        toast: true,
+      });
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      Swal.fire({
+        title: "Failed!",
+        text: "Create Product Failed!",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+        position: "top-end",
+        customClass: {
+          popup:
+            "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
+        },
+        toast: true,
+      });
+    } finally {
+      dispatch(fetchProducts({ page, limit: 5, filters, currentPage }));
+      setForm({});
+      setShowCreateProduct(false);
+      setSelectedImage(null);
+    }
   };
 
   const handleApplyFilters = (newFilters: {
@@ -51,6 +121,25 @@ const Products = () => {
     setShowFilter(false);
   };
 
+  const handleInputChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setForm((form) => {
+      return {
+        ...form,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setSelectedImage(event.target.files[0]);
+    }
+  };
+
   return (
     <div>
       <div className="relative">
@@ -58,7 +147,10 @@ const Products = () => {
           <div className="flex justify-between items-start w-full h-full">
             <div className="flex flex-col gap-6">
               <h1 className="text-3xl font-semibold">Product List</h1>
-              <button className="flex items-center gap-1 justify-center w-32 h-10 border border-amber-500 rounded-md bg-amber-500 font-semibold text-sm">
+              <button
+                onClick={() => setShowCreateProduct(true)}
+                className="flex items-center gap-1 justify-center w-32 h-10 border border-amber-500 rounded-md bg-amber-500 font-semibold text-sm"
+              >
                 <FeatherIcon icon="plus" className="h-4 w-4" />
                 Add Product
               </button>
@@ -101,6 +193,7 @@ const Products = () => {
           {!isLoading && !isRejected && products.length > 0 && (
             <ProductList
               products={products}
+              dataCount={dataCount}
               pageInfo={pageInfo}
               handlePageChange={handlePageChange}
             />
@@ -109,14 +202,43 @@ const Products = () => {
       </div>
       {showFilter && (
         <div
-          className="absolute inset-0 z-30 flex justify-end bg-black bg-opacity-30"
+          className="absolute inset-0 h-full z-30 flex justify-end bg-black bg-opacity-30"
           onClick={() => setShowFilter(false)}
         >
           <div
-            className="bg-white w-[320px] h-full p-6"
+            className="bg-white w-5/12 h-full p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <Filter onApplyFilters={handleApplyFilters} />
+          </div>
+        </div>
+      )}
+      {showCreateProduct && (
+        <div
+          className="absolute inset-0 h-auto z-30 flex justify-end bg-black bg-opacity-30"
+          onClick={() => setShowCreateProduct(false)}
+        >
+          <div
+            className="bg-white w-5/12 h-full p-6 overflow-scroll no-scrollbar pb-20"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <CreateProduct
+              name="name"
+              price="price"
+              description="description"
+              image={changedImage ? URL.createObjectURL(changedImage) : img}
+              onSelectSize={(option) => {
+                setSelectedSize(option);
+                setForm((prev) => ({ ...prev, sizeId: String(option.id) }));
+              }}
+              onSelectCategory={(option) => {
+                setSelectedCategory(option);
+                setForm((prev) => ({ ...prev, categoryId: String(option.id) }));
+              }}
+              onImageChange={handleImageChange}
+              onChange={handleInputChange}
+              handleSubmit={(e) => handleApply(currentPage, e)}
+            />
           </div>
         </div>
       )}

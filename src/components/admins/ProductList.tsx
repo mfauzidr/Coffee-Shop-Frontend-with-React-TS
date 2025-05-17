@@ -4,6 +4,7 @@ import ProductListCard from "./ProductListCard";
 
 interface ProductListProps {
   products: Product[];
+  dataCount: number;
   pageInfo: {
     currentPage: number;
     pages: number;
@@ -13,6 +14,7 @@ interface ProductListProps {
 
 const ProductList = ({
   products,
+  dataCount,
   pageInfo,
   handlePageChange,
 }: ProductListProps) => {
@@ -46,7 +48,7 @@ const ProductList = ({
       <div className="flex justify-between mt-2 text-sm text-gray-500">
         <div>
           {products.length > 0
-            ? `${products.length} Products Found`
+            ? `${dataCount} Products Found`
             : "No products found"}
         </div>
         <div>

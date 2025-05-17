@@ -177,7 +177,7 @@ export const ApplyButton = ({
     <button
       onClick={onClick}
       type={type}
-      className={`flex-1 ${size} py-1 lg:py-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center text-xs md:text-base`}
+      className={`flex-1 ${size} py-1 lg:py-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center`}
     >
       {buttonName}
     </button>

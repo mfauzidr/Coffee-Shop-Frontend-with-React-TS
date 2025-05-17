@@ -6,10 +6,16 @@ import { Link } from "react-router-dom";
 import { useStoreSelector, useStoreDispatch } from "../redux/hooks";
 import { authAction } from "../redux/slices/auth";
 import ShoppingCart from "./ShoppingCart";
+import { jwtDecode } from "jwt-decode";
 
 interface NavbarProps {
   bgColor: string;
   position: string;
+}
+
+interface DecodedToken {
+  role: string;
+  uuid: string;
 }
 
 const Navbar = ({ bgColor, position }: NavbarProps) => {
@@ -19,7 +25,11 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
   const dispatch = useStoreDispatch();
   const { token } = useStoreSelector((state) => state.auth);
   const isLoggedIn = !!token;
+  let decoded: DecodedToken = { role: "", uuid: "" };
 
+  if (token) {
+    decoded = jwtDecode(token);
+  }
   const handleLogout = () => {
     dispatch(authAction.removeToken());
     window.location.href = "/";
@@ -57,7 +67,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
         menuOpen ? "h-auto" : "h-20"
       } transition-all duration-500 ease-in-out`}
     >
-      <div className="flex flex-col lg:flex-row flex-1 items-center justify-between w-full lg:w-auto">
+      <div className="flex flex-col lg:flex-row flex-1 items-center w-full lg:w-auto">
         <div className="flex text-white justify-between lg:justify-normal w-full lg:w-auto mb-6 lg:mb-0 overflow-visible">
           <Brand textColor={"white"} />
           <div className="flex items-center gap-6 lg:hidden ">
@@ -93,14 +103,30 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
               Product
             </Link>
           </li>
-          <li className="mx-6">
-            <Link
-              className="pb-2 -mt-2 transition duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
-              to="/history-order"
-            >
-              Orders
-            </Link>
-          </li>
+          {token ? (
+            <li className="mx-6">
+              <Link
+                className="pb-2 -mt-2 transition duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
+                to="/history-order"
+              >
+                Orders
+              </Link>
+            </li>
+          ) : (
+            ""
+          )}
+          {decoded.role && decoded.role === "admin" ? (
+            <li className="mx-6">
+              <Link
+                className="pb-2 -mt-2 transition duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
+                to="/admin/dashboard"
+              >
+                Dashboard
+              </Link>
+            </li>
+          ) : (
+            ""
+          )}
         </ul>
       </div>
 

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { RootState } from "../store";
 
 export interface Product {
   id: number;
@@ -24,6 +25,7 @@ export interface ProductFilters {
 export interface ProductsState {
   products: Product[];
   highlightedProducts: Product[];
+  dataCount: number;
   isLoading: boolean;
   isRejected: boolean;
   error: string | null;
@@ -36,6 +38,7 @@ export interface ProductsState {
 const initialState: ProductsState = {
   products: [],
   highlightedProducts: [],
+  dataCount: 0,
   isLoading: false,
   isRejected: false,
   error: null,
@@ -94,6 +97,35 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
+export const createProduct = createAsyncThunk<
+  ProductsState,
+  { formData: FormData }
+>("products/createProduct", async ({ formData }, thunkAPI) => {
+  try {
+    const {
+      auth: { token },
+    } = thunkAPI.getState() as RootState;
+    const url = `${import.meta.env.VITE_REACT_APP_API_URL}/products`;
+    const response: AxiosResponse<ProductsState> = await axios.post(
+      url,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return thunkAPI.rejectWithValue(error.message);
+    } else {
+      return thunkAPI.rejectWithValue("An unknown error occurred");
+    }
+  }
+});
+
 export const fetchHighlightedProducts = createAsyncThunk(
   "products/fetchHighlightedProducts",
   async () => {
@@ -120,6 +152,7 @@ const productSlice = createSlice({
         state.isLoading = false;
         state.isRejected = false;
         state.products = action.payload.results;
+        state.dataCount = action.payload.meta.totalData;
         state.pageInfo = {
           currentPage: action.payload.meta.currentPage,
           pages: action.payload.meta.totalPage,
@@ -147,6 +180,24 @@ const productSlice = createSlice({
           (action.payload as string) ||
           action.error.message ||
           "An error occurred while fetching highlighted products.";
+      })
+      .addCase(createProduct.pending, (state) => {
+        state.isLoading = true;
+        state.isRejected = false;
+        state.error = "";
+      })
+      .addCase(createProduct.fulfilled, (state, { payload }) => {
+        state.products = {
+          ...state.products,
+          ...payload,
+        };
+        state.isLoading = false;
+        state.isRejected = false;
+      })
+      .addCase(createProduct.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isRejected = true;
+        state.error = payload as string;
       });
   },
 });
