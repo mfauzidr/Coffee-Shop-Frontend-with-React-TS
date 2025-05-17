@@ -43,9 +43,9 @@ const PaymentInfo = ({
   }, [form.address, form.deliveryMethod, onChange]);
 
   const options = [
-    { label: "Dine In", value: "dine-in", required: true },
-    { label: "Door Delivery", value: "delivery" },
-    { label: "Pick Up", value: "pick-up" },
+    { id: 1, label: "Dine In", value: "dine-in", required: true },
+    { id: 2, label: "Door Delivery", value: "delivery" },
+    { id: 3, label: "Pick Up", value: "pick-up" },
   ];
 
   const handleRadioChange = (selectedOption: Option) => {
