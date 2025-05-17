@@ -9,7 +9,7 @@ interface Product {
   productName: string;
   description: string;
   price: number;
-  isFlashSale: boolean;
+  isFlashSale: boolean | null | undefined;
   ratingProduct?: number;
   onAddToCart?: () => void;
 }

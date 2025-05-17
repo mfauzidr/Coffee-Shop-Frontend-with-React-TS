@@ -3,13 +3,20 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useStoreSelector } from "../../redux/hooks";
 import { useEffect, useState } from "react";
-import { createProduct, fetchProducts } from "../../redux/slices/products";
+import {
+  createProduct,
+  deleteProduct,
+  fetchProductDetail,
+  fetchProducts,
+  updateProduct,
+} from "../../redux/slices/products";
 import Filter from "../../components/admins/FilterModal";
 import ProductList from "../../components/admins/ProductList";
 import CreateProduct from "../../components/admins/CreateProduct";
 import Swal from "sweetalert2";
 import img from "../../assets/img/no-image.png";
 import { Option } from "../../components/RadioGroup";
+import EditProduct from "../../components/admins/EditProduct";
 
 interface ProductFilters {
   search: string;
@@ -36,15 +43,22 @@ const Products = () => {
     category: "",
     sortBy: "",
   });
+  const { detailProduct } = useStoreSelector(
+    (state: RootState) => state.products
+  );
 
   const currentPage = pageInfo?.currentPage || 1;
   const [form, setForm] = useState<IProductBody>();
 
   const [showFilter, setShowFilter] = useState<boolean>(false);
   const [showCreateProduct, setShowCreateProduct] = useState<boolean>(false);
+  const [showEditProduct, setShowEditProduct] = useState<boolean>(false);
   const [changedImage, setSelectedImage] = useState<File | null>(null);
   const [, setSelectedSize] = useState<Option>();
   const [, setSelectedCategory] = useState<Option>();
+
+  const uuid = detailProduct.uuid;
+
   useEffect(() => {
     dispatch(
       fetchProducts({ page: currentPage, limit: 5, filters, currentPage })
@@ -71,11 +85,17 @@ const Products = () => {
       if (form?.sizeId) formData.append("sizeId", form.sizeId);
       if (changedImage) formData.append("image", changedImage);
 
-      await dispatch(createProduct({ formData })).unwrap();
+      if (showCreateProduct === true) {
+        await dispatch(createProduct({ formData })).unwrap();
+      } else if (showEditProduct === true) {
+        await dispatch(updateProduct({ uuid, formData })).unwrap();
+      }
 
       Swal.fire({
         title: "Success!",
-        text: "Create Product Success",
+        text: showCreateProduct
+          ? "Product successfully created."
+          : "Product successfully updated.",
         icon: "success",
         showConfirmButton: false,
         timer: 2000,
@@ -90,7 +110,9 @@ const Products = () => {
       console.error("Error updating profile:", error);
       Swal.fire({
         title: "Failed!",
-        text: "Create Product Failed!",
+        text: showCreateProduct
+          ? "Create Product Failed!"
+          : "Update Product Failed",
         icon: "error",
         showConfirmButton: false,
         timer: 2000,
@@ -105,6 +127,7 @@ const Products = () => {
       dispatch(fetchProducts({ page, limit: 5, filters, currentPage }));
       setForm({});
       setShowCreateProduct(false);
+      setShowEditProduct(false);
       setSelectedImage(null);
     }
   };
@@ -133,10 +156,41 @@ const Products = () => {
       };
     });
   };
+  console.log("From: ", form);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setSelectedImage(event.target.files[0]);
+    }
+  };
+
+  const handleEditClick = async (uuid: string | undefined) => {
+    if (!uuid) return;
+
+    try {
+      await dispatch(fetchProductDetail({ uuid })).unwrap();
+      setShowEditProduct(true);
+    } catch (error) {
+      console.error("Failed to fetch product detail:", error);
+      Swal.fire("Failed to fetch product details", "", "error");
+    }
+  };
+  const handleDeleteClick = async (uuid: string | undefined) => {
+    if (!uuid) return;
+
+    try {
+      await dispatch(deleteProduct({ uuid })).unwrap();
+    } catch (error) {
+      console.error("Failed to delete product ", error);
+      Swal.fire("Failed to delete product ", "", "error");
+    } finally {
+      dispatch(
+        fetchProducts({ page: currentPage, limit: 5, filters, currentPage })
+      );
+      setForm({});
+      setShowCreateProduct(false);
+      setShowEditProduct(false);
+      setSelectedImage(null);
     }
   };
 
@@ -196,6 +250,8 @@ const Products = () => {
               dataCount={dataCount}
               pageInfo={pageInfo}
               handlePageChange={handlePageChange}
+              onEditClick={handleEditClick}
+              onDeleteClick={handleDeleteClick}
             />
           )}
         </div>
@@ -216,7 +272,10 @@ const Products = () => {
       {showCreateProduct && (
         <div
           className="absolute inset-0 h-auto z-30 flex justify-end bg-black bg-opacity-30"
-          onClick={() => setShowCreateProduct(false)}
+          onClick={() => {
+            setShowEditProduct(false);
+            setForm({});
+          }}
         >
           <div
             className="bg-white w-5/12 h-full p-6 overflow-scroll no-scrollbar pb-20"
@@ -227,6 +286,43 @@ const Products = () => {
               price="price"
               description="description"
               image={changedImage ? URL.createObjectURL(changedImage) : img}
+              onSelectSize={(option) => {
+                setSelectedSize(option);
+                setForm((prev) => ({ ...prev, sizeId: String(option.id) }));
+              }}
+              onSelectCategory={(option) => {
+                setSelectedCategory(option);
+                setForm((prev) => ({ ...prev, categoryId: String(option.id) }));
+              }}
+              onImageChange={handleImageChange}
+              onChange={handleInputChange}
+              handleSubmit={(e) => handleApply(currentPage, e)}
+            />
+          </div>
+        </div>
+      )}
+      {showEditProduct && (
+        <div
+          className="absolute inset-0 h-auto z-30 flex justify-end bg-black bg-opacity-30"
+          onClick={() => {
+            setShowEditProduct(false);
+            setForm({});
+          }}
+        >
+          <div
+            className="bg-white w-5/12 h-full p-6 overflow-scroll no-scrollbar pb-20"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <EditProduct
+              detailProduct={detailProduct}
+              name="name"
+              price="price"
+              description="description"
+              image={
+                changedImage
+                  ? URL.createObjectURL(changedImage)
+                  : detailProduct.image || img
+              }
               onSelectSize={(option) => {
                 setSelectedSize(option);
                 setForm((prev) => ({ ...prev, sizeId: String(option.id) }));

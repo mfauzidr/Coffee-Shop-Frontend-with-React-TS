@@ -9,8 +9,11 @@ export interface Product {
   productName: string;
   description: string;
   price: number;
-  rating: number;
-  isFlashSale: boolean;
+  categoryId?: number;
+  sizeId?: number;
+  rating?: number | undefined;
+  isFlashSale?: boolean | null | undefined;
+  isRecommended?: boolean | null | undefined;
   ratingProduct?: number;
 }
 
@@ -25,6 +28,7 @@ export interface ProductFilters {
 export interface ProductsState {
   products: Product[];
   highlightedProducts: Product[];
+  detailProduct: Product;
   dataCount: number;
   isLoading: boolean;
   isRejected: boolean;
@@ -38,6 +42,14 @@ export interface ProductsState {
 const initialState: ProductsState = {
   products: [],
   highlightedProducts: [],
+  detailProduct: {
+    id: 0,
+    uuid: "",
+    image: "",
+    productName: "",
+    price: 0,
+    description: "",
+  },
   dataCount: 0,
   isLoading: false,
   isRejected: false,
@@ -97,6 +109,35 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
+export const fetchProductDetail = createAsyncThunk<
+  Product,
+  { uuid: string },
+  { rejectValue: { error: unknown; status?: number } }
+>("products/fetchProductDetail", async ({ uuid }, { rejectWithValue }) => {
+  try {
+    const res = await axios.get(
+      `${import.meta.env.VITE_REACT_APP_API_URL}/products/${uuid}`
+    );
+    console.log(res.data.results[0]);
+
+    if (res.data && res.data.results && res.data.results.length > 0) {
+      return res.data.results[0] as Product;
+    } else {
+      return rejectWithValue({
+        error: "Invalid response structure",
+      });
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return rejectWithValue({
+        error: error.response?.data || "Unknown error",
+        status: error.response?.status,
+      });
+    }
+    throw error;
+  }
+});
+
 export const createProduct = createAsyncThunk<
   ProductsState,
   { formData: FormData }
@@ -125,6 +166,58 @@ export const createProduct = createAsyncThunk<
     }
   }
 });
+
+export const updateProduct = createAsyncThunk<
+  ProductsState,
+  { uuid: string; formData: FormData }
+>("products/updateProduct", async ({ uuid, formData }, thunkAPI) => {
+  try {
+    const {
+      auth: { token },
+    } = thunkAPI.getState() as RootState;
+    const url = `${import.meta.env.VITE_REACT_APP_API_URL}/products/${uuid}`;
+    const response: AxiosResponse<ProductsState> = await axios.patch(
+      url,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return thunkAPI.rejectWithValue(error.message);
+    } else {
+      return thunkAPI.rejectWithValue("An unknown error occurred");
+    }
+  }
+});
+export const deleteProduct = createAsyncThunk<ProductsState, { uuid: string }>(
+  "products/deleteProduct",
+  async ({ uuid }, thunkAPI) => {
+    try {
+      const {
+        auth: { token },
+      } = thunkAPI.getState() as RootState;
+      const url = `${import.meta.env.VITE_REACT_APP_API_URL}/products/${uuid}`;
+      const response: AxiosResponse<ProductsState> = await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return thunkAPI.rejectWithValue(error.message);
+      } else {
+        return thunkAPI.rejectWithValue("An unknown error occurred");
+      }
+    }
+  }
+);
 
 export const fetchHighlightedProducts = createAsyncThunk(
   "products/fetchHighlightedProducts",
@@ -166,8 +259,56 @@ const productSlice = createSlice({
           action.error.message ||
           "An error occurred while fetching products.";
       })
+      .addCase(fetchProductDetail.pending, (state) => {
+        state.isLoading = true;
+        state.isRejected = false;
+        state.error = "";
+      })
+      .addCase(fetchProductDetail.fulfilled, (state, action) => {
+        state.detailProduct = action.payload;
+        state.isLoading = false;
+        state.isRejected = false;
+      })
+      .addCase(fetchProductDetail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isRejected = true;
+        state.error =
+          action.error.message || "An error occurred while fetching products.";
+      })
       .addCase(fetchHighlightedProducts.pending, (state) => {
         state.isLoading = true;
+      })
+      .addCase(updateProduct.pending, (state) => {
+        state.isLoading = true;
+        state.isRejected = false;
+        state.error = "";
+      })
+      .addCase(deleteProduct.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isRejected = false;
+      })
+      .addCase(deleteProduct.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isRejected = true;
+        state.error = payload as string;
+      })
+      .addCase(deleteProduct.pending, (state) => {
+        state.isLoading = true;
+        state.isRejected = false;
+        state.error = "";
+      })
+      .addCase(updateProduct.fulfilled, (state, { payload }) => {
+        state.detailProduct = {
+          ...state.detailProduct,
+          ...payload,
+        };
+        state.isLoading = false;
+        state.isRejected = false;
+      })
+      .addCase(updateProduct.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isRejected = true;
+        state.error = payload as string;
       })
       .addCase(fetchHighlightedProducts.fulfilled, (state, action) => {
         state.isLoading = false;

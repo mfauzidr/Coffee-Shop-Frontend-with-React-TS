@@ -18,7 +18,7 @@ interface ProductDetailFormProps {
   isFlashSale: boolean;
   name: string;
   price: number;
-  ratingProduct: number;
+  ratingProduct?: number | undefined;
   isRecommended: boolean;
   desc: string;
   productId: string;
@@ -184,7 +184,7 @@ const ProductDetailForm = ({
             `Rp. ${price?.toLocaleString("id")} ,-`
           )}
         </div>
-        <RatingStar rating={ratingProduct} />
+        <RatingStar rating={ratingProduct! | 0} />
         <div className="flex gap-2 md:gap-6 text-xs md:text-lg">
           <div>20+ Review</div>
           {isRecommended && (
