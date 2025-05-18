@@ -61,12 +61,12 @@ const Products = () => {
 
   useEffect(() => {
     dispatch(
-      fetchProducts({ page: currentPage, limit: 5, filters, currentPage })
+      fetchProducts({ page: currentPage, limit: 6, filters, currentPage })
     );
   }, [dispatch, filters, currentPage]);
 
   const handlePageChange = (page: string | number) => {
-    dispatch(fetchProducts({ page, limit: 5, filters, currentPage }));
+    dispatch(fetchProducts({ page, limit: 6, filters, currentPage }));
     window.scrollTo({ top: 650, behavior: "smooth" });
   };
 
@@ -185,7 +185,7 @@ const Products = () => {
       Swal.fire("Failed to delete product ", "", "error");
     } finally {
       dispatch(
-        fetchProducts({ page: currentPage, limit: 5, filters, currentPage })
+        fetchProducts({ page: currentPage, limit: 6, filters, currentPage })
       );
       setForm({});
       setShowCreateProduct(false);
