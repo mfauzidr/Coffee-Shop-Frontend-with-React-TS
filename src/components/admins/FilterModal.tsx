@@ -206,7 +206,6 @@ const Filter = ({ onApplyFilters }: FilterSidebarProps) => {
     };
 
     onApplyFilters(filters);
-    dispatch(fetchProducts({ currentPage: 1, filters }));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
