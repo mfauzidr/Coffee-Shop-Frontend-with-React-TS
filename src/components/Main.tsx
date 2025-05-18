@@ -1,21 +1,24 @@
-import { useNavigate } from 'react-router-dom';
-import StatCard from './StatCard';
-import bgMain from '../assets/img/bg-main.png';
+import { useNavigate } from "react-router-dom";
+import StatCard from "./StatCard";
+import bgMain from "../assets/img/bg-main.webp";
 
 const Main = () => {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {
-    navigate('/register');
+    navigate("/register");
   };
 
   return (
     <header className="h-screen flex flex-col-reverse lg:flex-row">
       <div className="flex flex-1 bg-gradient-to-b from-gray-600 to-black justify-center items-center px-16 py-12 lg:px-0 lg:py-0">
         <div className="flex flex-col lg:px-32 gap-6 text-white">
-          <h1 className="text-2xl lg:text-5xl">Start Your Day with Coffee and Good Meals</h1>
+          <h1 className="text-2xl lg:text-5xl">
+            Start Your Day with Coffee and Good Meals
+          </h1>
           <div className="text-sm lg:text-base">
-            We provide high quality beans, good taste, and healthy meals made by love just for you. Start your day with us for a bigger smile!
+            We provide high quality beans, good taste, and healthy meals made by
+            love just for you. Start your day with us for a bigger smile!
           </div>
           <div>
             <button
@@ -24,7 +27,6 @@ const Main = () => {
             >
               Get Started
             </button>
-
           </div>
           <div className="flex justify-between divide-x">
             <StatCard label="Staff" max={90} duration={40} />
@@ -33,7 +35,10 @@ const Main = () => {
           </div>
         </div>
       </div>
-      <div className="hidden lg:flex lg:flex-1 bg-cover bg-center" style={{ backgroundImage: `url(${bgMain})` }}></div>
+      <div
+        className="hidden lg:flex lg:flex-1 bg-cover bg-center"
+        style={{ backgroundImage: `url(${bgMain})` }}
+      ></div>
     </header>
   );
 };

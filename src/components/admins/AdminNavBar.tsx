@@ -93,7 +93,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
               >
                 <img
                   className="rounded-full w-10 h-10 object-cover border-2"
-                  src={profile.image || "/default-avatar.png"}
+                  src={profile.image || "/default-avatar.webp"}
                   alt="Profile"
                 />
                 <FeatherIcon

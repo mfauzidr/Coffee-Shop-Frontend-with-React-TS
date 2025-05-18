@@ -5,7 +5,7 @@ import { useStoreSelector } from "../redux/hooks";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import NoImg from "../assets/img/no-image.png";
+import NoImg from "../assets/img/no-image.webp";
 
 const ShoppingCart = () => {
   const { carts } = useStoreSelector((state: RootState) => state.cart);

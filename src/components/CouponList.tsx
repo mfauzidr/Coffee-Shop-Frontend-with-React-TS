@@ -1,8 +1,8 @@
 import React from "react";
 import { CarouselButton, CarouselIndicator } from "./CarouselPagination";
 import PromoCard from "./PromoCard";
-import Promo1 from "../assets/img/promo-1.png";
-import Promo2 from "../assets/img/promo-2.png";
+import Promo1 from "../assets/img/promo-1.webp";
+import Promo2 from "../assets/img/promo-2.webp";
 
 interface PromoData {
   imgSrc: string;

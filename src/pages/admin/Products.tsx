@@ -14,7 +14,7 @@ import Filter from "../../components/admins/FilterModal";
 import ProductList from "../../components/admins/ProductList";
 import CreateProduct from "../../components/admins/CreateProduct";
 import Swal from "sweetalert2";
-import img from "../../assets/img/no-image.png";
+import img from "../../assets/img/no-image.webp";
 import { Option } from "../../components/RadioGroup";
 import EditProduct from "../../components/admins/EditProduct";
 

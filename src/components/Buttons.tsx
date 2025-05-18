@@ -1,5 +1,7 @@
 import FeatherIcon from "feather-icons-react";
 import { Link } from "react-router-dom";
+import fb from "../src/assets/img/facebook-icon.webp";
+import google from "../src/assets/img/google-icon.webp";
 
 interface SubmitButtonProps {
   buttonName?: string;
@@ -30,7 +32,7 @@ export const LoginMethod = () => {
       >
         <img
           className="mr-2"
-          src="../src/assets/img/facebook-icon.png"
+          src={fb}
           alt=""
           style={{ width: "24px", height: "24px" }}
         />
@@ -42,7 +44,7 @@ export const LoginMethod = () => {
       >
         <img
           className="mr-2"
-          src="../src/assets/img/google-icon.png"
+          src={google}
           alt=""
           style={{ width: "24px", height: "24px" }}
         />

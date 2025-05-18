@@ -1,9 +1,9 @@
-import Image1 from "../assets/img/payment-1.png";
-import Image2 from "../assets/img/payment-2.png";
-import Image3 from "../assets/img/payment-3.png";
-import Image4 from "../assets/img/payment-4.png";
-import Image5 from "../assets/img/payment-5.png";
-import Image6 from "../assets/img/payment-6.png";
+import Image1 from "../assets/img/payment-1.webp";
+import Image2 from "../assets/img/payment-2.webp";
+import Image3 from "../assets/img/payment-3.webp";
+import Image4 from "../assets/img/payment-4.webp";
+import Image5 from "../assets/img/payment-5.webp";
+import Image6 from "../assets/img/payment-6.webp";
 import { Cart } from "../redux/slices/cart";
 import { Button } from "./Buttons";
 

@@ -1,7 +1,7 @@
 import { Button, CartButton } from "./Buttons";
 import RatingStar from "./RatingStar";
 import { Link } from "react-router-dom";
-import NoImg from "../assets/img/no-image.png";
+import NoImg from "../assets/img/no-image.webp";
 
 interface Product {
   uuid: string;
