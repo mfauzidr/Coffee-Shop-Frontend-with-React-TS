@@ -70,10 +70,7 @@ const Products = () => {
     window.scrollTo({ top: 650, behavior: "smooth" });
   };
 
-  const handleApply = async (
-    page: string | number,
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleApply = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
@@ -124,7 +121,6 @@ const Products = () => {
         toast: true,
       });
     } finally {
-      dispatch(fetchProducts({ page, limit: 6, filters, currentPage }));
       setForm({});
       setShowCreateProduct(false);
       setShowEditProduct(false);
@@ -296,7 +292,7 @@ const Products = () => {
               }}
               onImageChange={handleImageChange}
               onChange={handleInputChange}
-              handleSubmit={(e) => handleApply(currentPage, e)}
+              handleSubmit={(e) => handleApply(e)}
             />
           </div>
         </div>
@@ -333,7 +329,7 @@ const Products = () => {
               }}
               onImageChange={handleImageChange}
               onChange={handleInputChange}
-              handleSubmit={(e) => handleApply(currentPage, e)}
+              handleSubmit={(e) => handleApply(e)}
             />
           </div>
         </div>
