@@ -136,6 +136,7 @@ const Products = () => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       ...newFilters,
+      search: prevFilters.search,
     }));
     setShowFilter(false);
   };
