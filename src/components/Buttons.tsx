@@ -1,7 +1,7 @@
 import FeatherIcon from "feather-icons-react";
 import { Link } from "react-router-dom";
-import fb from "../src/assets/img/facebook-icon.webp";
-import google from "../src/assets/img/google-icon.webp";
+import fb from "../assets/img/facebook-icon.webp";
+import google from "../assets/img/google-icon.webp";
 
 interface SubmitButtonProps {
   buttonName?: string;
