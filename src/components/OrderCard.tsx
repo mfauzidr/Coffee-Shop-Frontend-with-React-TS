@@ -141,14 +141,15 @@ const OrderCard = ({
 
   return (
     <div className="flex p-2 md:p-2.5 gap-1 md:gap-7 bg-gray-100 shadow-md items-center">
-      <div>
+      <div className="w-24 md:w-40 aspect-square overflow-hidden rounded">
         <img
-          className="max-w-20 md:max-w-36 max-h-20 md:max-h-36"
+          className="w-full h-full object-cover"
           src={image}
           alt={productName}
         />
       </div>
-      <div className="flex justify-between w-full">
+
+      <div className="flex justify-between w-full pl-4">
         <div className="flex flex-col p-1 md:p-2.5 gap-1 md:gap-3.5 w-fit md:w-60">
           <div className="font-bold text-md md:text-xl">{productName}</div>
           <div className="flex divide-x divide-gray-300 text-gray-600 text-xs md:text-base justify-between w-60">

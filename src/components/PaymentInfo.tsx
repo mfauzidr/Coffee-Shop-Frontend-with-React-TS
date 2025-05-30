@@ -64,7 +64,7 @@ const PaymentInfo = ({
       <div className="text-lg md:text-xl font-medium">
         Payment Info & Delivery
       </div>
-      <form className="flex flex-col gap-3">
+      <form className="flex flex-col gap-3 w-full">
         <EmailInput
           name="email"
           placeholder="Enter Your Email"

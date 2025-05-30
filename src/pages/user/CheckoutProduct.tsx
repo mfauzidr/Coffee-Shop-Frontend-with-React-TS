@@ -161,7 +161,7 @@ const CheckoutProduct = () => {
     <>
       <div className="flex flex-col mx-8 md:mx-16 lg:mx-32 mt-8 md:mt-16 h-auto gap-6">
         <PageHeader pageName="Payment Details" />
-        <div className="block lg:flex gap-5">
+        <div className="block lg:flex gap-5 mb-6">
           <div className="flex flex-col lg:w-2/3 gap-2.5 mb:2.5 lg:mb-0">
             <div className="flex justify-between items-center h-fit mb-3.5">
               <div className="text-lg lg:text-xl font-medium">Your Order</div>
@@ -181,7 +181,7 @@ const CheckoutProduct = () => {
                 </button>
               </div>
             </div>
-            <div className="flex flex-col max-h-80 md:max-h-[450px] gap-2 md:gap-4 overflow-scroll md:p-3 bg-slate-50">
+            <div className="flex flex-col max-h-80 md:max-h-[450px] gap-2 md:gap-4 overflow-scroll md:p-3 bg-slate-50 mb-5">
               {carts.length > 0 ? (
                 carts.map((items, index) => (
                   <OrderCard
@@ -209,19 +209,19 @@ const CheckoutProduct = () => {
                 </p>
               )}
             </div>
+            <PaymentInfo
+              email={profile.email}
+              fullname={profile.fullName}
+              address={profile.address}
+              deliveryMethod={deliveryMethod}
+              onChange={({ address, deliveryMethod }) => {
+                setDeliveryAddress(address);
+                setDeliveryMethod(deliveryMethod);
+              }}
+            />
           </div>
           <OrderSummary orders={carts} onClick={handleCheckout} />
         </div>
-        <PaymentInfo
-          email={profile.email}
-          fullname={profile.fullName}
-          address={profile.address}
-          deliveryMethod={deliveryMethod}
-          onChange={({ address, deliveryMethod }) => {
-            setDeliveryAddress(address);
-            setDeliveryMethod(deliveryMethod);
-          }}
-        />
       </div>
       <Footer />
       {showDeleteConfirmModal && (

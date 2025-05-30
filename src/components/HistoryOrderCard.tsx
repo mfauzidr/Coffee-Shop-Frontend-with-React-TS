@@ -38,21 +38,21 @@ const HistoryOrderCard = ({
                 <FontAwesomeIcon icon={faGlassWater as IconProp} />
                 No. Order
               </div>
-              <div className="font-bold text-xs">{orderNumber}</div>
+              <div className="font-extrabold text-xs">{orderNumber}</div>
             </div>
-            <div className="flex flex-col gap-2.5 w-[68px]">
+            <div className="flex flex-col gap-2.5 w-20">
               <div className="flex items-center gap-2">
                 <FontAwesomeIcon icon={faCalendarDays as IconProp} />
                 Date
               </div>
-              <div className="font-bold text-xs">{date}</div>
+              <div className="font-extrabold text-xs">{date}</div>
             </div>
             <div className="flex flex-col gap-2.5 w-[68px]">
               <div className="flex items-center gap-2">
                 <FontAwesomeIcon icon={faRepeat as IconProp} />
                 Total
               </div>
-              <div className="font-bold text-xs">Rp. {total}</div>
+              <div className="font-extrabold text-xs">Rp. {total}</div>
             </div>
             <div className="flex flex-col gap-2.5 w-28">
               {status && (

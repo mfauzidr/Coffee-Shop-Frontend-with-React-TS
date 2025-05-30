@@ -62,14 +62,14 @@ const HistoryOrder = () => {
 
   return (
     <>
-      <div className="flex flex-col mx-16 lg:mx-32 my-8 md:my-16 h-auto gap-2.5 lg:gap-5">
-        <div className="flex w-full items-end gap-5 lg:gap-7 mb-5 lg:mb-9">
-          <h1 className="text-2xl lg:text-5xl font-medium">History Order</h1>
-          <div className="bg-gray-200 px-2 lg:px-4 py-1 lg:py-2.5 text-sm lg:text-base">
+      <div className="flex flex-col mx-16 md:mx-32 my-8 md:my-16 h-auto gap-2.5 md:gap-5">
+        <div className="flex w-full items-end gap-5 md:gap-7 mb-5 md:mb-9">
+          <h1 className="text-2xl md:text-5xl font-medium">History Order</h1>
+          <div className="bg-gray-200 px-2 md:px-4 py-1 md:py-2.5 text-sm md:text-base">
             {posts.length}
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row gap-5">
+        <div className="flex flex-col md:flex-row md:justify-between gap-5">
           <div className="flex flex-col">
             <DatePicker responsiveDisplay="block md:hidden w-fit mb-4" />
             <div className="flex">

@@ -2346,12 +2346,12 @@ html {
   margin-bottom: 2rem;
 }
 
-.-mt-2 {
-  margin-top: -0.5rem;
+.-mt-1 {
+  margin-top: -0.25rem;
 }
 
-.-mt-2\.5 {
-  margin-top: -0.625rem;
+.-mt-2 {
+  margin-top: -0.5rem;
 }
 
 .-mt-8 {
@@ -2474,8 +2474,8 @@ html {
   margin-top: 2.25rem;
 }
 
-.-mt-1 {
-  margin-top: -0.25rem;
+.ml-4 {
+  margin-left: 1rem;
 }
 
 .block {
@@ -2601,6 +2601,10 @@ html {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-20 {
+  height: 5rem;
 }
 
 .max-h-0 {
@@ -3966,6 +3970,14 @@ html {
     margin-bottom: 4rem;
   }
 
+  .md\:-mt-2 {
+    margin-top: -0.5rem;
+  }
+
+  .md\:-mt-2\.5 {
+    margin-top: -0.625rem;
+  }
+
   .md\:mb-2 {
     margin-bottom: 0.5rem;
   }
@@ -3994,12 +4006,8 @@ html {
     margin-top: 4rem;
   }
 
-  .md\:-mt-2 {
-    margin-top: -0.5rem;
-  }
-
-  .md\:-mt-2\.5 {
-    margin-top: -0.625rem;
+  .md\:mb-9 {
+    margin-bottom: 2.25rem;
   }
 
   .md\:flex {
@@ -4036,6 +4044,10 @@ html {
 
   .md\:h-96 {
     height: 24rem;
+  }
+
+  .md\:h-36 {
+    height: 9rem;
   }
 
   .md\:max-h-36 {
@@ -4086,8 +4098,24 @@ html {
     width: 20rem;
   }
 
+  .md\:w-36 {
+    width: 9rem;
+  }
+
+  .md\:w-40 {
+    width: 10rem;
+  }
+
+  .md\:w-full {
+    width: 100%;
+  }
+
   .md\:max-w-36 {
     max-width: 9rem;
+  }
+
+  .md\:max-w-md {
+    max-width: 28rem;
   }
 
   .md\:flex-1 {
@@ -4108,6 +4136,10 @@ html {
 
   .md\:justify-center {
     justify-content: center;
+  }
+
+  .md\:justify-between {
+    justify-content: space-between;
   }
 
   .md\:gap-10 {
@@ -4175,6 +4207,10 @@ html {
     padding: 0.75rem;
   }
 
+  .md\:p-4 {
+    padding: 1rem;
+  }
+
   .md\:px-12 {
     padding-left: 3rem;
     padding-right: 3rem;
@@ -4208,6 +4244,21 @@ html {
   .md\:py-6 {
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
+  }
+
+  .md\:px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .md\:py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .md\:py-2\.5 {
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
   }
 
   .md\:text-2xl {
@@ -4406,6 +4457,10 @@ html {
 
   .lg\:justify-end {
     justify-content: flex-end;
+  }
+
+  .lg\:justify-between {
+    justify-content: space-between;
   }
 
   .lg\:gap-0 {
