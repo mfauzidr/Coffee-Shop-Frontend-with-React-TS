@@ -47,7 +47,7 @@ const RadioGroup = ({
             >
               {option.label}
               {option.additionalPrice !== 0 && (
-                <div className="text-gray-500 text-[10px] h-[10px] p-0 -mt-2.5">
+                <div className="text-gray-500 text-[10px] h-[10px] p-0 -mt-1 md:-mt-2.5">
                   + {option.additionalPrice}
                 </div>
               )}
