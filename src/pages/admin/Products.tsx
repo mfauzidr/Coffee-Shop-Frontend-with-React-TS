@@ -121,6 +121,9 @@ const Products = () => {
         toast: true,
       });
     } finally {
+      dispatch(
+        fetchProducts({ page: currentPage, limit: 6, filters, currentPage })
+      );
       setForm({});
       setShowCreateProduct(false);
       setShowEditProduct(false);
