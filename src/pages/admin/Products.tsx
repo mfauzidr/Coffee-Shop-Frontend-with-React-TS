@@ -270,7 +270,7 @@ const Products = () => {
         <div
           className="absolute inset-0 h-auto z-30 flex justify-end bg-black bg-opacity-30"
           onClick={() => {
-            setShowEditProduct(false);
+            setShowCreateProduct(false);
             setForm({});
           }}
         >

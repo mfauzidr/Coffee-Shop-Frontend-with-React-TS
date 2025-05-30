@@ -92,7 +92,7 @@ const EditProduct = ({
   return (
     <form className="flex flex-col" action="" onSubmit={handleSubmit}>
       <div className="flex justify-between mb-6 text-lg">
-        <label>Add Product</label>
+        <label>Edit Product</label>
       </div>
       <label className="font-bold text-sm mb-2" htmlFor="image">
         Photo Product
