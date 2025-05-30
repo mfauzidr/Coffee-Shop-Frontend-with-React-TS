@@ -64,7 +64,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
     <nav
       id="navbar"
       className={`flex flex-col lg:flex-row lg:h-20 w-full ${bgColor} text-white items-center px-8 md:px-16 lg:px-32 gap-4 lg:gap-0 py-6 lg:py-0 ${position} overflow-visible ${
-        menuOpen ? "h-auto" : "h-20"
+        menuOpen ? "max-h-96" : "max-h-20"
       } transition-all duration-500 ease-in-out`}
     >
       <div className="flex flex-col lg:flex-row flex-1 items-center w-full lg:w-auto">
@@ -84,12 +84,12 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
         </div>
         <ul
           className={`flex flex-col lg:flex-row lg:flex-1 mx-3 items-center justify-center gap-4 lg:gap-0 transition-all duration-500 ease-in-out ${
-            menuOpen ? "max-h-20" : "max-h-0"
+            menuOpen ? "max-h-40" : "max-h-0"
           } lg:max-h-full overflow-hidden`}
         >
           <li className="mx-6">
             <Link
-              className="pb-2 -mt-2 transition duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
+              className="pb-2 -mt-2 transition-all duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
               to="/"
             >
               Home
@@ -97,7 +97,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
           </li>
           <li className="mx-6">
             <Link
-              className="pb-2 -mt-2 transition duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
+              className="pb-2 -mt-2 transition-all duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
               to="/product"
             >
               Product
@@ -106,7 +106,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
           {token ? (
             <li className="mx-6">
               <Link
-                className="pb-2 -mt-2 transition duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
+                className="pb-2 -mt-2 transition-all duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
                 to="/history-order"
               >
                 Orders
@@ -118,7 +118,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
           {decoded.role && decoded.role === "admin" ? (
             <li className="mx-6">
               <Link
-                className="pb-2 -mt-2 transition duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
+                className="pb-2 -mt-2 transition-all duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
                 to="/admin/dashboard"
               >
                 Dashboard

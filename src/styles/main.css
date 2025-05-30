@@ -2614,6 +2614,14 @@ html {
   max-height: 100vh;
 }
 
+.max-h-40 {
+  max-height: 10rem;
+}
+
+.max-h-60 {
+  max-height: 15rem;
+}
+
 .min-h-screen {
   min-height: 100vh;
 }
