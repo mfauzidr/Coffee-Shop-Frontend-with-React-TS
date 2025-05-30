@@ -104,7 +104,7 @@ interface ListFilterProps {
 
 const ListFilter = ({ id, items }: ListFilterProps) => {
   return (
-    <ul id={id} className="flex flex-col gap-8">
+    <ul id={id} className="flex flex-col gap-2 md:gap-8">
       {items.map((item, index) => (
         <CheckboxFilter
           key={index}
@@ -117,7 +117,7 @@ const ListFilter = ({ id, items }: ListFilterProps) => {
   );
 };
 
-interface FilterSidebarProps {
+interface FilterModalProps {
   onReset: () => void;
   onApplyFilters: (filters: {
     search: string;
@@ -127,7 +127,7 @@ interface FilterSidebarProps {
   }) => void;
 }
 
-const FilterSidebar = ({ onReset, onApplyFilters }: FilterSidebarProps) => {
+const FilterModal = ({ onReset, onApplyFilters }: FilterModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [categories, setCategories] = useState<Categories[]>([]);
   const [search, setSearch] = useState("");
@@ -215,11 +215,15 @@ const FilterSidebar = ({ onReset, onApplyFilters }: FilterSidebarProps) => {
   };
 
   return (
-    <aside className="hidden lg:flex flex-col bg-black rounded-3xl h-fit p-8 gap-y-6">
-      <form className="flex flex-col gap-6" action="">
+    <div className="flex-1 bg-white border-4 border-amber-500 rounded-3xl max-h-[650px] p-8 gap-y-4 text-black text-sm">
+      <form className="flex flex-col gap-3" action="">
         <div className="flex justify-between">
           <div>Filter</div>
-          <button type="reset" onClick={onReset}>
+          <button
+            className="hover:text-amber-500"
+            type="reset"
+            onClick={onReset}
+          >
             Reset Filter
           </button>
         </div>
@@ -227,7 +231,7 @@ const FilterSidebar = ({ onReset, onApplyFilters }: FilterSidebarProps) => {
           Search
         </label>
         <input
-          className="h-10 rounded p-5 text-black text-sm"
+          className="h-10 rounded p-5 text-black text-sm border"
           id="search"
           type="text"
           placeholder="Search here"
@@ -241,7 +245,7 @@ const FilterSidebar = ({ onReset, onApplyFilters }: FilterSidebarProps) => {
         <label className="font-bold" htmlFor="sort-by">
           Sort By
         </label>
-        <ul className="flex flex-col gap-4">
+        <ul className="flex flex-col gap-2">
           {sortByItems.map((item, index) => (
             <RadioFilter
               key={index}
@@ -253,7 +257,7 @@ const FilterSidebar = ({ onReset, onApplyFilters }: FilterSidebarProps) => {
             />
           ))}
         </ul>
-        <div className="mt-4">
+        <div className="">
           <label className="font-bold">Range Price</label>
           <PriceRangeSlider values={priceRange} onChange={setPriceRange} />
         </div>
@@ -265,8 +269,8 @@ const FilterSidebar = ({ onReset, onApplyFilters }: FilterSidebarProps) => {
           onClick={handleApply}
         />
       </form>
-    </aside>
+    </div>
   );
 };
 
-export default FilterSidebar;
+export default FilterModal;
