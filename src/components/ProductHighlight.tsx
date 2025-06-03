@@ -30,7 +30,7 @@ const ProductHighlight = () => {
         <p className="text-red-500">{error || "An error occurred."}</p>
       )}
       {!isLoading && !isRejected && highlightedProducts.length > 0 && (
-        <div className="h-auto max-w-full overflow-x-auto lg:overflow-visible">
+        <div className="h-auto max-w-full overflow-x-auto lg:overflow-visible lg:px-24">
           <div className="flex flex-1 lg:flex-row mt-5 lg:mt-14 gap-2 lg:gap-5 w-80 lg:w-full">
             {highlightedProducts.map((product) => (
               <ProductCard
