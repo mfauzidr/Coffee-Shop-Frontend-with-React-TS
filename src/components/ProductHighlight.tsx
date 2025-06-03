@@ -16,7 +16,7 @@ const ProductHighlight = () => {
   }, [dispatch]);
 
   return (
-    <section className="flex flex-col h-3/4 lg:h-screen items-center mt-20 px-10 gap-6">
+    <section className="flex flex-col h-3/4 lg:h-auto items-center mt-20 px-10 gap-6">
       <SectionHeader
         title={
           <h1>
