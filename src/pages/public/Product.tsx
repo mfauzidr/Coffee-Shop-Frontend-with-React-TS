@@ -21,7 +21,6 @@ const Product = () => {
     <div className="relative">
       <ProductHeader />
 
-      {/* Mobile search & filter button */}
       <div className="flex lg:hidden px-6 md:px-16 gap-4 py-2 md:py-4 border-b-2 items-center">
         <div className="flex-1 relative">
           <i className="absolute inset-y-0 left-0 flex items-center ml-3">
@@ -47,7 +46,6 @@ const Product = () => {
 
       <CouponList />
 
-      {/* Product section */}
       <div className="mx-10 md:mx-32 mb-10">
         <div className="text-2xl md:text-5xl">
           Our <span className="text-amber-800">Product</span>

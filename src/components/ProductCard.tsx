@@ -4,14 +4,15 @@ import { Link } from "react-router-dom";
 import NoImg from "../assets/img/no-image.webp";
 
 interface Product {
-  uuid: string;
-  image: string;
-  productName: string;
-  description: string;
-  price: number;
-  isFlashSale: boolean | null | undefined;
+  uuid?: string;
+  image?: string;
+  productName?: string;
+  description?: string;
+  price?: number;
+  isFlashSale?: boolean | null | undefined;
   ratingProduct?: number;
   onAddToCart?: () => void;
+  loading?: boolean;
 }
 
 const ProductCard = ({
@@ -23,9 +24,27 @@ const ProductCard = ({
   isFlashSale,
   ratingProduct,
   onAddToCart,
+  loading,
 }: Product) => {
-  const discount = price / 2;
+  let discount = 0;
+  if (price) discount = price / 2;
+
   const defaultImage = NoImg;
+
+  if (loading) {
+    return (
+      <div className="flex-1 flex-col relative animate-pulse">
+        <div className="flex flex-1 h-32 lg:h-64 min-w-40 lg:w-full bg-gray-200 rounded-lg" />
+        <div className="relative flex-1 bg-white shadow-md mx-3 lg:mx-6 p-3 -mt-8 text-black">
+          <div className="h-4 bg-gray-200 mb-2 w-3/4 rounded" />
+          <div className="h-3 bg-gray-200 mb-1 w-full rounded" />
+          <div className="h-3 bg-gray-200 mb-1 w-5/6 rounded" />
+          <div className="h-6 bg-gray-200 mt-2 w-1/2 rounded" />
+          <div className="h-8 bg-gray-200 mt-2 w-full rounded" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 flex-col relative">

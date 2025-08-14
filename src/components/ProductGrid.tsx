@@ -99,26 +99,29 @@ const ProductGrid = ({ filters }: ProductGridProps) => {
 
   return (
     <div>
-      {isLoading && <p>Loading...</p>}
       {isRejected && (
         <p className="text-red-500">{error || "An error occurred."}</p>
       )}
       {!isLoading && !isRejected && products.length > 0 && (
         <>
-          <div className="relative grid grid-flow-row grid-cols-2 gap-2 md:gap-8">
-            {products.map((product) => (
-              <ProductCard
-                key={product.uuid}
-                uuid={product.uuid}
-                image={product.image}
-                productName={product.productName}
-                description={product.description}
-                price={product.price}
-                isFlashSale={product.isFlashSale}
-                ratingProduct={product.ratingProduct}
-                onAddToCart={() => handleAddToCart(product.uuid)}
-              />
-            ))}
+          <div className="relative grid grid-flow-row grid-cols-2 2xl:grid-cols-3 gap-2 md:gap-8">
+            {isLoading
+              ? Array.from({ length: 6 }).map((_, index) => (
+                  <ProductCard key={index} loading={true} />
+                ))
+              : products.map((product) => (
+                  <ProductCard
+                    key={product.uuid}
+                    uuid={product.uuid}
+                    image={product.image}
+                    productName={product.productName}
+                    description={product.description}
+                    price={product.price}
+                    isFlashSale={product.isFlashSale}
+                    ratingProduct={product.ratingProduct}
+                    onAddToCart={() => handleAddToCart(product.uuid)}
+                  />
+                ))}
           </div>
           {pageInfo && (
             <PagePagination
