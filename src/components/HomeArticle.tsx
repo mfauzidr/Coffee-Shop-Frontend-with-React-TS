@@ -4,7 +4,7 @@ import BgImage from "../assets/img/bg-article.webp";
 const HomeArticle = () => {
   return (
     <>
-      <article className="flex h-1/2">
+      <article className="flex h-1/2 xl:h-[55vh]">
         <div className="flex lg:flex-1 justify-center items-center bg-white px-16 py-12 lg:px-0">
           <div className="flex flex-col flex-1 lg:px-32 gap-6">
             <h1 className="text-2xl lg:text-3xl relative pl-6">
