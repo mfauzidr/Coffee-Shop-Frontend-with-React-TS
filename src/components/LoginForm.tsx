@@ -16,6 +16,7 @@ interface DecodedToken {
 function LoginForm() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const dispatch = useStoreDispatch();
   const { isLoading } = useStoreSelector((state) => state.auth);
@@ -35,6 +36,7 @@ function LoginForm() {
     if (!email || !password) {
       setIsError(true);
       setIsSuccess(false);
+      setErrorMessage("Please fill out the form correctly!");
       return;
     }
 
@@ -59,6 +61,8 @@ function LoginForm() {
     } catch (err) {
       console.error("Login error:", err);
       setIsError(true);
+      setErrorMessage("Login failed! Wrong Email or Password");
+      setIsSuccess(false);
     }
   };
 
@@ -93,7 +97,7 @@ function LoginForm() {
           <span
             className={`text-red-500 font-semibold ${isError ? "" : "hidden"}`}
           >
-            Wrong email or Password!
+            {errorMessage}
           </span>
         </div>
         <Link to="/forgot-password" className="text-amber-500 self-end">
@@ -109,13 +113,11 @@ function LoginForm() {
           Register
         </Link>
       </div>
-
       <div className="flex items-center justify-center">
         <div className="flex-grow border-t border-gray-300 mx-2"></div>
         <div className="text-gray-300 px-2">or</div>
         <div className="flex-grow border-t border-gray-300 mx-2"></div>
       </div>
-
       <LoginMethod />
     </form>
   );

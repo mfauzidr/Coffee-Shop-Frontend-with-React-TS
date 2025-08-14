@@ -1,19 +1,23 @@
-import { useState } from 'react';
-import FeatherIcon from 'feather-icons-react';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import FeatherIcon from "feather-icons-react";
+import { Link } from "react-router-dom";
 
 interface InputProps {
   label?: string;
   name: string;
   placeholder?: string;
-  disabled?: boolean
-  showChangeEmail?: boolean
-  value?: string
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  disabled?: boolean;
+  showChangeEmail?: boolean;
+  value?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const FullNameInput = ({ name, placeholder = 'Enter Your Full Name', value, onChange }: InputProps) => {
-
+export const FullNameInput = ({
+  name,
+  placeholder = "Enter Your Full Name",
+  value,
+  onChange,
+}: InputProps) => {
   const inputValue = value === "" ? undefined : value;
   return (
     <div className="relative">
@@ -36,8 +40,13 @@ export const FullNameInput = ({ name, placeholder = 'Enter Your Full Name', valu
   );
 };
 
-export const EmailInput = ({ value, name, placeholder = 'Enter Your Email', showChangeEmail = false, disabled = false }: InputProps) => {
-
+export const EmailInput = ({
+  value,
+  name,
+  placeholder = "Enter Your Email",
+  showChangeEmail = false,
+  disabled = false,
+}: InputProps) => {
   return (
     <div className="relative">
       <label className="block font-semibold" htmlFor={name}>
@@ -55,7 +64,7 @@ export const EmailInput = ({ value, name, placeholder = 'Enter Your Email', show
         <div className="border rounded-lg border-gray-200 w-full h-12 pl-10 flex items-center text-gray-400">
           {placeholder}
         </div>
-      ) :
+      ) : (
         <input
           className="border rounded-lg w-full h-11 pl-10 outline-none"
           id={name}
@@ -64,13 +73,17 @@ export const EmailInput = ({ value, name, placeholder = 'Enter Your Email', show
           type="email"
           placeholder={placeholder}
         />
-
-      }
+      )}
     </div>
   );
 };
 
-export const PasswordInput = ({ value, label, name, placeholder = 'Enter Your Password' }: InputProps & { showSetNew?: boolean }) => {
+export const PasswordInput = ({
+  value,
+  label,
+  name,
+  placeholder = "Enter Your Password",
+}: InputProps & { showSetNew?: boolean }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => {
@@ -90,13 +103,21 @@ export const PasswordInput = ({ value, label, name, placeholder = 'Enter Your Pa
           className="w-full outline-none"
           id={name}
           name={name}
-          type={showPassword ? 'text' : 'password'}
+          type={showPassword ? "text" : "password"}
           value={value}
           placeholder={placeholder}
         />
-        <button onClick={togglePassword} id="reveal-password" className="justify-self-end" type="button">
+        <button
+          onClick={togglePassword}
+          id="reveal-password"
+          className="justify-self-end"
+          type="button"
+        >
           <i>
-            <FeatherIcon icon="eye-off" className="text-gray-500 h-5 w-5" />
+            <FeatherIcon
+              icon={`${showPassword ? "eye" : "eye-off"}`}
+              className="text-gray-500 h-5 w-5"
+            />
           </i>
         </button>
       </div>
@@ -104,7 +125,11 @@ export const PasswordInput = ({ value, label, name, placeholder = 'Enter Your Pa
   );
 };
 
-export const ConfirmPasswordInput = ({ value, name, placeholder = 'Enter Your Password Again' }: InputProps) => {
+export const ConfirmPasswordInput = ({
+  value,
+  name,
+  placeholder = "Enter Your Password Again",
+}: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => {
@@ -124,13 +149,21 @@ export const ConfirmPasswordInput = ({ value, name, placeholder = 'Enter Your Pa
           className="w-full outline-none"
           id={name}
           name={name}
-          type={showPassword ? 'text' : 'password'}
+          type={showPassword ? "text" : "password"}
           value={value}
           placeholder={placeholder}
         />
-        <button onClick={togglePassword} id="reveal-confirm-password" className="justify-self-end" type="button">
+        <button
+          onClick={togglePassword}
+          id="reveal-confirm-password"
+          className="justify-self-end"
+          type="button"
+        >
           <i>
-            <FeatherIcon icon="eye-off" className="text-gray-500 h-5 w-5" />
+            <FeatherIcon
+              icon={`${showPassword ? "eye" : "eye-off"}`}
+              className="text-gray-500 h-5 w-5"
+            />
           </i>
         </button>
       </div>
@@ -138,8 +171,12 @@ export const ConfirmPasswordInput = ({ value, name, placeholder = 'Enter Your Pa
   );
 };
 
-export const AddressInput = ({ name, placeholder = 'Enter Your Address', value, onChange }: InputProps) => {
-
+export const AddressInput = ({
+  name,
+  placeholder = "Enter Your Address",
+  value,
+  onChange,
+}: InputProps) => {
   return (
     <div className="relative">
       <label className="block font-semibold" htmlFor="address">
@@ -161,8 +198,12 @@ export const AddressInput = ({ name, placeholder = 'Enter Your Address', value, 
   );
 };
 
-export const PhoneInput = ({ name, placeholder = 'Enter Your Phone Number', value, onChange }: InputProps) => {
-
+export const PhoneInput = ({
+  name,
+  placeholder = "Enter Your Phone Number",
+  value,
+  onChange,
+}: InputProps) => {
   return (
     <div className="relative">
       <label className="block font-semibold" htmlFor="phone">

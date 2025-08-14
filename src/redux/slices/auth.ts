@@ -28,7 +28,7 @@ const loginThunk = createAsyncThunk<
   { rejectValue: { error: Error; status?: number } }
 >("auth/login", async (form, { rejectWithValue }) => {
   try {
-    const url = `${import.meta.env.VITE_REACT_APP_API_URL}/login`;
+    const url = `${import.meta.env.VITE_REACT_APP_API_URL}/auth/login`;
     const result: AxiosResponse<AuthResponse> = await axios.post(url, form);
     const token = result.data.results[0].token;
 
