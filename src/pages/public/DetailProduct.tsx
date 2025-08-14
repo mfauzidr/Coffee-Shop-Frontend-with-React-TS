@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Footer from "../../components/Footer";
 import ImageProduct from "../../components/ImageProduct";
 import SmallImg1 from "../../assets/img/coffee-2.webp";
 import SmallImg2 from "../../assets/img/coffee-3.webp";
@@ -62,7 +61,6 @@ const DetailProduct = () => {
           <ProductRec />
         </div>
       </div>
-      <Footer />
     </>
   );
 };

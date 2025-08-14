@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Footer from "../../components/Footer";
 import ProfileCard from "../../components/ProfileCard";
 import {
   AddressInput,
@@ -202,8 +201,6 @@ const Profile = () => {
           </form>
         </div>
       </div>
-
-      <Footer />
     </>
   );
 };

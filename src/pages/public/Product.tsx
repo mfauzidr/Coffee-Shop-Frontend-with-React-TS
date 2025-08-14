@@ -1,5 +1,4 @@
 import CouponList from "../../components/CouponList";
-import Footer from "../../components/Footer";
 import ProductGrid from "../../components/ProductGrid";
 import ProductHeader from "../../components/ProductHeader";
 import FilterSidebar from "../../components/FilterSidebar";
@@ -93,8 +92,6 @@ const Product = () => {
           </div>
         </div>
       </div>
-
-      <Footer />
 
       {showFilter && (
         <div

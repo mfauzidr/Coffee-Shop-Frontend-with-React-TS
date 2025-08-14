@@ -1,5 +1,4 @@
 import CustomerDetails from "../../components/CustomerDetails";
-import Footer from "../../components/Footer";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useStoreSelector } from "../../redux/hooks";
@@ -130,7 +129,6 @@ const DetailOrder = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

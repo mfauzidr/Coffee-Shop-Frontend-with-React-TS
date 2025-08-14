@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Footer from "../../components/Footer";
 import OrderStatus from "../../components/OrderStatus";
 import DatePicker from "../../components/DatePicker";
 import HistoryOrderCard from "../../components/HistoryOrderCard";
@@ -99,7 +98,6 @@ const HistoryOrder = () => {
           <MessageSection />
         </div>
       </div>
-      <Footer />
     </>
   );
 };

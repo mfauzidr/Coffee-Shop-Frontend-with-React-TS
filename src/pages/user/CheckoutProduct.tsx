@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Footer from "../../components/Footer";
 import OrderCard from "../../components/OrderCard";
 import OrderSummary from "../../components/OrderSummary";
 import PageHeader from "../../components/PageHeader";
@@ -223,7 +222,6 @@ const CheckoutProduct = () => {
           <OrderSummary orders={carts} onClick={handleCheckout} />
         </div>
       </div>
-      <Footer />
       {showDeleteConfirmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">

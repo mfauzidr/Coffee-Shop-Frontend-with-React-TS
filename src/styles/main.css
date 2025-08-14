@@ -4362,10 +4362,6 @@ html {
     height: auto;
   }
 
-  .lg\:h-screen {
-    height: 100vh;
-  }
-
   .lg\:max-h-full {
     max-height: 100%;
   }
