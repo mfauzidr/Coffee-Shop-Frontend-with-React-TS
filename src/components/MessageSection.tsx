@@ -4,7 +4,7 @@ import { Button } from "./Buttons";
 
 const MessageSection = () => {
   return (
-    <div className="flex p-5 border border-gray-200 h-fit md:max-w-md">
+    <div className="flex p-5 border border-gray-200 h-fit md:max-w-md lg:max-w-lg xl-max-w-xl 2xl:max-w-2xl">
       <div className="flex flex-col gap-2.5">
         <div className="flex w-12 h-12 rounded-2xl bg-yellow-950 justify-center items-center">
           <FontAwesomeIcon icon={faMessage} style={{ color: "#ffffff" }} />

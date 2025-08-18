@@ -1211,6 +1211,11 @@ html {
   display: inline-flex;
 }
 
+.\!rating {
+  position: relative !important;
+  display: inline-flex !important;
+}
+
 .rating :where(input) {
   cursor: pointer;
   border-radius: 0px;
@@ -1219,6 +1224,16 @@ html {
   width: 1.5rem;
   background-color: var(--fallback-bc,oklch(var(--bc)/var(--tw-bg-opacity)));
   --tw-bg-opacity: 1;
+}
+
+.\!rating :where(input) {
+  cursor: pointer !important;
+  border-radius: 0px !important;
+  animation: rating-pop var(--animation-input, 0.25s) ease-out !important;
+  height: 1.5rem !important;
+  width: 1.5rem !important;
+  background-color: var(--fallback-bc,oklch(var(--bc)/var(--tw-bg-opacity))) !important;
+  --tw-bg-opacity: 1 !important;
 }
 
 .select {
@@ -1800,18 +1815,38 @@ html {
   -webkit-appearance: none;
 }
 
+.\!rating input {
+  -moz-appearance: none !important;
+       appearance: none !important;
+  -webkit-appearance: none !important;
+}
+
 .rating .rating-hidden {
   width: 0.5rem;
   background-color: transparent;
+}
+
+.\!rating .rating-hidden {
+  width: 0.5rem !important;
+  background-color: transparent !important;
 }
 
 .rating input[type="radio"]:checked {
   background-image: none;
 }
 
+.\!rating input[type="radio"]:checked {
+  background-image: none !important;
+}
+
 .rating input:checked ~ input,
   .rating input[aria-checked="true"] ~ input {
   --tw-bg-opacity: 0.2;
+}
+
+.\!rating input:checked ~ input,
+  .\!rating input[aria-checked="true"] ~ input {
+  --tw-bg-opacity: 0.2 !important;
 }
 
 .rating input:focus-visible {
@@ -1822,9 +1857,22 @@ html {
   transform: translateY(-0.125em);
 }
 
+.\!rating input:focus-visible {
+  transition-property: transform !important;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1) !important;
+  transition-duration: 300ms !important;
+  transform: translateY(-0.125em) !important;
+}
+
 .rating input:active:focus {
   animation: none;
   transform: translateY(-0.125em);
+}
+
+.\!rating input:active:focus {
+  animation: none !important;
+  transform: translateY(-0.125em) !important;
 }
 
 @keyframes rating-pop {
@@ -2329,6 +2377,10 @@ html {
   margin-bottom: 0px;
 }
 
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
 .mb-10 {
   margin-bottom: 2.5rem;
 }
@@ -2437,8 +2489,8 @@ html {
   margin-top: 2.25rem;
 }
 
-.mb-1 {
-  margin-bottom: 0.25rem;
+.mr-12 {
+  margin-right: 3rem;
 }
 
 .block {
@@ -2509,6 +2561,10 @@ html {
   height: 7rem;
 }
 
+.h-3 {
+  height: 0.75rem;
+}
+
 .h-3\/4 {
   height: 75%;
 }
@@ -2566,10 +2622,6 @@ html {
   height: 100vh;
 }
 
-.h-3 {
-  height: 0.75rem;
-}
-
 .max-h-0 {
   max-height: 0px;
 }
@@ -2590,16 +2642,16 @@ html {
   max-height: 24rem;
 }
 
-.max-h-\[650px\] {
-  max-height: 650px;
-}
-
 .max-h-screen {
   max-height: 100vh;
 }
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.w-1\/2 {
+  width: 50%;
 }
 
 .w-10 {
@@ -2638,6 +2690,10 @@ html {
   width: 7rem;
 }
 
+.w-3\/4 {
+  width: 75%;
+}
+
 .w-32 {
   width: 8rem;
 }
@@ -2668,6 +2724,10 @@ html {
 
 .w-5\/12 {
   width: 41.666667%;
+}
+
+.w-5\/6 {
+  width: 83.333333%;
 }
 
 .w-52 {
@@ -2713,22 +2773,6 @@ html {
 
 .w-full {
   width: 100%;
-}
-
-.w-72 {
-  width: 18rem;
-}
-
-.w-1\/2 {
-  width: 50%;
-}
-
-.w-3\/4 {
-  width: 75%;
-}
-
-.w-5\/6 {
-  width: 83.333333%;
 }
 
 .min-w-40 {
@@ -3933,6 +3977,11 @@ html {
 }
 
 @media (min-width: 768px) {
+  .md\:mx-12 {
+    margin-left: 3rem;
+    margin-right: 3rem;
+  }
+
   .md\:mx-16 {
     margin-left: 4rem;
     margin-right: 4rem;
@@ -3946,16 +3995,6 @@ html {
   .md\:my-16 {
     margin-top: 4rem;
     margin-bottom: 4rem;
-  }
-
-  .md\:mx-8 {
-    margin-left: 2rem;
-    margin-right: 2rem;
-  }
-
-  .md\:mx-12 {
-    margin-left: 3rem;
-    margin-right: 3rem;
   }
 
   .md\:-mt-2 {
@@ -4002,6 +4041,10 @@ html {
     margin-top: 5rem;
   }
 
+  .md\:mr-12 {
+    margin-right: 3rem;
+  }
+
   .md\:flex {
     display: flex;
   }
@@ -4040,10 +4083,6 @@ html {
 
   .md\:max-h-\[450px\] {
     max-height: 450px;
-  }
-
-  .md\:max-h-screen {
-    max-height: 100vh;
   }
 
   .md\:w-12 {
@@ -4321,6 +4360,10 @@ html {
     margin-top: 4rem;
   }
 
+  .lg\:mr-24 {
+    margin-right: 6rem;
+  }
+
   .lg\:block {
     display: block;
   }
@@ -4357,6 +4400,10 @@ html {
     height: auto;
   }
 
+  .lg\:h-svh {
+    height: 100svh;
+  }
+
   .lg\:max-h-full {
     max-height: 100%;
   }
@@ -4389,6 +4436,14 @@ html {
     width: 100%;
   }
 
+  .lg\:w-1\/2 {
+    width: 50%;
+  }
+
+  .lg\:max-w-lg {
+    max-width: 32rem;
+  }
+
   .lg\:flex-1 {
     flex: 1 1 0%;
   }
@@ -4400,10 +4455,6 @@ html {
 
   .lg\:transform {
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-  }
-
-  .lg\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .lg\:flex-row {
@@ -4432,6 +4483,14 @@ html {
 
   .lg\:gap-8 {
     gap: 2rem;
+  }
+
+  .lg\:gap-10 {
+    gap: 2.5rem;
+  }
+
+  .lg\:gap-16 {
+    gap: 4rem;
   }
 
   .lg\:overflow-visible {
@@ -4514,12 +4573,56 @@ html {
 }
 
 @media (min-width: 1280px) {
+  .xl\:mr-48 {
+    margin-right: 12rem;
+  }
+
+  .xl\:mr-32 {
+    margin-right: 8rem;
+  }
+
   .xl\:h-\[55vh\] {
     height: 55vh;
   }
 
-  .xl\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .xl\:h-\[720\] {
+    height: 720;
+  }
+
+  .xl\:h-\[720px\] {
+    height: 720px;
+  }
+
+  .xl\:h-\[640px\] {
+    height: 640px;
+  }
+
+  .xl\:max-w-xl {
+    max-width: 36rem;
+  }
+
+  .xl\:justify-between {
+    justify-content: space-between;
+  }
+
+  .xl\:gap-12 {
+    gap: 3rem;
+  }
+
+  .xl\:gap-14 {
+    gap: 3.5rem;
+  }
+
+  .xl\:gap-20 {
+    gap: 5rem;
+  }
+
+  .xl\:gap-32 {
+    gap: 8rem;
+  }
+
+  .xl\:gap-24 {
+    gap: 6rem;
   }
 
   .xl\:px-64 {
@@ -4529,8 +4632,24 @@ html {
 }
 
 @media (min-width: 1536px) {
+  .\32xl\:h-\[640px\] {
+    height: 640px;
+  }
+
+  .\32xl\:w-2\/3 {
+    width: 66.666667%;
+  }
+
+  .\32xl\:max-w-2xl {
+    max-width: 42rem;
+  }
+
   .\32xl\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .\32xl\:gap-10 {
+    gap: 2.5rem;
   }
 }
 

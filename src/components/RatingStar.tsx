@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-regular-svg-icons";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 
 interface RatingStarProps {
   rating?: number | undefined;
@@ -11,6 +11,17 @@ const RatingStar = ({ rating, gap = "", size = "" }: RatingStarProps) => {
   const maxRating = 5;
   const starElements = [];
 
+  if (!rating) {
+    starElements.push(
+      <FontAwesomeIcon
+        key={0}
+        icon={fas.faStar}
+        style={{ color: "#ECEEF0" }}
+        className="text-lg"
+      />
+    );
+  }
+
   if (rating) {
     for (let i = 1; i <= maxRating; i++) {
       const starColor = i <= rating ? "#F59E0B" : "#ECEEF0";
@@ -18,7 +29,7 @@ const RatingStar = ({ rating, gap = "", size = "" }: RatingStarProps) => {
       starElements.push(
         <FontAwesomeIcon
           key={i}
-          icon={faStar}
+          icon={fas.faStar}
           style={{ color: starColor }}
           className="text-lg"
         />
@@ -29,7 +40,7 @@ const RatingStar = ({ rating, gap = "", size = "" }: RatingStarProps) => {
   return (
     <div className={`flex ${gap} ${size} items-center`}>
       {starElements}
-      <span>{rating}</span>
+      {rating ? <span>{rating}</span> : "No Rating Yet"}
     </div>
   );
 };

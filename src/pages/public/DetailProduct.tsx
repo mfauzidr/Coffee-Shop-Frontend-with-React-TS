@@ -32,7 +32,7 @@ const DetailProduct = () => {
 
   return (
     <>
-      <div className="block md:flex mx-8 md:mx-16 lg:mx-32 my-8 md:my-16 lg:my-32 h-auto gap-5">
+      <div className="block md:flex mx-8 md:mx-16 lg:mx-32 my-8 md:my-16 lg:my-32 h-auto gap-5 lg:gap-10 xl:gap-20">
         {detailProduct && (
           <>
             <ImageProduct
@@ -41,7 +41,6 @@ const DetailProduct = () => {
             />
             <ProductDetailForm
               productId={uuid as string}
-              isFlashSale={true}
               name={detailProduct.productName}
               desc={detailProduct.description}
               price={detailProduct.price}

@@ -4,11 +4,11 @@ import CarouselPagination from "./CarouselPagination";
 
 const Reviews = () => {
   return (
-    <div className="flex flex-col lg:flex-row w-full h-auto lg:h-1/2 bg-gradient-to-b from-gray-600 to-black gap-5 py-8 px-16 lg:px-32 xl:px-64">
+    <div className="flex flex-col lg:flex-row w-full h-auto lg:h-1/2 bg-gradient-to-b from-gray-600 to-black gap-5 py-8 px-16 lg:px-32">
       <div className="flex items-center justify-center lg:hidden text-white">
         TESTIMONIAL
       </div>
-      <div className="flex flex-1 items-center md:justify-start">
+      <div className="flex items-center md:justify-start md:mr-12 lg:mr-24 xl:mr-32">
         <img src={RateProfileImg} alt="" />
       </div>
       <div className="flex flex-1 flex-col text-white items-left justify-center gap-6">

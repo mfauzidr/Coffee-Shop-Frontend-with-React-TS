@@ -26,13 +26,13 @@ const HistoryOrderCard = ({
   status,
 }: HistoryOrderCardProps) => {
   return (
-    <div className="flex flex-col gap-3 px-3 py-2.5 bg-gray-100 justify-between items-center">
-      <div className="flex justify-between gap-6 md:gap-8">
+    <div className="flex flex-col gap-3 px-3 py-2.5 bg-gray-100 justify-between">
+      <div className="flex gap-6 md:gap-8">
         <div className="hidden md:flex w-28 h-28">
           <img className="aspect-square object-cover" src={image} alt="" />
         </div>
-        <div className="block">
-          <div className="grid grid-cols-2 md:flex gap-6 md:gap-8 md:items-center">
+        <div className="flex flex-col justify-between">
+          <div className="grid grid-cols-2 md:flex gap-6 md:gap-8 2xl:gap-10">
             <div className="flex flex-col gap-2.5 w-32">
               <div className="flex items-center gap-2">
                 <FontAwesomeIcon icon={faGlassWater as IconProp} />
@@ -66,7 +66,7 @@ const HistoryOrderCard = ({
               </div>
             </div>
           </div>
-          <div className="block text-sm text-amber-500 underline">
+          <div className="flex items-end text-sm text-amber-500 underline pb-2">
             <Link to={`/detail-order/${uuid}`}>View Order Detail</Link>
           </div>
         </div>

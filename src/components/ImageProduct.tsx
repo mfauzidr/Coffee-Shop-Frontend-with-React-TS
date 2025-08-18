@@ -18,7 +18,7 @@ const ImageProduct = ({ image, smallImages }: ImageProductProps) => {
           <img
             src={image ? `${image}` : defaultImage}
             alt="Large Image"
-            className="w-full h-72 md:h-96 object-cover object-center"
+            className="w-full h-72 md:h-96 2xl:h-[640px] object-cover object-center"
           />
         </div>
         <div className="grid grid-cols-3 gap-4">

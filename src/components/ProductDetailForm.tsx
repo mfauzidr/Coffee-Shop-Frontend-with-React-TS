@@ -15,7 +15,6 @@ import { Option } from "./RadioGroup";
 import Swal from "sweetalert2";
 
 interface ProductDetailFormProps {
-  isFlashSale: boolean;
   name: string;
   price: number;
   ratingProduct?: number | undefined;
@@ -25,7 +24,6 @@ interface ProductDetailFormProps {
 }
 
 const ProductDetailForm = ({
-  isFlashSale,
   name,
   price,
   ratingProduct,
@@ -110,9 +108,14 @@ const ProductDetailForm = ({
     setQuantity((prevQuantity) => prevQuantity + 1);
   };
 
-  const discount = price / 2;
+  // const discount = price / 2;
 
   const handleBuy = async (productId: string) => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
     if (!selectedSize || !selectedVariant) {
       Swal.fire({
         title: "Failed!",
@@ -164,16 +167,17 @@ const ProductDetailForm = ({
   return (
     <form className="flex flex-col flex-1 w-full h-auto mt-5 md:mt-0">
       <div className="flex flex-col gap-1 md:gap-4">
-        {isFlashSale && (
+        {/* {isFlashSale && (
           <div className="bg-red-600 text-white text-xs md:text-lg px-2.5 py-1 rounded-3xl w-20 md:w-32">
             Flash Sale!
           </div>
-        )}
+        )} */}
         <h2 className="text-2xl md:text-5xl font-normal md:font-medium">
           {name}
         </h2>
         <div className="flex items-center text-lg md:text-2xl text-amber-500">
-          {isFlashSale ? (
+          Rp. ${price?.toLocaleString("id")} ,-
+          {/* {isFlashSale ? (
             <div>
               <span className="text-xs font-bold text-red-500 line-through">
                 IDR {price?.toLocaleString("id")}
@@ -182,7 +186,7 @@ const ProductDetailForm = ({
             </div>
           ) : (
             `Rp. ${price?.toLocaleString("id")} ,-`
-          )}
+          )} */}
         </div>
         <RatingStar rating={ratingProduct! | 0} />
         <div className="flex gap-2 md:gap-6 text-xs md:text-lg">
