@@ -12,18 +12,13 @@ import { useDispatch } from "react-redux";
 import { format, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
 
-interface PageInfo {
-  currentPage: number;
-  totalPage: number;
-}
-
 const HistoryOrder = () => {
   const [orderStatus, setOrderStatus] = useState<string>("onProgress");
-  const [pageInfo] = useState<PageInfo | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { token } = useStoreSelector((state: RootState) => state.auth);
-  const { orders } = useStoreSelector((state: RootState) => state.order);
+  const { orders, pageInfo, dataCount } = useStoreSelector(
+    (state: RootState) => state.order
+  );
 
   const dispatch = useDispatch<AppDispatch>();
   const [uuid, setUuid] = useState<string>("");
@@ -32,14 +27,36 @@ const HistoryOrder = () => {
     if (token) {
       const decodedToken = jwtDecode<{ uuid: string }>(token);
       setUuid(decodedToken.uuid);
+      setFilters((prev) => ({ ...prev, userId: uuid }));
     }
-  }, [token]);
+  }, [token, uuid]);
+
+  const currentPage = pageInfo?.currentPage || 1;
+
+  const [filters, setFilters] = useState({
+    status: "",
+    startDate: "",
+    endDate: "",
+  });
 
   useEffect(() => {
     if (token && uuid) {
-      dispatch(fetchOrders({ userId: uuid }));
+      dispatch(
+        fetchOrders({
+          userId: uuid,
+          page: currentPage,
+          limit: 6,
+          filters,
+          currentPage,
+        })
+      );
     }
-  }, [dispatch, token, uuid]);
+  }, [dispatch, token, filters, uuid, currentPage]);
+
+  const handlePageChange = (page: string | number) => {
+    dispatch(fetchOrders({ page, filters, currentPage }));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const posts = orders.map((order) => ({
     uuid: order.uuid,
@@ -54,18 +71,13 @@ const HistoryOrder = () => {
     setOrderStatus(newStatus);
   };
 
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
     <>
       <div className="flex flex-col mx-16 md:mx-32 my-8 md:my-16 h-auto gap-2.5 md:gap-5">
         <div className="flex w-full items-end gap-5 md:gap-7 mb-5 md:mb-9">
           <h1 className="text-2xl md:text-5xl font-medium">History Order</h1>
           <div className="bg-gray-200 px-2 md:px-4 py-1 md:py-2.5 text-sm md:text-base">
-            {posts.length}
+            {dataCount}
           </div>
         </div>
         <div className="flex flex-col md:flex-row md:justify-between gap-5">
@@ -90,8 +102,8 @@ const HistoryOrder = () => {
               ))}
             </div>
             <PagePagination
-              pages={pageInfo?.totalPage || 0}
-              currentPage={currentPage}
+              currentPage={pageInfo.currentPage}
+              pages={pageInfo.pages}
               onPageChange={handlePageChange}
             />
           </div>

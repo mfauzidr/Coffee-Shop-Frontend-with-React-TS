@@ -21,8 +21,25 @@ export interface OrderList {
   status: string;
 }
 
+export interface OrderFilter {
+  userId?: string;
+  orderNumber?: string;
+  status?: string;
+  startDate?: string;
+  endDate?: string;
+  sortBy?: string;
+  page?: string | number;
+  limit?: number;
+  currentPage?: number;
+}
+
 interface IOrderListState {
   orders: OrderList[];
+  pageInfo: {
+    currentPage: number;
+    pages: number;
+  };
+  dataCount?: number;
   isLoading: boolean;
   isRejected: boolean;
   error: string | null;
@@ -30,39 +47,65 @@ interface IOrderListState {
 
 const initialState: IOrderListState = {
   orders: [],
+  pageInfo: {
+    currentPage: 1,
+    pages: 1,
+  },
   isLoading: false,
   isRejected: false,
   error: null,
 };
 
-export const fetchOrders = createAsyncThunk<
-  OrderList[],
-  { userId: string },
-  { rejectValue: { error: Error; status?: number } }
->("orders/fetchOrders", async ({ userId }, { rejectWithValue, getState }) => {
-  const {
-    auth: { token },
-  } = getState() as RootState;
+export const fetchOrders = createAsyncThunk(
+  "orders/fetchOrders",
+  async (
+    params: {
+      userId?: string;
+      page?: string | number;
+      limit?: number;
+      currentPage: number;
+      filters?: OrderFilter;
+    },
+    { rejectWithValue, getState }
+  ) => {
+    const {
+      auth: { token },
+    } = getState() as RootState;
 
-  try {
-    const url = `${import.meta.env.VITE_REACT_APP_API_URL}/orders`;
-    const response = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      params: { userId },
-    });
-    return response.data.results;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return rejectWithValue({
-        error: error.response?.data,
-        status: error.response?.status,
+    try {
+      const { userId, page, limit, filters, currentPage } = params;
+
+      const newPage =
+        page === "next"
+          ? currentPage + 1
+          : page === "previous"
+          ? currentPage - 1
+          : page;
+
+      const url = `${import.meta.env.VITE_REACT_APP_API_URL}/orders`;
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          ...filters,
+          userId,
+          page: newPage,
+          limit,
+        },
       });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue({
+          error: error.response?.data,
+          status: error.response?.status,
+        });
+      }
+      throw error;
     }
-    throw error;
   }
-});
+);
 
 export const createOrder = createAsyncThunk<
   OrderList[],
@@ -142,14 +185,22 @@ const orderSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
-        state.orders = action.payload;
+        state.orders = action.payload.results;
+        state.pageInfo = {
+          currentPage: action.payload.meta.currentPage,
+          pages: action.payload.meta.totalPage,
+        };
+        state.dataCount = action.payload.meta.totalData;
         state.isLoading = false;
         state.isRejected = false;
       })
       .addCase(fetchOrders.rejected, (state, action) => {
         state.isLoading = false;
         state.isRejected = true;
-        state.error = action.payload?.error.message || "Failed to fetch carts.";
+        state.error =
+          (action.payload as string) ||
+          action.error.message ||
+          "Failed to fetch orders.";
       })
       .addCase(createOrder.pending, (state) => {
         state.isLoading = true;
@@ -162,7 +213,8 @@ const orderSlice = createSlice({
       .addCase(createOrder.rejected, (state, action) => {
         state.isLoading = false;
         state.isRejected = true;
-        state.error = action.payload?.error.message || "Failed to fetch carts.";
+        state.error =
+          action.payload?.error.message || "Failed to fetch orders.";
       });
   },
 });
