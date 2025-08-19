@@ -156,7 +156,6 @@ const Products = () => {
       };
     });
   };
-  console.log("From: ", form);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {

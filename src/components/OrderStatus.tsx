@@ -5,32 +5,27 @@ interface OrderStatusProps {
 
 const OrderStatus = ({ status, onStatusChange }: OrderStatusProps) => {
   const statuses = [
-    { id: "onProcess", label: "On Process" },
-    { id: "sendingGoods", label: "Sending Goods" },
-    { id: "finishOrder", label: "Finish Order" },
+    { id: "", label: "All Orders" },
+    { id: "On-Process", label: "On Process" },
+    { id: "Sending-Goods", label: "Sending Goods" },
+    { id: "Success", label: "Finish Order" },
+    { id: "Cancelled", label: "Cancelled" },
   ];
 
   return (
-    <ul className="flex bg-gray-100 p-2 items-center">
-      {statuses.map((s) => (
-        <li key={s.id} className="flex">
-          <input
-            type="radio"
-            id={s.id}
-            name="orderStatus"
-            className="hidden peer"
-            checked={status === s.id}
-            onChange={() => onStatusChange(s.id)}
-          />
-          <label
-            htmlFor={s.id}
-            className="px-3 lg:px-5 py-0 lg:py-2 bg-gray-100 cursor-pointer hover:bg-white peer-checked:bg-white text-sm"
-          >
+    <div className="w-52">
+      <select
+        value={status}
+        onChange={(e) => onStatusChange(e.target.value)}
+        className="w-full px-4 py-4 bg-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
+      >
+        {statuses.map((s) => (
+          <option key={s.id} value={s.id}>
             {s.label}
-          </label>
-        </li>
-      ))}
-    </ul>
+          </option>
+        ))}
+      </select>
+    </div>
   );
 };
 

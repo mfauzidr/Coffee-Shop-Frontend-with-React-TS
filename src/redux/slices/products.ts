@@ -118,7 +118,6 @@ export const fetchProductDetail = createAsyncThunk<
     const res = await axios.get(
       `${import.meta.env.VITE_REACT_APP_API_URL}/products/${uuid}`
     );
-    console.log(res.data.results[0]);
 
     if (res.data && res.data.results && res.data.results.length > 0) {
       return res.data.results[0] as Product;

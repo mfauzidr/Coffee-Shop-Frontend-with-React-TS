@@ -8,6 +8,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 
+import noImg from "../assets/img/no-image.webp";
+
 interface HistoryOrderCardProps {
   uuid: string;
   image?: string;
@@ -25,11 +27,22 @@ const HistoryOrderCard = ({
   total,
   status,
 }: HistoryOrderCardProps) => {
+  const statusClasses: Record<string, string> = {
+    "On-Process": "bg-orange-200 text-amber-600",
+    "Sending-Goods": "bg-blue-200 text-blue-600",
+    Success: "bg-green-200 text-green-600",
+    Cancelled: "bg-red-300 text-red-600",
+  };
+
   return (
     <div className="flex flex-col gap-3 px-3 py-2.5 bg-gray-100 justify-between">
       <div className="flex gap-6 md:gap-8">
         <div className="hidden md:flex w-28 h-28">
-          <img className="aspect-square object-cover" src={image} alt="" />
+          <img
+            className="aspect-square object-cover"
+            src={image ? image : noImg}
+            alt=""
+          />
         </div>
         <div className="flex flex-col justify-between">
           <div className="grid grid-cols-2 md:flex gap-6 md:gap-8 2xl:gap-10">
@@ -61,7 +74,11 @@ const HistoryOrderCard = ({
                   Status
                 </div>
               )}
-              <div className="py-1 px-2.5 bg-orange-200 text-amber-600 rounded-full text-xs font-bold">
+              <div
+                className={`flex py-1 px-2.5 rounded-full text-xs font-bold justify-center ${
+                  statusClasses[status] || "bg-gray-200 text-gray-600"
+                } `}
+              >
                 {status}
               </div>
             </div>

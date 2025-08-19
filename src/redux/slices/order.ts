@@ -42,7 +42,10 @@ interface IOrderListState {
   dataCount?: number;
   isLoading: boolean;
   isRejected: boolean;
-  error: string | null;
+  error: {
+    message?: string;
+    status?: number;
+  } | null;
 }
 
 const initialState: IOrderListState = {
@@ -197,10 +200,14 @@ const orderSlice = createSlice({
       .addCase(fetchOrders.rejected, (state, action) => {
         state.isLoading = false;
         state.isRejected = true;
-        state.error =
-          (action.payload as string) ||
-          action.error.message ||
-          "Failed to fetch orders.";
+        state.error = {
+          message:
+            (action.payload as { error: { message: string }; status: number })
+              ?.error?.message || "Failed to fetch orders",
+          status: (
+            action.payload as { error: { message: string }; status: number }
+          )?.status,
+        };
       })
       .addCase(createOrder.pending, (state) => {
         state.isLoading = true;
@@ -213,8 +220,14 @@ const orderSlice = createSlice({
       .addCase(createOrder.rejected, (state, action) => {
         state.isLoading = false;
         state.isRejected = true;
-        state.error =
-          action.payload?.error.message || "Failed to fetch orders.";
+        state.error = {
+          message:
+            (action.payload as { error: { message: string }; status: number })
+              ?.error?.message || "Failed to create orders",
+          status: (
+            action.payload as { error: { message: string }; status: number }
+          )?.status,
+        };
       });
   },
 });

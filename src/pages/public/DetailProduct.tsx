@@ -16,7 +16,6 @@ const DetailProduct = () => {
   };
 
   const { uuid } = useParams<{ uuid: string }>();
-  console.log(uuid);
   const dispatch = useStoreDispatch();
   const { detailProduct } = useStoreSelector(
     (state: RootState) => state.products
