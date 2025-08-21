@@ -17,10 +17,10 @@ const OrderStatus = ({ status, onStatusChange }: OrderStatusProps) => {
       <select
         value={status}
         onChange={(e) => onStatusChange(e.target.value)}
-        className="w-full px-4 py-4 bg-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
+        className="w-56 md:w-full p-2 md:p-4 bg-gray-100 rounded text-xs md:text-sm focus:outline-none focus:ring-1 focus:ring-amber-300"
       >
         {statuses.map((s) => (
-          <option key={s.id} value={s.id}>
+          <option className="text-xs md:text-sm" key={s.id} value={s.id}>
             {s.label}
           </option>
         ))}
