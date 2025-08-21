@@ -7,6 +7,7 @@ interface IAuthState {
   isLoading: boolean;
   isRejected: boolean;
   isFulfilled: boolean;
+  isLoggingOut: boolean;
 }
 
 interface AuthResponse {
@@ -20,6 +21,7 @@ const initialState: IAuthState = {
   isLoading: false,
   isFulfilled: false,
   isRejected: false,
+  isLoggingOut: false,
 };
 
 const loginThunk = createAsyncThunk<
@@ -58,6 +60,9 @@ const authSlice = createSlice({
       state.token = "";
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("tokenExpiration");
+    },
+    setLoggingOut: (state, action: PayloadAction<boolean>) => {
+      state.isLoggingOut = action.payload;
     },
   },
   extraReducers: (builder) => {

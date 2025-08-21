@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import FeatherIcon from "feather-icons-react";
 import Brand from "../Brand";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useStoreDispatch, useStoreSelector } from "../../redux/hooks";
 import { authAction } from "../../redux/slices/auth";
 import ShoppingCart from "../ShoppingCart";
 import { RootState } from "../../redux/store";
+import { profileAction } from "../../redux/slices/profile";
 
 interface NavbarProps {
   bgColor: string;
@@ -19,9 +20,13 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
   const dispatch = useStoreDispatch();
   const { profile } = useStoreSelector((state: RootState) => state.profile);
 
+  const navigate = useNavigate();
+
   const handleLogout = () => {
+    dispatch(authAction.setLoggingOut(true));
     dispatch(authAction.removeToken());
-    window.location.href = "/";
+    dispatch(profileAction.removeProfile());
+    navigate("/");
   };
 
   const showModal = (): void => {

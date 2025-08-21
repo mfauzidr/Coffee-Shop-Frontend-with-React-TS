@@ -28,7 +28,7 @@ const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 const profilePersistConfig: PersistConfig<ProfileState> = {
   key: "profile:coffeeShop",
   storage: storageSession,
-  whitelist: ["token"],
+  whitelist: ["profile"],
 };
 
 const persistedProfileReducer = persistReducer(

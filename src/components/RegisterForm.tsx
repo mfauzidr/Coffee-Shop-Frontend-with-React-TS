@@ -95,7 +95,11 @@ const RegisterForm = () => {
         <Brand textColor="amber-800" />
         <div className="text-xl text-amber-800">Register</div>
         <div className="text-base">Fill out the form correctly!</div>
-        <FullNameInput name="fullname" placeholder="Enter Your Full Name" />
+        <FullNameInput
+          name="fullname"
+          placeholder="Enter Your Full Name"
+          disabled={false}
+        />
         <EmailInput name="email" placeholder="Enter Your Email" />
         <PasswordInput
           label="Password"

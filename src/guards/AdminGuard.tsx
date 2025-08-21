@@ -9,11 +9,15 @@ type AdminGuardProps = {
 };
 
 const AdminGuard = ({ children }: AdminGuardProps) => {
-  const { token } = useStoreSelector((state: RootState) => state.auth);
+  const { token, isLoggingOut } = useStoreSelector(
+    (state: RootState) => state.auth
+  );
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    if (isLoggingOut) return;
+
     const checkRole = async () => {
       if (token && token !== "") {
         try {
@@ -27,20 +31,14 @@ const AdminGuard = ({ children }: AdminGuardProps) => {
         setRole(null);
       }
 
-      setLoading(false); // Hanya dipanggil setelah selesai setRole
+      setLoading(false);
     };
 
     checkRole();
-  }, [token]);
+  }, [token, isLoggingOut]);
 
-  if (loading) return <div>Loading...</div>;
-
-  if (!token || role === "invalid") {
-    return <Navigate to="/login" />;
-  }
-
-  if (role !== "admin") {
-    return <Navigate to="/" />;
+  if (isLoggingOut && role && role !== "admin") {
+    return <Navigate to="/product" replace />;
   }
 
   return <>{children}</>;

@@ -2,11 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import FeatherIcon from "feather-icons-react";
 import Brand from "./Brand";
 import { SignButton, ProfileButton, LogoutButton } from "./Buttons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useStoreSelector, useStoreDispatch } from "../redux/hooks";
 import { authAction } from "../redux/slices/auth";
 import ShoppingCart from "./ShoppingCart";
 import { jwtDecode } from "jwt-decode";
+import { profileAction } from "../redux/slices/profile";
 
 interface NavbarProps {
   bgColor: string;
@@ -22,6 +23,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const dispatch = useStoreDispatch();
   const { token } = useStoreSelector((state) => state.auth);
   const isLoggedIn = !!token;
@@ -31,8 +33,10 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
     decoded = jwtDecode(token);
   }
   const handleLogout = () => {
+    dispatch(authAction.setLoggingOut(true));
     dispatch(authAction.removeToken());
-    window.location.href = "/";
+    dispatch(profileAction.removeProfile());
+    navigate("/");
   };
 
   const showModal = (): void => {

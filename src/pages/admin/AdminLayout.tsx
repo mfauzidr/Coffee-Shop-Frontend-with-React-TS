@@ -9,20 +9,20 @@ import AdminSideBar from "../../components/admins/AdminSideBar";
 const AdminLayout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { token } = useStoreSelector((state) => state.auth);
+  const { token, isLoggingOut } = useStoreSelector((state) => state.auth);
 
   useEffect(() => {
-    const expiration = sessionStorage.getItem("tokenExpiration");
-    if (!expiration || !token) {
-      navigate("/login");
-      return;
-    }
+    if (isLoggingOut) return;
 
-    const timeout = parseInt(expiration) - Date.now();
+    const expiration = sessionStorage.getItem("tokenExpiration");
+    if (!expiration || !token) return;
+
+    const timeout = parseInt(expiration!) - Date.now();
 
     if (timeout > 0) {
       const timer = setTimeout(() => {
         dispatch(authAction.removeToken());
+        dispatch(authAction.setLoggingOut(false));
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("tokenExpiration");
         navigate("/login");
@@ -31,11 +31,12 @@ const AdminLayout = () => {
       return () => clearTimeout(timer);
     } else {
       dispatch(authAction.removeToken());
+      dispatch(authAction.setLoggingOut(false));
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("tokenExpiration");
       navigate("/login");
     }
-  }, [dispatch, navigate, token]);
+  }, [dispatch, navigate, token, isLoggingOut]);
 
   return (
     <div className="h-screen w-full flex flex-col">

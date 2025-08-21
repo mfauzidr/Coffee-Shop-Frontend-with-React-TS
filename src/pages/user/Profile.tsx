@@ -5,7 +5,6 @@ import {
   EmailInput,
   PhoneInput,
   PasswordInput,
-  ConfirmPasswordInput,
   FullNameInput,
 } from "../../components/InputForm";
 import { SubmitButton } from "../../components/Buttons";
@@ -34,6 +33,8 @@ const Profile = () => {
   const [form, setForm] = useState<IProfileBody>();
   const uuid = profile.uuid;
   const dispatch = useDispatch<AppDispatch>();
+  const [isEdit, setIsEdit] = useState<boolean>(true);
+  const [showModalEmail, setShowModalEmail] = useState<boolean>(false);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -58,9 +59,9 @@ const Profile = () => {
       if (form?.phoneNumber) formData.append("phoneNumber", form.phoneNumber);
       if (form?.address) formData.append("address", form.address);
       if (changedImage) formData.append("image", changedImage);
-      if (showPasswordForm && form?.password) {
-        formData.append("password", form.password);
-      }
+      // if (showPasswordForm && form?.password) {
+      //   formData.append("password", form.password);
+      // }
 
       await dispatch(updateProfileData({ uuid, formData })).unwrap();
 
@@ -94,6 +95,7 @@ const Profile = () => {
       });
     } finally {
       setIsLoading(false);
+      setIsEdit(false);
       dispatch(fetchProfile({ uuid }));
     }
   };
@@ -101,6 +103,9 @@ const Profile = () => {
   const togglePasswordForm = () => {
     setShowPasswordForm(!showPasswordForm);
     setIsError(false);
+  };
+  const toggleEditProfile = () => {
+    setIsEdit(!isEdit);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,6 +117,10 @@ const Profile = () => {
     });
   };
 
+  const handleClickChangeEmail = () => {
+    setShowModalEmail(true);
+  };
+
   return (
     <>
       <div className="flex flex-col mx-16 lg:mx-32 my-8 lg:my-16 h-auto gap-4">
@@ -120,6 +129,7 @@ const Profile = () => {
         </div>
         <div className="flex flex-col md:flex-row gap-6 mt-6 lg:mt-12">
           <ProfileCard
+            isEdit={!isEdit}
             name={profile?.fullName}
             email={profile?.email}
             profileImage={
@@ -133,52 +143,40 @@ const Profile = () => {
             className="flex flex-1 flex-col border rounded gap-4 py-4 md:py-6 px-3 md:px-12"
             onSubmit={handleSubmit}
           >
+            <div className="flex self-end">
+              <div
+                className="flex items-center self-end pr-3 text-amber-500 cursor-pointer"
+                onClick={toggleEditProfile}
+              >
+                {!isEdit ? "Cancel" : "Edit Profile"}
+              </div>
+            </div>
             <FullNameInput
-              value={form?.fullName}
+              value={profile?.fullName}
               name="fullName"
-              placeholder={profile?.fullName || "Enter Your Full Name"}
               onChange={handleInputChange}
+              disabled={isEdit}
             />
             <EmailInput
-              value={form?.email}
+              value={profile?.email}
               name="email"
               disabled={true}
-              placeholder={profile?.email}
               showChangeEmail={true}
+              onClick={handleClickChangeEmail}
             />
             <PhoneInput
-              value={form?.phoneNumber}
-              name="phoneNumber"
-              placeholder={profile?.phone || "Enter Your Phone Number"}
+              value={profile?.phone}
+              name="phone"
+              disabled={isEdit}
               onChange={handleInputChange}
             />
             <AddressInput
-              value={form?.address}
+              value={profile?.address}
               name="address"
-              placeholder={profile?.address || "Enter Your Address"}
+              disabled={isEdit}
               onChange={handleInputChange}
             />
-            <div
-              className={`transition-all duration-500 ease-in-out ${
-                showPasswordForm
-                  ? "max-h-screen opacity-100"
-                  : "max-h-0 overflow-hidden opacity-0"
-              }`}
-            >
-              {showPasswordForm && (
-                <>
-                  <PasswordInput
-                    label="New Password"
-                    name="password"
-                    placeholder="Enter New Password"
-                  />
-                  <ConfirmPasswordInput
-                    name="confirmPassword"
-                    placeholder="Confirm New Password"
-                  />
-                </>
-              )}
-            </div>
+
             <div className="flex justify-between">
               <div
                 id="alert-error"
@@ -194,13 +192,60 @@ const Profile = () => {
               </div>
             </div>
 
-            <SubmitButton
-              buttonName={isLoading ? "Submitting..." : "Submit"}
-              disabled={isLoading}
-            />
+            {!isEdit && (
+              <SubmitButton
+                buttonName={isLoading ? "Submitting..." : "Submit"}
+                disabled={isLoading}
+              />
+            )}
           </form>
         </div>
       </div>
+      {showModalEmail && (
+        <div
+          className="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-30"
+          onClick={() => setShowModalEmail(false)}
+        >
+          <div
+            className="bg-white border-4 border-amber-500 rounded-3xl p-8 max-h-screen text-black text-sm w-full max-w-md"
+            onClick={(e) => e.stopPropagation()}
+          >
+            This Is Change Email Modal
+          </div>
+        </div>
+      )}
+      {showPasswordForm && (
+        <div
+          className="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-30"
+          onClick={() => setShowPasswordForm(false)}
+        >
+          <div
+            className="bg-white border-4 border-amber-500 rounded-3xl p-8 max-h-screen text-black text-sm w-1/2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-center text-xl text-center mb-10">
+              Provide your current password and set a new one.
+            </div>
+            <div className="flex flex-col gap-5 bg-">
+              <PasswordInput
+                label="Old Password"
+                name="oldPassword"
+                placeholder="Enter Old Password"
+              />
+              <PasswordInput
+                label="New Password"
+                name="password"
+                placeholder="Enter New Password"
+              />
+              <PasswordInput
+                label="Confirm Password"
+                name="confirmPassword"
+                placeholder="Enter New Password Again"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

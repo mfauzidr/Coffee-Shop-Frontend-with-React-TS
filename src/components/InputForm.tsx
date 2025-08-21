@@ -1,6 +1,5 @@
 import { useState } from "react";
 import FeatherIcon from "feather-icons-react";
-import { Link } from "react-router-dom";
 
 interface InputProps {
   label?: string;
@@ -10,15 +9,15 @@ interface InputProps {
   showChangeEmail?: boolean;
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onClick?: () => void;
 }
 
 export const FullNameInput = ({
   name,
-  placeholder = "Enter Your Full Name",
   value,
+  disabled = false,
   onChange,
 }: InputProps) => {
-  const inputValue = value === "" ? undefined : value;
   return (
     <div className="relative">
       <label className="block font-semibold" htmlFor={name}>
@@ -27,15 +26,20 @@ export const FullNameInput = ({
           <FeatherIcon icon="user" className="h-5 w-5 text-gray-500" />
         </i>
       </label>
-      <input
-        className="border rounded-lg w-full h-11 pl-10 outline-none"
-        id={name}
-        name={name}
-        type="text"
-        value={inputValue}
-        placeholder={placeholder}
-        onChange={onChange}
-      />
+      {disabled ? (
+        <div className="border rounded-lg border-gray-200 w-full h-11 pl-10 flex items-center">
+          {value}
+        </div>
+      ) : (
+        <input
+          className="border rounded-lg w-full h-11 pl-10 outline-none"
+          id={name}
+          name={name}
+          type="text"
+          value={value}
+          onChange={onChange}
+        />
+      )}
     </div>
   );
 };
@@ -43,9 +47,10 @@ export const FullNameInput = ({
 export const EmailInput = ({
   value,
   name,
-  placeholder = "Enter Your Email",
   showChangeEmail = false,
   disabled = false,
+  onChange,
+  onClick,
 }: InputProps) => {
   return (
     <div className="relative">
@@ -53,7 +58,9 @@ export const EmailInput = ({
         Email
         {showChangeEmail && (
           <span className="absolute right-0 top-0 flex items-center pr-3 text-amber-500 self-items-end">
-            <Link to="#">Change</Link>
+            <button type="button" onClick={onClick}>
+              Change
+            </button>
           </span>
         )}
         <i className="absolute inset-y-0 left-0 flex items-center pl-3 pt-6">
@@ -61,9 +68,11 @@ export const EmailInput = ({
         </i>
       </label>
       {disabled ? (
-        <div className="border rounded-lg border-gray-200 w-full h-12 pl-10 flex items-center text-gray-400">
-          {placeholder}
-        </div>
+        value && (
+          <div className="border rounded-lg border-gray-200 w-full h-11 pl-10 flex items-center">
+            {value}
+          </div>
+        )
       ) : (
         <input
           className="border rounded-lg w-full h-11 pl-10 outline-none"
@@ -71,7 +80,8 @@ export const EmailInput = ({
           value={value}
           name={name}
           type="email"
-          placeholder={placeholder}
+          onChange={onChange}
+          placeholder="Enter Your Email"
         />
       )}
     </div>
@@ -173,8 +183,8 @@ export const ConfirmPasswordInput = ({
 
 export const AddressInput = ({
   name,
-  placeholder = "Enter Your Address",
   value,
+  disabled = false,
   onChange,
 }: InputProps) => {
   return (
@@ -185,23 +195,34 @@ export const AddressInput = ({
           <FeatherIcon icon="map-pin" className="h-5 w-5 text-gray-500" />
         </i>
       </label>
-      <input
-        className="border rounded-lg w-full h-11 pl-10 outline-none"
-        id="address"
-        name={name}
-        type="text"
-        value={value}
-        placeholder={placeholder}
-        onChange={onChange}
-      />
+      {disabled ? (
+        value ? (
+          <div className="border rounded-lg border-gray-200 w-full h-11 pl-10 flex items-center">
+            {value}
+          </div>
+        ) : (
+          <div className="border rounded-lg border-gray-200 w-full h-11 pl-10 flex items-center text-gray-400">
+            Enter Your Address
+          </div>
+        )
+      ) : (
+        <input
+          className="border rounded-lg w-full h-11 pl-10 outline-none"
+          id="address"
+          name={name}
+          type="text"
+          value={value}
+          onChange={onChange}
+        />
+      )}
     </div>
   );
 };
 
 export const PhoneInput = ({
   name,
-  placeholder = "Enter Your Phone Number",
   value,
+  disabled = false,
   onChange,
 }: InputProps) => {
   return (
@@ -212,16 +233,27 @@ export const PhoneInput = ({
           <FeatherIcon icon="phone" className="h-5 w-5 text-gray-500" />
         </i>
       </label>
-      <input
-        className="border rounded-lg w-full h-12 pl-10 outline-none"
-        id="phone"
-        name={name}
-        type="tel"
-        pattern="[0-9]{1,13}"
-        value={value}
-        placeholder={placeholder}
-        onChange={onChange}
-      />
+      {disabled ? (
+        value ? (
+          <div className="border rounded-lg border-gray-200 w-full h-11 pl-10 flex items-center">
+            {value}
+          </div>
+        ) : (
+          <div className="border rounded-lg border-gray-200 w-full h-11 pl-10 flex items-center text-gray-400">
+            Enter Your Phone Number
+          </div>
+        )
+      ) : (
+        <input
+          className="border rounded-lg w-full h-11 pl-10 outline-none"
+          id="phone"
+          name={name}
+          type="tel"
+          pattern="[0-9]{1,13}"
+          value={value}
+          onChange={onChange}
+        />
+      )}
     </div>
   );
 };

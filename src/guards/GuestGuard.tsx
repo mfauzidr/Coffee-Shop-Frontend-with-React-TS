@@ -12,7 +12,8 @@ const GuestGuard = ({ children }: GuestGuardProps) => {
 
   // Jika sudah login dan bukan di halaman login, redirect ke /
   if (token && token.trim() !== "" && location.pathname !== "/login") {
-    return <Navigate to="/" />;
+    console.log("Kamu Di Lempar di Guest Guard");
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

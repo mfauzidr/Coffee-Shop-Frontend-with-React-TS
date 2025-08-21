@@ -77,7 +77,11 @@ function LoginForm() {
       <div className="text-xl text-amber-800">Login</div>
       <div className="text-base">Fill out the form correctly</div>
 
-      <EmailInput name="email" placeholder="Enter Your Email" />
+      <EmailInput
+        name="email"
+        placeholder="Enter Your Email"
+        disabled={false}
+      />
       <PasswordInput
         label="Password"
         name="password"
