@@ -93,6 +93,7 @@ export const PasswordInput = ({
   label,
   name,
   placeholder = "Enter Your Password",
+  onChange,
 }: InputProps & { showSetNew?: boolean }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -104,7 +105,7 @@ export const PasswordInput = ({
     <div className="relative">
       <label className="block font-semibold" htmlFor={name}>
         {label}
-        <i className="absolute left-0 top-0 flex items-center pl-3 pt-9">
+        <i className="absolute left-0 top-0 flex items-center pl-3 pt-8">
           <FeatherIcon icon="lock" className="h-5 w-5 text-gray-500" />
         </i>
       </label>
@@ -116,6 +117,7 @@ export const PasswordInput = ({
           type={showPassword ? "text" : "password"}
           value={value}
           placeholder={placeholder}
+          onChange={onChange}
         />
         <button
           onClick={togglePassword}
@@ -139,6 +141,7 @@ export const ConfirmPasswordInput = ({
   value,
   name,
   placeholder = "Enter Your Password Again",
+  onChange,
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -162,6 +165,7 @@ export const ConfirmPasswordInput = ({
           type={showPassword ? "text" : "password"}
           value={value}
           placeholder={placeholder}
+          onChange={onChange}
         />
         <button
           onClick={togglePassword}

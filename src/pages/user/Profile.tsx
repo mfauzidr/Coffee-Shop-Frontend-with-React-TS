@@ -7,12 +7,17 @@ import {
   PasswordInput,
   FullNameInput,
 } from "../../components/InputForm";
-import { SubmitButton } from "../../components/Buttons";
+import { Button, SubmitButton } from "../../components/Buttons";
 import { useStoreSelector } from "../../redux/hooks";
 import { AppDispatch, RootState } from "../../redux/store";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
-import { fetchProfile, updateProfileData } from "../../redux/slices/profile";
+import {
+  fetchProfile,
+  updatePassword,
+  updateProfileData,
+} from "../../redux/slices/profile";
+import axios from "axios";
 
 interface IProfileBody {
   id?: number;
@@ -24,17 +29,28 @@ interface IProfileBody {
   address?: string;
 }
 
+interface IUpdatePassword {
+  oldPassword?: string;
+  newPassword?: string;
+  confirmPassword?: string;
+}
+
 const Profile = () => {
-  const [showPasswordForm, setShowPasswordForm] = useState(false);
-  const { profile } = useStoreSelector((state: RootState) => state.profile);
-  const [changedImage, setSelectedImage] = useState<File | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState(false);
-  const [form, setForm] = useState<IProfileBody>();
-  const uuid = profile.uuid;
   const dispatch = useDispatch<AppDispatch>();
+  const { profile, error } = useStoreSelector(
+    (state: RootState) => state.profile
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [form, setForm] = useState<IProfileBody>();
+  const [changedImage, setSelectedImage] = useState<File | null>(null);
   const [isEdit, setIsEdit] = useState<boolean>(true);
   const [showModalEmail, setShowModalEmail] = useState<boolean>(false);
+  const [modalPassword, setModalPassword] = useState(false);
+  const [passwordForm, setPasswordForm] = useState<IUpdatePassword>();
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("B");
+
+  const uuid = profile.uuid;
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -59,9 +75,6 @@ const Profile = () => {
       if (form?.phoneNumber) formData.append("phoneNumber", form.phoneNumber);
       if (form?.address) formData.append("address", form.address);
       if (changedImage) formData.append("image", changedImage);
-      // if (showPasswordForm && form?.password) {
-      //   formData.append("password", form.password);
-      // }
 
       await dispatch(updateProfileData({ uuid, formData })).unwrap();
 
@@ -101,8 +114,8 @@ const Profile = () => {
   };
 
   const togglePasswordForm = () => {
-    setShowPasswordForm(!showPasswordForm);
-    setIsError(false);
+    setModalPassword(!modalPassword);
+    setShowError(false);
   };
   const toggleEditProfile = () => {
     setIsEdit(!isEdit);
@@ -115,6 +128,77 @@ const Profile = () => {
         [e.target.name]: e.target.value,
       };
     });
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPasswordForm((passwordForm) => {
+      return {
+        ...passwordForm,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
+
+  const handleApplyPassword = async () => {
+    setShowError(false);
+
+    if (!passwordForm?.oldPassword) {
+      setShowError(true);
+      setErrorMessage("Please insert your old password!.");
+      return;
+    }
+    if (!passwordForm?.newPassword) {
+      setShowError(true);
+      setErrorMessage("Please insert your new password!.");
+      return;
+    }
+    if (passwordForm?.newPassword !== passwordForm?.confirmPassword) {
+      setShowError(true);
+      setErrorMessage("");
+      return;
+    }
+    if (passwordForm?.oldPassword === passwordForm?.newPassword) {
+      setShowError(true);
+      setErrorMessage(
+        "Your new password cannot be same with your old password."
+      );
+      return;
+    }
+
+    try {
+      const formData = {
+        password: passwordForm?.oldPassword,
+        newPassword: passwordForm.newPassword,
+      };
+
+      await dispatch(updatePassword({ formData })).unwrap();
+
+      Swal.fire({
+        title: "Success!",
+        text: "Update Success",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
+        position: "top-end",
+        customClass: {
+          popup:
+            "border-solid border-5 border-primary text-sm rounded-lg shadow-lg mt-8 tbt:mt-16",
+        },
+        toast: true,
+      });
+      setModalPassword(false);
+    } catch (err: any) {
+      console.error("Error updating password:", err);
+      if (err.error?.message) {
+        setErrorMessage(err.error.message);
+      } else if (err.message) {
+        setErrorMessage(err.message);
+      } else {
+        setErrorMessage("Failed to update password. Please try again.");
+      }
+
+      setShowError(true);
+    }
   };
 
   const handleClickChangeEmail = () => {
@@ -179,16 +263,10 @@ const Profile = () => {
 
             <div className="flex justify-between">
               <div
-                id="alert-error"
-                className={`flex text-red-400 text-base ${
-                  isError ? "block" : "invisible"
-                }`}
-              ></div>
-              <div
                 className="flex items-center self-end pr-3 text-amber-500 cursor-pointer"
                 onClick={togglePasswordForm}
               >
-                {showPasswordForm ? "Cancel" : "Set New Password"}
+                Update Password
               </div>
             </div>
 
@@ -214,10 +292,10 @@ const Profile = () => {
           </div>
         </div>
       )}
-      {showPasswordForm && (
+      {modalPassword && (
         <div
           className="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-30"
-          onClick={() => setShowPasswordForm(false)}
+          onClick={() => setModalPassword(false)}
         >
           <div
             className="bg-white border-4 border-amber-500 rounded-3xl p-8 max-h-screen text-black text-sm w-1/2"
@@ -231,16 +309,31 @@ const Profile = () => {
                 label="Old Password"
                 name="oldPassword"
                 placeholder="Enter Old Password"
+                onChange={handlePasswordChange}
               />
               <PasswordInput
                 label="New Password"
-                name="password"
+                name="newPassword"
                 placeholder="Enter New Password"
+                onChange={handlePasswordChange}
               />
               <PasswordInput
                 label="Confirm Password"
                 name="confirmPassword"
                 placeholder="Enter New Password Again"
+                onChange={handlePasswordChange}
+              />
+            </div>
+            <div className="flex flex-col relative mt-5 md:mt-7 lg:mt-9 xl:mt-14">
+              {showError && (
+                <div className="absolute flex -mt-2 md:-mt-4 lg:-mt-6 xl:-mt-12 bg-red-200 w-full rounded px-4 py-2 text-xs md:text-sm font-bold text-red-700 ">
+                  {errorMessage}
+                </div>
+              )}
+              <Button
+                type="button"
+                buttonName="Apply Password"
+                onClick={handleApplyPassword}
               />
             </div>
           </div>

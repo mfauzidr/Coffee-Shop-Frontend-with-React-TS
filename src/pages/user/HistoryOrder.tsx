@@ -69,8 +69,6 @@ const HistoryOrder = () => {
     status: order.status,
   }));
 
-  console.log(orders[0]);
-
   const statusChange = (newStatus: string) => {
     setOrderStatus(newStatus);
     setFilters((prevFilters) => ({

@@ -13,7 +13,6 @@ const AdminGuard = ({ children }: AdminGuardProps) => {
     (state: RootState) => state.auth
   );
   const [role, setRole] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (isLoggingOut) return;
@@ -30,15 +29,13 @@ const AdminGuard = ({ children }: AdminGuardProps) => {
       } else {
         setRole(null);
       }
-
-      setLoading(false);
     };
 
     checkRole();
   }, [token, isLoggingOut]);
 
   if (isLoggingOut && role && role !== "admin") {
-    return <Navigate to="/product" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

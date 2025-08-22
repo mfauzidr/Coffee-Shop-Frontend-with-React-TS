@@ -85,6 +85,42 @@ export const updateProfileData = createAsyncThunk<
   }
 });
 
+export const updatePassword = createAsyncThunk<
+  IProfileState,
+  { formData: { password: string; newPassword: string } },
+  { rejectValue: { error: Error; status?: number } }
+>(
+  "profile/updatePassword",
+  async ({ formData }, { rejectWithValue, getState }) => {
+    try {
+      const {
+        auth: { token },
+      } = getState() as RootState;
+      const url = `${
+        import.meta.env.VITE_REACT_APP_API_URL
+      }/users/update-password`;
+      const response: AxiosResponse<IProfileState> = await axios.post(
+        url,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue({
+          error: error.response?.data,
+          status: error.response?.status,
+        });
+      }
+      throw error;
+    }
+  }
+);
+
 const profileSlice = createSlice({
   name: "profile",
   initialState,
@@ -133,6 +169,27 @@ const profileSlice = createSlice({
         state.isFulfilled = false;
         state.isRejected = true;
         state.error = payload as string;
+      })
+      .addCase(updatePassword.pending, (state) => {
+        state.isLoading = true;
+        state.isFulfilled = false;
+        state.isRejected = false;
+        state.error = "";
+      })
+      .addCase(updatePassword.fulfilled, (state, { payload }) => {
+        state.profile = {
+          ...state.profile,
+          ...payload,
+        };
+        state.isLoading = false;
+        state.isFulfilled = true;
+        state.isRejected = false;
+      })
+      .addCase(updatePassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isFulfilled = false;
+        state.isRejected = true;
+        state.error = action.payload?.error.message || "Something Error";
       });
   },
 });
