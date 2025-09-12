@@ -92,7 +92,7 @@ const RegisterForm = () => {
         id="form"
         className="flex flex-col w-full md:w-4/5 lg:w-3/5 gap-2 px-8 lg:px-0 h-screen justify-center"
       >
-        <Brand textColor="amber-800" />
+        <Brand textColor="#92400e" iconSize="w-10 h-10" />
         <div className="text-xl text-amber-800">Register</div>
         <div className="text-base">Fill out the form correctly!</div>
         <FullNameInput

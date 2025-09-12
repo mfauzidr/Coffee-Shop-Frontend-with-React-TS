@@ -14,6 +14,9 @@ export default {
       fontFamily: {
         'sacramento': ['Sacramento', 'cursive'],
       },
+      colors: {
+        'biege': "#ebcb90"
+      }
     },
   },
   plugins: [daisyui],

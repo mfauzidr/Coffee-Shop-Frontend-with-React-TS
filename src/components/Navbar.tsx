@@ -73,7 +73,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
     >
       <div className="flex flex-col lg:flex-row flex-1 items-center w-full lg:w-auto">
         <div className="flex text-white justify-between lg:justify-normal w-full lg:w-auto mb-6 lg:mb-0 overflow-visible">
-          <Brand textColor={"white"} />
+          <Brand textColor={"white"} iconSize="w-12 h-12" />
           <div className="flex items-center gap-6 lg:hidden ">
             <Link to="/checkout-product">
               <FeatherIcon

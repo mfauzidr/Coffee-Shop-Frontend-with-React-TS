@@ -17,7 +17,6 @@ import {
   updatePassword,
   updateProfileData,
 } from "../../redux/slices/profile";
-import axios from "axios";
 
 interface IProfileBody {
   id?: number;
@@ -37,9 +36,7 @@ interface IUpdatePassword {
 
 const Profile = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { profile, error } = useStoreSelector(
-    (state: RootState) => state.profile
-  );
+  const { profile } = useStoreSelector((state: RootState) => state.profile);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [form, setForm] = useState<IProfileBody>();
   const [changedImage, setSelectedImage] = useState<File | null>(null);

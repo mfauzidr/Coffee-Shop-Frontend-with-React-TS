@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="flex flex-col md:flex-row w-full md:justify-between gap-6 md:gap-10">
         <div className="flex gap-11">
           <div className="flex-col md:flex-1 max-w-md lg:max-w-lg xl:max-w-xl">
-            <Brand textColor={"amber-800"} />
+            <Brand textColor="#6B705C" iconSize="w-14 h-14" />
             <div className="mt-5 text-sm md:text-base">
               Coffee Shop is a store that sells some good meals, and especially
               coffee. We provide high quality beans

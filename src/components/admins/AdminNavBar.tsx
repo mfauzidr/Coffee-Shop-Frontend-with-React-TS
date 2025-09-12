@@ -61,7 +61,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
     >
       <div className="flex flex-1 items-center justify-between w-auto">
         <div className="flex text-white justify-normal w-auto mb-0 overflow-visible">
-          <Brand textColor={"amber-800"} />
+          <Brand textColor="#92400e" iconSize="w-10 h-10" />
         </div>
       </div>
 
