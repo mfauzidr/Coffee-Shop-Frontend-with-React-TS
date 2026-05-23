@@ -1,11 +1,12 @@
+import axios from "axios";
+import FeatherIcon from "feather-icons-react";
 import { useEffect, useState } from "react";
 import { ApplyButton } from "../Buttons";
 import { Option } from "../RadioGroup";
-import axios from "axios";
 
 interface CreateProductProps {
   name: string;
-  image: string;
+  images: string[];
   price: string;
   description: string;
   onChange: (
@@ -16,15 +17,17 @@ interface CreateProductProps {
   onSelectSize: (selectedOption: Option) => void;
   onSelectCategory: (selectedOption: Option) => void;
   onImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onRemoveImage: (index: number) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const CreateProduct = ({
-  image,
+  images,
   onChange,
   onSelectSize,
   onSelectCategory,
   onImageChange,
+  onRemoveImage,
   handleSubmit,
 }: CreateProductProps) => {
   const [sizes, setSizes] = useState<Option[]>([]);
@@ -88,18 +91,36 @@ const CreateProduct = ({
       <label className="font-bold text-sm mb-2" htmlFor="image">
         Photo Product
       </label>
-      <div className="flex w-16 h-16 rounded-xl border bg-white overflow-hidden">
-        <img
-          className="object-cover w-full h-full text-sm"
-          src={image}
-          alt="Profile"
-        />
+      <div className="grid grid-cols-4 gap-2 mb-2">
+        {images.length > 0 ? (
+          images.map((src, index) => (
+            <div key={src + index} className="relative w-full h-20 rounded-xl border bg-white overflow-hidden">
+              <img
+                className="object-cover w-full h-full"
+                src={src}
+                alt={`Product preview ${index + 1}`}
+              />
+              <button
+                type="button"
+                onClick={() => onRemoveImage(index)}
+                className="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/60 text-white text-xs flex items-center justify-center"
+              >
+                ×
+              </button>
+            </div>
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center w-full h-20 rounded-xl border border-dashed border-slate-300 bg-white text-slate-400 text-xs">
+            <FeatherIcon icon="plus" className="w-5 h-5 mb-1" />
+          </div>
+        )}
       </div>
       <div className="flex flex-col gap-2 mt-2">
         <div className="relative">
           <input
             type="file"
             accept="image/*"
+            multiple
             onChange={onImageChange}
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             id="file-upload-input"
@@ -107,12 +128,13 @@ const CreateProduct = ({
           <label htmlFor="file-upload-input">
             <button
               type="button"
-              className={`flex-1 p-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center text-xs`}
+              className={`flex items-center justify-center w-full p-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center text-xs`}
             >
-              Upload Photo
+              Upload Product Photos
             </button>
           </label>
         </div>
+        <p className="text-xs text-slate-500">Maximum 4 images. Click × to remove any selected image.</p>
       </div>
       <label className="font-bold text-sm mb-2 mt-4" htmlFor="name">
         Product Name

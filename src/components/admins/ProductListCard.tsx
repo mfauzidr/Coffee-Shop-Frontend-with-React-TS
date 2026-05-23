@@ -1,9 +1,10 @@
 import FeatherIcon from "feather-icons-react";
+import noImg from "../../assets/img/no-image.webp";
 
 interface ProductistProps {
   product: {
     id: number;
-    image: string;
+    image?: string | string[];
     productName: string;
     price: number;
     description: string;
@@ -39,8 +40,16 @@ const ProductListCard = ({
         </div>
         <div className="w-24 aspect-square ml-2 mr-2 overflow-hidden rounded flex items-center justify-center">
           <img
-            src={product.image}
+            src={
+              Array.isArray(product.image)
+                ? product.image[0]
+                : product.image || noImg
+            }
             alt={product.productName}
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = noImg;
+            }}
             className="w-full h-full object-cover"
           />
         </div>

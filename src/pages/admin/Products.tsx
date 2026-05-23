@@ -14,7 +14,6 @@ import Filter from "../../components/admins/FilterModal";
 import ProductList from "../../components/admins/ProductList";
 import CreateProduct from "../../components/admins/CreateProduct";
 import Swal from "sweetalert2";
-import img from "../../assets/img/no-image.webp";
 import { Option } from "../../components/RadioGroup";
 import EditProduct from "../../components/admins/EditProduct";
 
@@ -53,7 +52,12 @@ const Products = () => {
   const [showFilter, setShowFilter] = useState<boolean>(false);
   const [showCreateProduct, setShowCreateProduct] = useState<boolean>(false);
   const [showEditProduct, setShowEditProduct] = useState<boolean>(false);
-  const [changedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [existingImages, setExistingImages] = useState<
+    { id?: number; url: string }[]
+  >([]);
+  const [deletedImageIds, setDeletedImageIds] = useState<number[]>([]);
   const [, setSelectedSize] = useState<Option>();
   const [, setSelectedCategory] = useState<Option>();
 
@@ -80,11 +84,17 @@ const Products = () => {
       if (form?.description) formData.append("description", form.description);
       if (form?.categoryId) formData.append("categoryId", form.categoryId);
       if (form?.sizeId) formData.append("sizeId", form.sizeId);
-      if (changedImage) formData.append("image", changedImage);
+      if (showEditProduct) {
+        deletedImageIds.forEach((imageId) => {
+          formData.append("deleteImageIds", String(imageId));
+        });
+      }
 
-      if (showCreateProduct === true) {
+      selectedImages.forEach((file) => formData.append("image", file));
+
+      if (showCreateProduct) {
         await dispatch(createProduct({ formData })).unwrap();
-      } else if (showEditProduct === true) {
+      } else if (showEditProduct) {
         await dispatch(updateProduct({ uuid, formData })).unwrap();
       }
 
@@ -127,7 +137,10 @@ const Products = () => {
       setForm({});
       setShowCreateProduct(false);
       setShowEditProduct(false);
-      setSelectedImage(null);
+      setSelectedImages([]);
+      setImagePreviews([]);
+      setExistingImages([]);
+      setDeletedImageIds([]);
     }
   };
 
@@ -158,16 +171,84 @@ const Products = () => {
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setSelectedImage(event.target.files[0]);
+    if (!event.target.files) return;
+
+    const filesArray = Array.from(event.target.files);
+    const remainingSlots = 4 - (existingImages.length + selectedImages.length);
+    const newFiles = filesArray.slice(0, remainingSlots);
+
+    if (newFiles.length === 0) return;
+
+    const nextImages = [...selectedImages, ...newFiles];
+    const nextPreviews = [
+      ...imagePreviews,
+      ...newFiles.map((file) => URL.createObjectURL(file)),
+    ];
+
+    setSelectedImages(nextImages);
+    setImagePreviews(nextPreviews);
+  };
+
+  const handleRemoveImage = (index: number) => {
+    if (index < existingImages.length) {
+      const removedImage = existingImages[index];
+      setExistingImages((prev) => prev.filter((_, idx) => idx !== index));
+      const imageId = removedImage.id;
+      if (imageId !== undefined) {
+        setDeletedImageIds((prev) => [...prev, imageId]);
+      }
+      return;
     }
+
+    const newImageIndex = index - existingImages.length;
+    setSelectedImages((prev) => prev.filter((_, idx) => idx !== newImageIndex));
+    setImagePreviews((prev) => {
+      const next = prev.filter((_, idx) => idx !== newImageIndex);
+      URL.revokeObjectURL(prev[newImageIndex]);
+      return next;
+    });
   };
 
   const handleEditClick = async (uuid: string | undefined) => {
     if (!uuid) return;
 
     try {
-      await dispatch(fetchProductDetail({ uuid })).unwrap();
+      const product = await dispatch(fetchProductDetail({ uuid })).unwrap();
+      const details = product.images?.map((image) => ({
+        id: image.id as number,
+        url: image.imageUrl,
+      })) ?? [];
+
+      if (details.length === 0) {
+        const fallbackImages: { id?: number; url: string }[] = [];
+
+        if (Array.isArray(product.image)) {
+          fallbackImages.push(
+            ...product.image.map((url) => ({
+              url,
+            }))
+          );
+        } else if (product.image) {
+          fallbackImages.push({ url: product.image });
+        } else if (product.primaryImage) {
+          fallbackImages.push({ url: product.primaryImage });
+          if (Array.isArray(product.otherImages)) {
+            fallbackImages.push(
+              ...product.otherImages.map((url) => ({
+                url,
+              }))
+            );
+          }
+        }
+
+        setExistingImages(fallbackImages);
+      } else {
+        setExistingImages(details);
+      }
+
+      setDeletedImageIds([]);
+      setSelectedImages([]);
+      setImagePreviews([]);
       setShowEditProduct(true);
     } catch (error) {
       console.error("Failed to fetch product detail:", error);
@@ -189,7 +270,10 @@ const Products = () => {
       setForm({});
       setShowCreateProduct(false);
       setShowEditProduct(false);
-      setSelectedImage(null);
+      setSelectedImages([]);
+      setImagePreviews([]);
+      setExistingImages([]);
+      setDeletedImageIds([]);
     }
   };
 
@@ -274,6 +358,8 @@ const Products = () => {
           onClick={() => {
             setShowCreateProduct(false);
             setForm({});
+            setSelectedImages([]);
+            setImagePreviews([]);
           }}
         >
           <div
@@ -284,7 +370,7 @@ const Products = () => {
               name="name"
               price="price"
               description="description"
-              image={changedImage ? URL.createObjectURL(changedImage) : img}
+              images={imagePreviews}
               onSelectSize={(option) => {
                 setSelectedSize(option);
                 setForm((prev) => ({ ...prev, sizeId: String(option.id) }));
@@ -294,6 +380,7 @@ const Products = () => {
                 setForm((prev) => ({ ...prev, categoryId: String(option.id) }));
               }}
               onImageChange={handleImageChange}
+              onRemoveImage={handleRemoveImage}
               onChange={handleInputChange}
               handleSubmit={(e) => handleApply(e)}
             />
@@ -306,6 +393,10 @@ const Products = () => {
           onClick={() => {
             setShowEditProduct(false);
             setForm({});
+            setSelectedImages([]);
+            setImagePreviews([]);
+            setExistingImages([]);
+            setDeletedImageIds([]);
           }}
         >
           <div
@@ -317,11 +408,10 @@ const Products = () => {
               name="name"
               price="price"
               description="description"
-              image={
-                changedImage
-                  ? URL.createObjectURL(changedImage)
-                  : detailProduct.image || img
-              }
+              images={[
+                ...existingImages.map((image) => image.url),
+                ...imagePreviews,
+              ]}
               onSelectSize={(option) => {
                 setSelectedSize(option);
                 setForm((prev) => ({ ...prev, sizeId: String(option.id) }));
@@ -331,6 +421,7 @@ const Products = () => {
                 setForm((prev) => ({ ...prev, categoryId: String(option.id) }));
               }}
               onImageChange={handleImageChange}
+              onRemoveImage={handleRemoveImage}
               onChange={handleInputChange}
               handleSubmit={(e) => handleApply(e)}
             />

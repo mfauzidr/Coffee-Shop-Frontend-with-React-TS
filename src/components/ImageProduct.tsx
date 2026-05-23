@@ -1,7 +1,7 @@
 import NoImg from "../assets/img/no-image.webp";
 
 interface ImageProductProps {
-  image: string;
+  image?: string | string[];
   smallImages: {
     small: string[];
   };
@@ -10,13 +10,14 @@ interface ImageProductProps {
 const ImageProduct = ({ image, smallImages }: ImageProductProps) => {
   const { small } = smallImages;
   const defaultImage = NoImg;
+  const imageUrl = Array.isArray(image) ? image[0] : image;
 
   return (
     <div className="flex-1 container">
       <div className="grid grid-cols-1 gap-5">
         <div>
           <img
-            src={image ? `${image}` : defaultImage}
+            src={imageUrl ? `${imageUrl}` : defaultImage}
             alt="Large Image"
             className="w-full h-72 md:h-96 2xl:h-[640px] object-cover object-center"
           />

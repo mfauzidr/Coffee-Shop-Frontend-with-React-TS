@@ -5,7 +5,10 @@ import { RootState } from "../store";
 export interface Product {
   id: number;
   uuid: string;
-  image: string;
+  image?: string | string[];
+  primaryImage?: string;
+  otherImages?: string[];
+  images?: { id?: number; imageUrl: string; isPrimary: boolean }[];
   productName: string;
   description: string;
   price: number;
@@ -33,6 +36,8 @@ export interface ProductsState {
   isLoading: boolean;
   isRejected: boolean;
   error: string | null;
+  detailLoading: boolean;
+  detailError: string | null;
   pageInfo: {
     currentPage: number;
     pages: number;
@@ -54,6 +59,8 @@ const initialState: ProductsState = {
   isLoading: false,
   isRejected: false,
   error: null,
+  detailLoading: false,
+  detailError: null,
   pageInfo: {
     currentPage: 1,
     pages: 1,
@@ -259,20 +266,17 @@ const productSlice = createSlice({
           "An error occurred while fetching products.";
       })
       .addCase(fetchProductDetail.pending, (state) => {
-        state.isLoading = true;
-        state.isRejected = false;
-        state.error = "";
+        state.detailLoading = true;
+        state.detailError = null;
       })
       .addCase(fetchProductDetail.fulfilled, (state, action) => {
         state.detailProduct = action.payload;
-        state.isLoading = false;
-        state.isRejected = false;
+        state.detailLoading = false;
       })
       .addCase(fetchProductDetail.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isRejected = true;
-        state.error =
-          action.error.message || "An error occurred while fetching products.";
+        state.detailLoading = false;
+        state.detailError =
+          action.error.message || "An error occurred while fetching product detail.";
       })
       .addCase(fetchHighlightedProducts.pending, (state) => {
         state.isLoading = true;

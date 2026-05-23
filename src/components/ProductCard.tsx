@@ -5,7 +5,7 @@ import NoImg from "../assets/img/no-image.webp";
 
 interface Product {
   uuid?: string;
-  image?: string;
+  image?: string | string[];
   productName?: string;
   description?: string;
   price?: number;
@@ -46,6 +46,8 @@ const ProductCard = ({
     );
   }
 
+  const imageUrl = Array.isArray(image) ? image[0] : image;
+
   return (
     <div className="flex-1 flex-col relative">
       {isFlashSale && (
@@ -56,7 +58,7 @@ const ProductCard = ({
       <div className="flex flex-1 h-32 lg:h-64 min-w-40 lg:w-full justify-center overflow-hidden">
         <img
           className="flex-1 object-cover object-center"
-          src={image ? `${image}` : defaultImage}
+          src={imageUrl ? `${imageUrl}` : defaultImage}
           alt={productName}
         />
       </div>

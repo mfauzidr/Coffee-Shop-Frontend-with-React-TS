@@ -2600,6 +2600,10 @@ html {
   right: 0px;
 }
 
+.right-1 {
+  right: 0.25rem;
+}
+
 .right-12 {
   right: 3rem;
 }
@@ -2614,6 +2618,10 @@ html {
 
 .top-0 {
   top: 0px;
+}
+
+.top-1 {
+  top: 0.25rem;
 }
 
 .top-1\/2 {
@@ -2924,6 +2932,10 @@ html {
 
 .h-2\/3 {
   height: 66.666667%;
+}
+
+.h-20 {
+  height: 5rem;
 }
 
 .h-24 {
@@ -3288,6 +3300,10 @@ html {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 .grid-cols-7 {
   grid-template-columns: repeat(7, minmax(0, 1fr));
 }
@@ -3572,6 +3588,10 @@ html {
   border-style: solid;
 }
 
+.border-dashed {
+  border-style: dashed;
+}
+
 .border-amber-500 {
   --tw-border-opacity: 1;
   border-color: rgb(245 158 11 / var(--tw-border-opacity, 1));
@@ -3723,6 +3743,10 @@ html {
 .bg-black {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+}
+
+.bg-black\/60 {
+  background-color: rgb(0 0 0 / 0.6);
 }
 
 .bg-blue-100 {
@@ -4672,6 +4696,11 @@ html {
   color: rgb(2 132 199 / var(--tw-text-opacity, 1));
 }
 
+.text-slate-400 {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity, 1));
+}
+
 .text-slate-500 {
   --tw-text-opacity: 1;
   color: rgb(100 116 139 / var(--tw-text-opacity, 1));
@@ -4898,10 +4927,6 @@ html {
 .checked\:bg-amber-500:checked {
   --tw-bg-opacity: 1;
   background-color: rgb(245 158 11 / var(--tw-bg-opacity, 1));
-}
-
-.hover\:cursor-pointer:hover {
-  cursor: pointer;
 }
 
 .hover\:border-b:hover {
