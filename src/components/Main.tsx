@@ -22,7 +22,7 @@ const Main = () => {
           </div>
           <div>
             <button
-              className="border border-amber-500 bg-amber-500 text-black h-12 w-36 rounded hover:bg-amber-400 hover:text-white"
+              className="border border-amber-500 bg-amber-500 text-black h-12 w-36 rounded hover:bg-amber-900 hover:border-amber-900 hover:text-white"
               onClick={handleGetStarted}
             >
               Get Started

@@ -14,7 +14,7 @@ export const SubmitButton = ({
 }: SubmitButtonProps) => {
   return (
     <button
-      className="border mt-4 w-full h-12 rounded-md bg-amber-500"
+      className="border mt-4 w-full h-12 rounded-md bg-amber-500 text-black hover:bg-amber-900 hover:border-amber-900 hover:text-white font-semibold"
       type="submit"
       disabled={disabled}
     >
@@ -133,7 +133,7 @@ export const BuyButton = ({ size, onClick }: BuyButtonProps) => {
   return (
     <button
       type="button"
-      className={`flex-1 ${size} py-1 lg:py-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center text-xs md:text-base`}
+      className={`flex-1 ${size} py-1 lg:py-2 border border-amber-500 bg-amber-500 hover:bg-amber-900 hover:border-amber-900 hover:text-white rounded font-semibold text-black text-center text-xs md:text-base`}
       onClick={onClick}
     >
       Buy
@@ -162,7 +162,7 @@ export const Button = ({
       onClick={() => {
         onClick?.();
       }}
-      className={`flex-1 ${size} py-1 lg:py-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center text-xs md:text-base`}
+      className={`flex-1 ${size} py-1 lg:py-2 border border-amber-500 bg-amber-500 hover:bg-amber-900 hover:border-amber-900 hover:text-white rounded font-semibold text-black text-center text-xs md:text-base`}
     >
       <button type={type}>{buttonName}</button>
     </Link>
@@ -179,7 +179,7 @@ export const ApplyButton = ({
     <button
       onClick={onClick}
       type={type}
-      className={`flex-1 ${size} py-1 lg:py-2 border border-amber-500 bg-amber-500 rounded font-semibold text-black text-center`}
+      className={`flex-1 ${size} py-1 lg:py-2 border border-amber-500 bg-amber-500 hover:bg-amber-900 hover:border-amber-900 hover:text-white rounded font-semibold text-black text-center`}
     >
       {buttonName}
     </button>

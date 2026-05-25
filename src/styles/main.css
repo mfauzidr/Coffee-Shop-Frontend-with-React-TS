@@ -1026,6 +1026,66 @@ html {
   cursor: not-allowed;
 }
 
+.table {
+  font-size: 0.875rem;
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-box);
+  text-align: left;
+}
+
+.table:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+  text-align: right;
+}
+
+@media (hover: hover) {
+  .table tr.row-hover:hover, .table tr.row-hover:nth-child(even):hover {
+    background-color: var(--color-base-200);
+  }
+}
+
+.table :where(th, td) {
+  padding-inline: calc(0.25rem * 4);
+  padding-block: calc(0.25rem * 3);
+  vertical-align: middle;
+}
+
+.table :where(thead, tfoot) {
+  white-space: nowrap;
+  color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.table :where(tfoot) {
+  border-top: var(--border) solid color-mix(in oklch, var(--color-base-content) 5%, #0000);
+}
+
+.table :where(.table-pin-rows thead tr) {
+  position: sticky;
+  top: calc(0.25rem * 0);
+  z-index: 1;
+  background-color: var(--color-base-100);
+}
+
+.table :where(.table-pin-rows tfoot tr) {
+  position: sticky;
+  bottom: calc(0.25rem * 0);
+  z-index: 1;
+  background-color: var(--color-base-100);
+}
+
+.table :where(.table-pin-cols tr th) {
+  position: sticky;
+  right: calc(0.25rem * 0);
+  left: calc(0.25rem * 0);
+  background-color: var(--color-base-100);
+}
+
+.table :where(thead tr, tbody tr:not(:last-child)) {
+  border-bottom: var(--border) solid color-mix(in oklch, var(--color-base-content) 5%, #0000);
+}
+
 .alert-success {
   border-color: var(--color-success);
   color: var(--color-success-content);
@@ -2567,6 +2627,10 @@ html {
   position: relative;
 }
 
+.sticky {
+  position: sticky;
+}
+
 .inset-0 {
   inset: 0px;
 }
@@ -2652,6 +2716,10 @@ html {
   z-index: 50;
 }
 
+.z-40 {
+  z-index: 40;
+}
+
 .mx-10 {
   margin-left: 2.5rem;
   margin-right: 2.5rem;
@@ -2680,11 +2748,6 @@ html {
 .mx-4 {
   margin-left: 1rem;
   margin-right: 1rem;
-}
-
-.mx-6 {
-  margin-left: 1.5rem;
-  margin-right: 1.5rem;
 }
 
 .mx-8 {
@@ -2720,6 +2783,16 @@ html {
 .my-8 {
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mx-6 {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
 }
 
 .-mt-1 {
@@ -2886,6 +2959,10 @@ html {
   display: flex;
 }
 
+.table {
+  display: table;
+}
+
 .grid {
   display: grid;
 }
@@ -3009,6 +3086,10 @@ html {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-9 {
+  height: 2.25rem;
 }
 
 .max-h-0 {
@@ -3184,6 +3265,10 @@ html {
   min-width: 10rem;
 }
 
+.min-w-full {
+  min-width: 100%;
+}
+
 .max-w-20 {
   max-width: 5rem;
 }
@@ -3230,6 +3315,10 @@ html {
 
 .grow {
   flex-grow: 1;
+}
+
+.table-fixed {
+  table-layout: fixed;
 }
 
 .-translate-y-1\/2 {
@@ -3306,6 +3395,10 @@ html {
 
 .grid-cols-7 {
   grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.flex-row {
+  flex-direction: row;
 }
 
 .flex-col {
@@ -3468,6 +3561,10 @@ html {
 
 .self-end {
   align-self: flex-end;
+}
+
+.self-center {
+  align-self: center;
 }
 
 .justify-self-end {
@@ -4063,6 +4160,11 @@ html {
   background-color: rgb(66 32 6 / var(--tw-bg-opacity, 1));
 }
 
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
+}
+
 .bg-opacity-10 {
   --tw-bg-opacity: 0.1;
 }
@@ -4318,6 +4420,11 @@ html {
   padding-bottom: 1px;
 }
 
+.px-9 {
+  padding-left: 2.25rem;
+  padding-right: 2.25rem;
+}
+
 .pb-0 {
   padding-bottom: 0px;
 }
@@ -4406,12 +4513,20 @@ html {
   padding-top: 2rem;
 }
 
+.pl-1 {
+  padding-left: 0.25rem;
+}
+
 .text-left {
   text-align: left;
 }
 
 .text-center {
   text-align: center;
+}
+
+.align-middle {
+  vertical-align: middle;
 }
 
 .font-sacramento {
@@ -4943,24 +5058,19 @@ html {
   border-color: rgb(245 158 11 / var(--tw-border-opacity, 1));
 }
 
+.hover\:border-amber-900:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(120 53 15 / var(--tw-border-opacity, 1));
+}
+
 .hover\:bg-amber-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(254 243 199 / var(--tw-bg-opacity, 1));
 }
 
-.hover\:bg-amber-200:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(253 230 138 / var(--tw-bg-opacity, 1));
-}
-
 .hover\:bg-amber-300:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(252 211 77 / var(--tw-bg-opacity, 1));
-}
-
-.hover\:bg-amber-400:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(251 191 36 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-amber-600:hover {
@@ -6246,6 +6356,11 @@ html {
     line-height: 1.75rem;
   }
 
+  .md\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+
   .md\:font-medium {
     font-weight: 500;
   }
@@ -6274,6 +6389,10 @@ html {
   .lg\:my-32 {
     margin-top: 8rem;
     margin-bottom: 8rem;
+  }
+
+  .lg\:-ml-2 {
+    margin-left: -0.5rem;
   }
 
   .lg\:-mt-6 {
@@ -6425,6 +6544,10 @@ html {
     gap: 2.5rem;
   }
 
+  .lg\:gap-2 {
+    gap: 0.5rem;
+  }
+
   .lg\:gap-5 {
     gap: 1.25rem;
   }
@@ -6552,8 +6675,16 @@ html {
     max-width: 36rem;
   }
 
+  .xl\:justify-between {
+    justify-content: space-between;
+  }
+
   .xl\:gap-20 {
     gap: 5rem;
+  }
+
+  .xl\:gap-4 {
+    gap: 1rem;
   }
 
   .xl\:text-lg {

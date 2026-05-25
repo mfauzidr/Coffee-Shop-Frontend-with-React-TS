@@ -11,7 +11,6 @@ interface ProductistProps {
     uuid: string;
   };
   size: string;
-  method: string;
   stock?: number;
   index: number;
   onEditClick: (uuid: string | undefined) => void;
@@ -21,24 +20,18 @@ interface ProductistProps {
 const ProductListCard = ({
   product,
   size,
-  method,
   stock,
   index,
   onEditClick,
   onDeleteClick,
 }: ProductistProps) => {
   return (
-    <>
-      <div
-        key={product.id}
-        className={`flex w-full justify-between items-center py-2 px-6 pr-8 text-xs font-base ${
-          index % 2 !== 0 ? "bg-gray-100" : ""
-        }`}
-      >
-        <div className="flex w-24">
-          <input type="checkbox" />
-        </div>
-        <div className="w-24 aspect-square ml-2 mr-2 overflow-hidden rounded flex items-center justify-center">
+    <tr className={`${index % 2 !== 0 ? "bg-gray-100" : "bg-white"}`}>
+      <td className="py-3 px-6 align-middle text-center">
+        <input type="checkbox" />
+      </td>
+      <td className="py-3 px-6 align-middle text-center">
+        <div className="w-24 aspect-square mx-auto overflow-hidden rounded bg-slate-100">
           <img
             src={
               Array.isArray(product.image)
@@ -53,24 +46,18 @@ const ProductListCard = ({
             className="w-full h-full object-cover"
           />
         </div>
-
-        <div className="flex justify-center items-center text-center w-48 pl-2 mr-2">
-          {product.productName}
-        </div>
-        <div className="flex justify-center w-48">
-          Rp {product.price.toLocaleString()}
-        </div>
-        <div className="flex justify-center w-52 max-h-20 overflow-auto no-scrollbar py-2">
-          {product.description}
-        </div>
-        <div className="flex justify-center text-center w-52">{size}</div>
-        <div className="flex justify-center w-48">{method}</div>
-        {stock ? (
-          <div className="flex justify-center w-28 pr-3">{stock}</div>
-        ) : (
-          ""
-        )}
-        <div className="flex gap-1 w-12">
+      </td>
+      <td className="py-3 px-6 align-middle text-center">{product.productName}</td>
+      <td className="py-3 px-6 align-middle text-center">
+        Rp {product.price.toLocaleString()}
+      </td>
+      <td className="py-3 px-6 align-middle text-center max-h-20 overflow-auto no-scrollbar py-2">
+        {product.description}
+      </td>
+      <td className="py-3 px-6 align-middle text-center">{size}</td>
+      <td className="py-3 px-6 align-middle text-center">{stock}</td>
+      <td className="py-3 px-6 align-middle text-center">
+        <div className="flex justify-center gap-1">
           <button
             type="button"
             className="text-amber-500 bg-amber-500 bg-opacity-10 rounded-full p-1.5"
@@ -86,8 +73,8 @@ const ProductListCard = ({
             <FeatherIcon icon="trash-2" className="w-4 h-4" />
           </button>
         </div>
-      </div>
-    </>
+      </td>
+    </tr>
   );
 };
 

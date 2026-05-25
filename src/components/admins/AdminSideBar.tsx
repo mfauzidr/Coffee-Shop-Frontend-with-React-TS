@@ -9,7 +9,7 @@ const AdminSideBar = () => {
     setSelectedPage(buttonName);
   };
   return (
-    <div className="inline-block pl-10 pt-8 pr-3 text-gray-600 bg-white border-r border-gray-200 border-solid w-64">
+    <div className="inline-block pl-10 pt-8 pr-3 text-gray-600 bg-white border-r border-gray-200 border-solid w-64 h-full overflow-y-auto">
       <div className="flex-col items-center justify-start font-medium text-slate-500">
         <Link to="/admin/dashboard">
           <button

@@ -71,9 +71,9 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
         menuOpen ? "max-h-96" : "max-h-20"
       } transition-all duration-500 ease-in-out`}
     >
-      <div className="flex flex-col lg:flex-row flex-1 items-center w-full lg:w-auto">
+      <div className="flex flex-col lg:flex-row flex-1 items-center w-full lg:w-auto lg:-ml-2 lg:gap-2 xl:gap-4 ">
         <div className="flex text-white justify-between lg:justify-normal w-full lg:w-auto mb-6 lg:mb-0 overflow-visible">
-          <Brand textColor={"white"} iconSize="w-12 h-12" />
+          <Brand textColor={"white"} iconSize="w-16 h-16 -mt-2" />
           <div className="flex items-center gap-6 lg:hidden ">
             <Link to="/checkout-product">
               <FeatherIcon
@@ -87,11 +87,11 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
           </div>
         </div>
         <ul
-          className={`flex flex-col lg:flex-row lg:flex-1 mx-3 items-center justify-center gap-4 lg:gap-0 transition-all duration-500 ease-in-out ${
-            menuOpen ? "max-h-40" : "max-h-0"
+          className={`flex flex-col lg:flex-row lg:flex-1 mx-3 items-center justify-start gap-4 lg:gap-6 transition-all duration-500 ease-in-out ${
+            menuOpen ? "max-h-40" : "max-h-0" 
           } lg:max-h-full overflow-hidden`}
         >
-          <li className="mx-6">
+          <li className="">
             <Link
               className="pb-2 -mt-2 transition-all duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
               to="/"
@@ -99,7 +99,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
               Home
             </Link>
           </li>
-          <li className="mx-6">
+          <li className="">
             <Link
               className="pb-2 -mt-2 transition-all duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
               to="/product"
@@ -108,7 +108,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
             </Link>
           </li>
           {token ? (
-            <li className="mx-6">
+            <li className="">
               <Link
                 className="pb-2 -mt-2 transition-all duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
                 to="/history-order"
@@ -120,7 +120,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
             ""
           )}
           {decoded.role && decoded.role === "admin" ? (
-            <li className="mx-6">
+            <li className="">
               <Link
                 className="pb-2 -mt-2 transition-all duration-500 hover:border-b hover:border-amber-500 hover:text-amber-500"
                 to="/admin/dashboard"
@@ -140,9 +140,6 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
         } lg:max-h-full overflow-hidden`}
       >
         <div className="hidden items-center lg:flex gap-6">
-          <Link to="/product">
-            <FeatherIcon icon="search" className="text-amber-500" />
-          </Link>
           <div
             ref={dropdownRef}
             className="relative"
@@ -199,7 +196,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
                 value={"Sign Up"}
                 href={"/register"}
                 styling={
-                  "text-black border border-amber-500 h-12 w-24 rounded-md bg-amber-500 hover:bg-amber-200 hover:border-amber-200"
+                  "text-black border border-amber-500 h-12 w-24 rounded-md bg-amber-500 hover:bg-amber-900 hover:border-amber-200"
                 }
               />
             </>

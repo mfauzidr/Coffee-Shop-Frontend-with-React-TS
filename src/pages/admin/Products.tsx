@@ -12,6 +12,7 @@ import {
 } from "../../redux/slices/products";
 import Filter from "../../components/admins/FilterModal";
 import ProductList from "../../components/admins/ProductList";
+import ProductListSkeleton from "../../components/admins/ProductListSkeleton";
 import CreateProduct from "../../components/admins/CreateProduct";
 import Swal from "sweetalert2";
 import { Option } from "../../components/RadioGroup";
@@ -278,7 +279,7 @@ const Products = () => {
   };
 
   return (
-    <div>
+    <>
       <div className="relative">
         <div className="flex flex-col gap-6 p-8 w-full">
           <div className="flex justify-between items-start w-full h-full">
@@ -323,7 +324,7 @@ const Products = () => {
               </div>
             </div>
           </div>
-          {isLoading && <p>Loading...</p>}
+          {isLoading && <ProductListSkeleton />}
           {isRejected && (
             <p className="text-red-500">{error || "An error occurred."}</p>
           )}
@@ -428,7 +429,7 @@ const Products = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

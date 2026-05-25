@@ -4,7 +4,6 @@ import Brand from "../Brand";
 import { Link, useNavigate } from "react-router-dom";
 import { useStoreDispatch, useStoreSelector } from "../../redux/hooks";
 import { authAction } from "../../redux/slices/auth";
-import ShoppingCart from "../ShoppingCart";
 import { RootState } from "../../redux/store";
 import { profileAction } from "../../redux/slices/profile";
 
@@ -14,7 +13,6 @@ interface NavbarProps {
 }
 
 const Navbar = ({ bgColor, position }: NavbarProps) => {
-  const [cartOpen, setCartOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const dispatch = useStoreDispatch();
@@ -44,7 +42,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setCartOpen(false);
+        setDropdownOpen(false);
       }
     };
 
@@ -68,32 +66,13 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
       <div
         className={`flex flex-col lg:flex-row lg:flex-1 items-center justify-center lg:justify-end gap-4 lg:gap-6 transition-all duration-500 ease-in-out`}
       >
-        <div className="hidden items-center lg:flex gap-3">
-          <Link to="/product">
-            <FeatherIcon icon="search" className="text-black" />
-          </Link>
-          <div
-            ref={dropdownRef}
-            className="relative"
-            onMouseEnter={() => setCartOpen(true)}
-            onMouseLeave={() => setCartOpen(false)}
-          >
-            <button>
-              <FeatherIcon
-                icon="shopping-cart"
-                className="text-black w-5 lg:w-6 h-5 lg:h-6 mt-1"
-              />
-            </button>
-            {cartOpen && <ShoppingCart />}
-          </div>
-        </div>
 
         <div className="flex gap-6">
           <>
-            <div className="relative">
+            <div className="relative" ref={dropdownRef}>
               <button
                 id="profileDropdownButton"
-                onClick={() => setDropdownOpen(true)}
+                onClick={() => setDropdownOpen((prev) => !prev)}
                 className="flex items-center gap-2 focus:outline-none"
               >
                 <img
@@ -102,7 +81,7 @@ const Navbar = ({ bgColor, position }: NavbarProps) => {
                   alt="Profile"
                 />
                 <FeatherIcon
-                  icon="chevron-down"
+                  icon={dropdownOpen ? "chevron-up" : "chevron-down"}
                   className="text-sm text-black"
                 />
               </button>

@@ -28,38 +28,40 @@ const ProductList = ({
 
   return (
     <>
-      <div className="flex flex-col p-2 w-full border border-slate-300 rounded-lg">
-        <div className="flex border-b w-full justify-between py-2 px-6 mt-2 text-xs font-semibold">
-          <div className="flex w-20">
-            <input type="checkbox" />
-          </div>
-          <div className="flex justify-center w-24 px-10">Image</div>
-          <div className="flex justify-center w-48">Product Name</div>
-          <div className="flex justify-center w-48">Price</div>
-          <div className="flex justify-center w-48 pr-4">Desc</div>
-          <div className="flex justify-center w-52">Size</div>
-          <div className="flex justify-center w-48">Method</div>
-          <div className="flex justify-center w-24">Stock</div>
-          <div className="flex justify-center w-24 pl-5">Action</div>
-        </div>
-        <div className="flex flex-col border-b w-full justify-between">
-          {products.map((product, index) => (
-            <ProductListCard
-              key={product.id}
-              product={product}
-              size="Large, Medium"
-              method="Delivery, Dine-In"
-              stock={200}
-              index={index}
-              onEditClick={() => onEditClick?.(product.uuid)}
-              onDeleteClick={() => {
-                setSelectedUuid(product.uuid);
-                setShowDelete(true);
-              }}
-            />
-          ))}
-        </div>
-        <div className="flex justify-between mt-2 text-sm text-gray-500">
+      <div className="overflow-x-auto w-full border border-slate-300 rounded-lg bg-white">
+        <table className="min-w-full table-fixed text-xs text-left">
+          <thead className="border-b bg-slate-50 text-slate-500">
+            <tr>
+              <th className="w-20 py-3 px-6 text-center">
+                <input type="checkbox" />
+              </th>
+              <th className="w-24 py-3 px-6 text-center">Image</th>
+              <th className="w-48 py-3 px-6 text-center">Product Name</th>
+              <th className="w-48 py-3 px-6 text-center">Price</th>
+              <th className="w-48 py-3 px-6 text-center">Desc</th>
+              <th className="w-52 py-3 px-6 text-center">Size</th>
+              <th className="w-24 py-3 px-6 text-center">Stock</th>
+              <th className="w-24 py-3 px-6 text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product, index) => (
+              <ProductListCard
+                key={product.id}
+                product={product}
+                size="Large, Medium"
+                stock={200}
+                index={index}
+                onEditClick={() => onEditClick?.(product.uuid)}
+                onDeleteClick={() => {
+                  setSelectedUuid(product.uuid);
+                  setShowDelete(true);
+                }}
+              />
+            ))}
+          </tbody>
+        </table>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-3 p-4 text-sm text-gray-500">
           <div>
             {products.length > 0
               ? `${dataCount} Products Found`

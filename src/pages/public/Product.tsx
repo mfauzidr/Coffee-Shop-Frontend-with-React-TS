@@ -2,7 +2,6 @@ import CouponList from "../../components/CouponList";
 import ProductGrid from "../../components/ProductGrid";
 import ProductHeader from "../../components/ProductHeader";
 import FilterSvg from "../../assets/svg/Filter.svg";
-import FeatherIcon from "feather-icons-react";
 import { useState } from "react";
 import FilterSidebar from "../../components/FilterSidebar";
 
@@ -23,9 +22,6 @@ const Product = () => {
 
       <div className="flex lg:hidden px-6 md:px-16 gap-4 py-2 md:py-4 border-b-2 items-center">
         <div className="flex-1 relative">
-          <i className="absolute inset-y-0 left-0 flex items-center ml-3">
-            <FeatherIcon icon="search" className="h-5 w-5 text-gray-500" />
-          </i>
           <input
             className="border rounded-lg w-full h-11 pl-10 outline-none"
             id="Search"

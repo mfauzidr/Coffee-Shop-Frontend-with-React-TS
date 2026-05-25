@@ -54,7 +54,7 @@ const FloatingChat = () => {
               placeholder="Masukan Pesan Anda"
             />
             <button
-              className="flex items-center justify-center h-11 w-11 rounded-lg bg-amber-500"
+              className="flex items-center justify-center h-11 w-11 rounded-lg bg-amber-500 hover:bg-amber-900"
               type="submit"
             >
               <FeatherIcon icon="send" />
@@ -65,7 +65,7 @@ const FloatingChat = () => {
 
       {!chatOpen && (
         <button
-          className="fixed bottom-12 right-12 bg-amber-500 w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
+          className="fixed bottom-12 right-12 bg-amber-500 hover:bg-amber-900 w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
           onClick={() => setChatOpen(true)}
         >
           <FeatherIcon icon="message-circle" size="40" />

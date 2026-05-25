@@ -26,7 +26,7 @@ const StatCard = ({ label, max, duration }: StatCardProps) => {
 
   return (
     <div className="flex flex-1 flex-col items-center">
-      <div className="text-2xl md:text-5xl text-amber-500">{currentValue}+</div>
+      <div className="text-xl md:text-3xl text-amber-500">{currentValue}+</div>
       <div className="text-sm md:text-base">{label}</div>
     </div>
   );
